@@ -41,24 +41,23 @@ export default function ThemeToggle() {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
+  const iconTransition = {
+    duration: 0.6,
+    ease: [0.25, 0.8, 0.35, 1] as [number, number, number, number],
+  };
+
   const sunMotion = {
     initial: { y: 14, opacity: 0, scale: 0.95 },
     animate: { y: 0, opacity: 1, scale: 1 },
     exit: { y: 14, opacity: 0, scale: 0.95 },
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.8, 0.35, 1],
-    },
+    transition: iconTransition,
   };
 
   const moonMotion = {
     initial: { y: -14, opacity: 0, scale: 0.95 },
     animate: { y: 0, opacity: 1, scale: 1 },
     exit: { y: -14, opacity: 0, scale: 0.95 },
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.8, 0.35, 1],
-    },
+    transition: iconTransition,
   };
 
   return (
