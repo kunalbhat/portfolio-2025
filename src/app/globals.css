@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
+  /* Default theme (dark) */
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+    color-scheme: dark;
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    /* Core palette */
+    --bg: #020617; /* slate-950 */
+    --fg: #f9fafb; /* slate-50 */
+    --muted: #64748b; /* slate-500 */
+    --border: #1f2937; /* slate-800 */
+    --accent: #192e03;
+    --accent-soft: rgba(52, 211, 153, 0.3);
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #020617;
+    --fg: #f9fafb;
+    --muted: #64748b;
+    --border: #1f2937;
+    --accent: #192e03;
+    --accent-soft: rgba(52, 211, 153, 0.3);
+  }
+
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg: #f9fafb;
+    --fg: #020617;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #d9f99d;
+    --accent-soft: rgba(16, 185, 129, 0.18);
+  }
+
+  html,
+  body {
+    height: 100%;
+    font-family: var(--font-albert), system-ui, sans-serif;
+  }
+
+  body {
+    @apply antialiased;
+    background-color: var(--bg);
+    color: var(--fg);
+  }
+
+  h1 {
+    @apply text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight;
+    color: var(--fg);
+  }
+
+  h2 {
+    @apply text-2xl font-normal mb-12 leading-relaxed;
+  }
+
+  p {
+    @apply text-xl text-lime-950;
+  }
+
+  a {
+    @apply bg-(--accent) underline underline-offset-2 decoration-wavy decoration-2 hover:underline-offset-4;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root,
+    body {
+      transition: background-color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1),
+        color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1);
+    }
+
+    body * {
+      transition-property: background-color, color, border-color, fill, stroke;
+      transition-duration: 0.65s;
+      transition-timing-function: cubic-bezier(0.25, 0.8, 0.35, 1);
+    }
+  }
 }
