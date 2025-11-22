@@ -7,31 +7,34 @@
 
     /* Core palette */
     --bg: #020617; /* slate-950 */
-    --fg: #f9fafb; /* slate-50 */
+    --fg: rgb(116, 140, 235, 1)
     --muted: #64748b; /* slate-500 */
     --border: #1f2937; /* slate-800 */
     --accent: #192e03;
     --accent-soft: rgba(52, 211, 153, 0.3);
+    --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
   }
 
   [data-theme="dark"] {
     color-scheme: dark;
     --bg: #020617;
-    --fg: #f9fafb;
+    --fg: rgb(116, 140, 235, 1)
     --muted: #64748b;
     --border: #1f2937;
     --accent: #192e03;
     --accent-soft: rgba(52, 211, 153, 0.3);
+    --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
   }
 
   [data-theme="light"] {
     color-scheme: light;
     --bg: #f9fafb;
-    --fg: #020617;
+    --fg: #03061a
     --muted: #6b7280;
     --border: #e5e7eb;
     --accent: #d9f99d;
     --accent-soft: rgba(16, 185, 129, 0.18);
+    --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
   }
 
   html,
@@ -52,7 +55,7 @@
   }
 
   h2 {
-    @apply text-2xl font-normal mb-12 leading-relaxed;
+    @apply md:text-3xl font-normal mb-12 leading-relaxed;
   }
 
   p {
@@ -61,6 +64,10 @@
 
   a {
     @apply bg-(--accent) underline underline-offset-4 decoration-wavy decoration-2 hover:underline-offset-8;
+  }
+
+  figcaption {
+    @apply text-lg;
   }
 
   @media (prefers-reduced-motion: no-preference) {

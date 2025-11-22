@@ -1,23 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import ThemeToggle from "@/components/theme-toggle";
 
 export default function SiteHeader() {
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
-
   return (
-    <motion.header
-      className="fixed inset-x-0 top-0 z-30 backdrop-blur-sm"
-      style={{
-        opacity,
-        willChange: "opacity, background-color",
-        backgroundColor: "color-mix(in srgb, var(--bg) 85%, transparent)",
-        transition: "background-color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1)",
-      }}
-    >
+    <motion.header className="fixed inset-x-0 top-0 z-30">
       <div className="max-w-8xl mx-auto px-8 md:px-16">
         <div className="flex items-center justify-between py-6 md:py-8">
           <motion.div
