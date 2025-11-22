@@ -51,7 +51,11 @@ export default function SiteHeader({
       <div className="max-w-8xl mx-auto px-8 md:px-16">
         <div className="flex items-center justify-between py-6 md:py-8">
           <motion.div
-            className="flex items-center gap-4"
+            className={`flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
+              showInput
+                ? "-translate-x-full opacity-0 md:translate-x-0 md:opacity-100"
+                : "translate-x-0 opacity-100"
+            }`}
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
@@ -174,10 +178,10 @@ export default function SiteHeader({
             </AnimatePresence>
 
             <motion.div
-              className={`transition-all duration-300 ${
+              className={`transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
                 showInput
-                  ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
-                  : "opacity-100 translate-y-0"
+                  ? "translate-x-full opacity-0 md:translate-x-0 md:opacity-100"
+                  : "translate-x-0 opacity-100"
               }`}
               initial={false}
               animate={{}}

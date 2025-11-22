@@ -102,9 +102,8 @@ export default function Home() {
                 </div>
               </figure>
               <figcaption>
-                <span className="text-(--muted)">
-                  Private preview — enter the password to view.
-                </span>
+                <h3>Private project</h3>
+                <span className="text-(--muted)">Enter the password to view.</span>
               </figcaption>
             </div>
           )}
