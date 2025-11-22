@@ -35,7 +35,7 @@ export default function Home() {
           className="mb-12 md:mb-16"
           text="Currently designing experiences that bring millions of families closer together."
         />
-        <p>
+        <p className="mb-12 md:mb-24 ">
           At{" "}
           <a href="https://www.auraframes.com" target="_blank">
             Aura
@@ -44,11 +44,7 @@ export default function Home() {
           concepts, continuous customer insight, and rapid experimentation to
           ship high-impact features at scale.
         </p>
-
-        <header className="mb-10 md:mb-16">
-          <h2>Showcase</h2>
-        </header>
-        <section className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <section className="portfolio-grid">
           <div>
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <video
@@ -71,7 +67,82 @@ export default function Home() {
               </span>
             </figcaption>
           </div>
-
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <video
+                key={theme}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+              >
+                <source src="videos/aura-product-video.mp4" type="video/mp4" />
+              </video>
+            </figure>
+            <figcaption>
+              {/* <span className="eyebrow">Aura</span> */}
+              <h3>Captions</h3>
+              <span>
+                We made sending photos to Aura Frames beautifully simple with
+                RCS and the Aura Agent.
+              </span>
+            </figcaption>
+          </div>
+          {isUnlocked ? (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
+            >
+              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                >
+                  <source src={`${waymoVideoBase}.webm`} type="video/webm" />
+                  <source src={`${waymoVideoBase}.mp4`} type="video/mp4" />
+                </video>
+              </figure>
+              <figcaption>
+                <h3>Waymo</h3>
+                <span>
+                  Exploring future mobility experiences with a focus on clear,
+                  calm in-car communication.
+                </span>
+              </figcaption>
+            </motion.div>
+          ) : (
+            <div>
+              <figure className="aspect-square rounded-3xl drop-shadow-xl bg-(--bg-overlay) grid place-items-center px-6 text-center">
+                <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
+                  <Image
+                    src="/images/icon-lock.svg"
+                    alt="Locked"
+                    width={32}
+                    height={32}
+                    className="h-8 w-8"
+                  />
+                  <p className="font-semibold text-(--fg) mb-0">Confidential</p>
+                </div>
+              </figure>
+              <figcaption>
+                <h3>Confidential</h3>
+                <span className="text-(--muted)">
+                  Enter the password to view.
+                </span>
+              </figcaption>
+            </div>
+          )}
+        </section>
+        <header className="mb-8">
+          <h2>Showcase</h2>
+          <p className="text-xl">Previous work and personal projects.</p>
+        </header>
+        <section className="portfolio-grid">
           <div>
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
@@ -87,6 +158,25 @@ export default function Home() {
               <h3>TRMNL Spotify Plugin</h3>
               <span>
                 A Spotify recently played plugin for the TRMNL e-ink display.
+              </span>
+            </figcaption>
+          </div>
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/braintree-dashboard.gif"
+                alt="Braintree Control Panel"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+                unoptimized
+              />
+            </figure>
+            <figcaption>
+              <h3>Braintree Control Panel</h3>
+              <span>
+                I led the redesign of Braintree&apos;s merchant dashboard.
               </span>
             </figcaption>
           </div>

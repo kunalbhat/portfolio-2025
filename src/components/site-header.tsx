@@ -67,22 +67,22 @@ export default function SiteHeader({
                 scale: [0.7, 1.06, 0.98, 1],
                 opacity: [0, 1, 1, 1],
               }}
-                transition={{
-                  duration: 0.9,
-                  times: [0, 0.5, 0.82, 1],
-                  ease: [0.26, 0.86, 0.44, 1],
-                  delay: 0.05,
-                }}
-              >
-                <Image
-                  src="/images/site-icon.svg"
-                  alt="Site icon"
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 object-contain"
-                  priority
-                />
-              </motion.div>
+              transition={{
+                duration: 0.9,
+                times: [0, 0.5, 0.82, 1],
+                ease: [0.26, 0.86, 0.44, 1],
+                delay: 0.05,
+              }}
+            >
+              <Image
+                src="/images/site-icon.svg"
+                alt="Site icon"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain"
+                priority
+              />
+            </motion.div>
 
             <span
               className={`font-bold text-2xl text-(--fg) transition-all duration-300 ${
@@ -95,7 +95,7 @@ export default function SiteHeader({
             </span>
           </motion.div>
 
-          <div className="flex items-center gap-[1.125rem]">
+          <div className="flex items-center gap-4.5">
             <AnimatePresence initial={false}>
               {unlocked ? (
                 <motion.div
@@ -104,7 +104,7 @@ export default function SiteHeader({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -6, scale: 0.95 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="h-11 w-11 rounded-full bg-[var(--bg-overlay)] grid place-items-center"
+                  className="h-11 w-11 rounded-full bg-(--bg-overlay) grid place-items-center"
                 >
                   <Image
                     src="/images/icon-unlock.svg"
@@ -125,7 +125,7 @@ export default function SiteHeader({
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 12, scale: 0.98 }}
                   transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
-                  className="flex items-center gap-2 bg-[var(--bg-overlay)] rounded-full px-3 py-1.5 text-sm"
+                  className="flex items-center gap-2 bg-(--bg-overlay) rounded-full px-3 py-1.5 text-sm"
                 >
                   <Image
                     src="/images/icon-lock.svg"
@@ -157,7 +157,7 @@ export default function SiteHeader({
                   key="lock-button"
                   type="button"
                   onClick={revealInput}
-                  className="h-11 w-11 rounded-full bg-[var(--bg-overlay)] grid place-items-center transition-opacity cursor-pointer"
+                  className="h-11 w-11 rounded-full bg-(--bg-overlay) grid place-items-center transition-opacity cursor-pointer"
                   aria-label="Enter portfolio password"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.97 }}
@@ -165,15 +165,15 @@ export default function SiteHeader({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                  >
-                    <Image
-                      src="/images/icon-lock.svg"
-                      alt=""
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 lock-icon"
-                    />
-                  </motion.button>
+                >
+                  <Image
+                    src="/images/icon-lock.svg"
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="h-8 w-8 lock-icon"
+                  />
+                </motion.button>
               )}
             </AnimatePresence>
 
@@ -191,7 +191,9 @@ export default function SiteHeader({
           </div>
         </div>
         {error && !unlocked ? (
-          <p className="text-sm text-red-500 pt-1">Wrong password. Try again.</p>
+          <p className="text-sm text-red-500 pt-1">
+            Wrong password. Try again.
+          </p>
         ) : null}
       </div>
     </motion.header>
