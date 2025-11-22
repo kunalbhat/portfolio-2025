@@ -7,7 +7,7 @@
 
     /* Core palette */
     --bg: #020617; /* slate-950 */
-    --fg: rgb(116, 140, 235, 1)
+    --fg: rgb(116, 140, 235, 1);
     --muted: #64748b; /* slate-500 */
     --border: #1f2937; /* slate-800 */
     --accent: #192e03;
@@ -18,7 +18,7 @@
   [data-theme="dark"] {
     color-scheme: dark;
     --bg: #020617;
-    --fg: rgb(116, 140, 235, 1)
+    --fg: rgb(116, 140, 235, 1);
     --muted: #64748b;
     --border: #1f2937;
     --accent: #192e03;
@@ -29,7 +29,7 @@
   [data-theme="light"] {
     color-scheme: light;
     --bg: #f9fafb;
-    --fg: #03061a
+    --fg: #03061a;
     --muted: #6b7280;
     --border: #e5e7eb;
     --accent: #d9f99d;
@@ -50,16 +50,19 @@
   }
 
   h1 {
-    @apply text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold tracking-tight;
-    color: var(--fg);
+    @apply text-4xl md:text-7xl lg:text-8xl font-semibold tracking-tight;
   }
 
   h2 {
-    @apply md:text-3xl font-normal mb-12 leading-relaxed;
+    @apply text-xl md:text-3xl font-normal mb-12 md:leading-relaxed;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold mb-4;
   }
 
   p {
-    @apply text-xl text-lime-950;
+    @apply text-xl;
   }
 
   a {
@@ -67,7 +70,11 @@
   }
 
   figcaption {
-    @apply text-lg;
+    @apply text-lg my-8;
+  }
+
+  figcaption strong {
+    @apply block;
   }
 
   @media (prefers-reduced-motion: no-preference) {
