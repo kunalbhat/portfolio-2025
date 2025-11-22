@@ -57,33 +57,42 @@ export default function SiteHeader({
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <motion.div
-              className="h-12 w-12 rounded-full bg-lime-200 flex items-center justify-center"
+              className="h-12 w-12 rounded-full bg-lime-200 flex items-center justify-center shrink-0 overflow-hidden"
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{
                 scale: [0.7, 1.06, 0.98, 1],
                 opacity: [0, 1, 1, 1],
               }}
-              transition={{
-                duration: 0.9,
-                times: [0, 0.5, 0.82, 1],
-                ease: [0.26, 0.86, 0.44, 1],
-                delay: 0.05,
-              }}
-            >
-              <Image
-                src="/images/site-icon.svg"
-                alt="Site icon"
-                width={50}
-                height={50}
-                priority
-              />
-            </motion.div>
+                transition={{
+                  duration: 0.9,
+                  times: [0, 0.5, 0.82, 1],
+                  ease: [0.26, 0.86, 0.44, 1],
+                  delay: 0.05,
+                }}
+              >
+                <Image
+                  src="/images/site-icon.svg"
+                  alt="Site icon"
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 object-contain"
+                  priority
+                />
+              </motion.div>
 
-            <span className="font-bold text-2xl text-(--fg)">Kunal Bhat</span>
+            <span
+              className={`font-bold text-2xl text-(--fg) transition-all duration-300 ${
+                showInput
+                  ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
+                  : "opacity-100 translate-y-0"
+              }`}
+            >
+              Kunal Bhat
+            </span>
           </motion.div>
 
           <div className="flex items-center gap-[1.125rem]">
-            <AnimatePresence mode="popLayout" initial={false}>
+            <AnimatePresence initial={false}>
               {unlocked ? (
                 <motion.div
                   key="unlocked"
@@ -164,7 +173,17 @@ export default function SiteHeader({
               )}
             </AnimatePresence>
 
-            <ThemeToggle />
+            <motion.div
+              className={`transition-all duration-300 ${
+                showInput
+                  ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
+                  : "opacity-100 translate-y-0"
+              }`}
+              initial={false}
+              animate={{}}
+            >
+              <ThemeToggle />
+            </motion.div>
           </div>
         </div>
         {error && !unlocked ? (
