@@ -10,7 +10,7 @@ export default function Home() {
   const auraVideoBase = themedAsset("/videos/aura-rcs", theme);
 
   return (
-    <div className="max-w-8xl px-8 md:px-16 pt-28 md:pt-32 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
+    <div className="max-w-8xl px-8 md:px-16 pt-20 md:pt-32 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
 
       <main className="py-12 min-h-screen">
