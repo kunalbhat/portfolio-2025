@@ -1,17 +1,29 @@
 "use client";
 
+import Image from "next/image";
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import { useTheme } from "@/hooks/use-theme";
 import { themedAsset } from "@/utils/themed-asset";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Home() {
+  const [isUnlocked, setIsUnlocked] = useState(false);
   const theme = useTheme("light");
   const auraVideoBase = themedAsset("/videos/aura-rcs", theme);
+  const waymoVideoSrc = "/videos/waymo.mp4";
+  const unlockPassword = "samsonite";
+
+  const handleUnlockAttempt = (password: string) => {
+    const success = password.trim() === unlockPassword;
+    setIsUnlocked(success);
+    return success;
+  };
 
   return (
     <div className="max-w-8xl px-8 md:px-16 pt-20 md:pt-32 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
-      <SiteHeader />
+      <SiteHeader onUnlockAttempt={handleUnlockAttempt} unlocked={isUnlocked} />
 
       <main className="py-12 min-h-screen">
         <AnimatedHeadline
@@ -23,16 +35,16 @@ export default function Home() {
           research.
         </h2>
 
-        <section className="md:grid grid-cols-3">
+        <section className="md:grid grid-cols-3 gap-10">
           <div>
-            <figure>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <video
                 key={theme}
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="w-full h-auto rounded-3xl drop-shadow-xl"
+                className="h-full w-full object-cover"
               >
                 <source src={`${auraVideoBase}.webm`} type="video/webm" />
                 <source src={`${auraVideoBase}.mp4`} type="video/mp4" />
@@ -46,6 +58,55 @@ export default function Home() {
               </span>
             </figcaption>
           </div>
+
+          {isUnlocked ? (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
+            >
+              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                >
+                  <source src={waymoVideoSrc} type="video/mp4" />
+                </video>
+              </figure>
+              <figcaption>
+                <h3>Waymo</h3>
+                <span>
+                  Exploring future mobility experiences with a focus on clear,
+                  calm in-car communication.
+                </span>
+              </figcaption>
+            </motion.div>
+          ) : (
+            <div>
+              <figure className="aspect-square rounded-3xl drop-shadow-xl bg-gray-50 grid place-items-center px-6 text-center">
+                <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
+                  <Image
+                    src="/images/icon-lock.svg"
+                    alt=""
+                    width={32}
+                    height={32}
+                    className="h-8 w-8"
+                  />
+                  <p className="font-semibold text-(--fg)">Confidential</p>
+                  <p className="text-sm max-w-[18ch]">
+                    Unlock with the password to preview this work.
+                  </p>
+                </div>
+              </figure>
+              <figcaption>
+                <h3>Waymo</h3>
+                <span>Private preview — enter the password to view.</span>
+              </figcaption>
+            </div>
+          )}
         </section>
       </main>
     </div>

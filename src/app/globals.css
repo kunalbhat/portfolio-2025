@@ -15,6 +15,15 @@
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
   }
 
+  /* Icon treatments */
+  .lock-icon {
+    filter: invert(1);
+  }
+
+  [data-theme="light"] .lock-icon {
+    filter: none;
+  }
+
   [data-theme="dark"] {
     color-scheme: dark;
     --bg: #020617;
