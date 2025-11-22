@@ -61,7 +61,7 @@ export default function SiteHeader({
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <motion.div
-              className="h-12 w-12 rounded-full bg-lime-200 flex items-center justify-center shrink-0 overflow-hidden"
+              className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-lime-200 flex items-center justify-center shrink-0 overflow-hidden"
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{
                 scale: [0.7, 1.06, 0.98, 1],
@@ -79,7 +79,7 @@ export default function SiteHeader({
                 alt="Site icon"
                 width={40}
                 height={40}
-                className="h-10 w-10 object-contain"
+                className="h-9 w-9 md:h-10 md:w-10 object-contain"
                 priority
               />
             </motion.div>

@@ -27,10 +27,10 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-32 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
+    <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader onUnlockAttempt={handleUnlockAttempt} unlocked={isUnlocked} />
 
-      <main className="py-12 min-h-screen">
+      <main className="py-8 min-h-screen">
         <AnimatedHeadline
           className="mb-12 md:mb-16"
           text="Currently designing experiences that bring millions of families closer together."
