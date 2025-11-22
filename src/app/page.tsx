@@ -102,8 +102,9 @@ export default function Home() {
                 </div>
               </figure>
               <figcaption>
-                <h3>Waymo</h3>
-                <span>Private preview — enter the password to view.</span>
+                <span className="text-(--muted)">
+                  Private preview — enter the password to view.
+                </span>
               </figcaption>
             </div>
           )}
