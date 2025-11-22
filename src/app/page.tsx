@@ -12,7 +12,7 @@ export default function Home() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const theme = useTheme("light");
   const auraVideoBase = themedAsset("/videos/aura-rcs", theme);
-  const waymoVideoSrc = "/videos/waymo.mp4";
+  const waymoVideoBase = "/videos/waymo-my-car";
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",
     theme,
@@ -33,14 +33,22 @@ export default function Home() {
       <main className="py-12 min-h-screen">
         <AnimatedHeadline
           className="mb-12 md:mb-16"
-          text="Designing experiences that bring millions of families closer together."
+          text="Currently designing experiences that bring millions of families closer together."
         />
-        <h2 className="mb-12 md:mb-24">
-          At <a href="#">Aura</a>, I design for growth and lead product
-          research.
-        </h2>
+        <p>
+          At{" "}
+          <a href="https://www.auraframes.com" target="_blank">
+            Aura
+          </a>
+          , I lead growth initiatives and product research—driving big-swing
+          concepts, continuous customer insight, and rapid experimentation to
+          ship high-impact features at scale.
+        </p>
 
-        <section className="md:grid grid-cols-3 gap-10">
+        <header className="mb-10 md:mb-16">
+          <h2>Showcase</h2>
+        </header>
+        <section className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           <div>
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <video
@@ -76,10 +84,9 @@ export default function Home() {
               />
             </figure>
             <figcaption>
-              <h3>TRMNL Spotify Dashboard</h3>
+              <h3>TRMNL Spotify Plugin</h3>
               <span>
-                Mobile dashboard concept tailored for the TRMNL commute
-                experience.
+                A Spotify recently played plugin for the TRMNL e-ink display.
               </span>
             </figcaption>
           </div>
@@ -98,7 +105,8 @@ export default function Home() {
                   playsInline
                   className="h-full w-full object-cover"
                 >
-                  <source src={waymoVideoSrc} type="video/mp4" />
+                  <source src={`${waymoVideoBase}.webm`} type="video/webm" />
+                  <source src={`${waymoVideoBase}.mp4`} type="video/mp4" />
                 </video>
               </figure>
               <figcaption>
@@ -111,23 +119,20 @@ export default function Home() {
             </motion.div>
           ) : (
             <div>
-              <figure className="aspect-square rounded-3xl drop-shadow-xl bg-gray-50 grid place-items-center px-6 text-center">
+              <figure className="aspect-square rounded-3xl drop-shadow-xl bg-(--bg-overlay) grid place-items-center px-6 text-center">
                 <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
                   <Image
                     src="/images/icon-lock.svg"
-                    alt="Unlock"
+                    alt="Locked"
                     width={32}
                     height={32}
                     className="h-8 w-8"
                   />
-                  <p className="font-semibold text-(--fg)">Confidential</p>
-                  <p className="text-sm max-w-[18ch]">
-                    Unlock with the password to preview this work.
-                  </p>
+                  <p className="font-semibold text-(--fg) mb-0">Confidential</p>
                 </div>
               </figure>
               <figcaption>
-                <h3>Private project</h3>
+                <h3>Confidential</h3>
                 <span className="text-(--muted)">
                   Enter the password to view.
                 </span>

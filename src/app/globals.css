@@ -63,7 +63,7 @@
   }
 
   h2 {
-    @apply text-xl md:text-3xl font-normal mb-12 md:leading-relaxed;
+    @apply text-xl md:text-3xl font-bold md:leading-relaxed;
   }
 
   h3 {
@@ -71,7 +71,7 @@
   }
 
   p {
-    @apply text-xl;
+    @apply text-2xl md:text-3xl font-normal mb-12 md:mb-24 md:leading-relaxed;
   }
 
   a {
