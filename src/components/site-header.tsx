@@ -48,7 +48,7 @@ export default function SiteHeader({
 
   return (
     <motion.header className="fixed inset-x-0 top-0 z-30">
-      <div className="max-w-8xl mx-auto px-8 md:px-16">
+      <div className="max-w-8xl mx-auto px-6 md:px-16">
         <div className="flex items-center justify-between py-6 md:py-8">
           <motion.div
             className={`flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
