@@ -16,7 +16,7 @@ export default function Home() {
       <main className="py-12 min-h-screen">
         <AnimatedHeadline
           className="mb-12 md:mb-16"
-          text="Designing photo-sharing experiences that bring millions of families closer together."
+          text="Designing experiences that bring millions of families closer together."
         />
         <h2 className="mb-12 md:mb-24">
           At <a href="#">Aura</a>, I design for growth and lead product
