@@ -60,7 +60,7 @@
   }
 
   a {
-    @apply bg-(--accent) underline underline-offset-2 decoration-wavy decoration-2 hover:underline-offset-4;
+    @apply bg-(--accent) underline underline-offset-4 decoration-wavy decoration-2 hover:underline-offset-8;
   }
 
   @media (prefers-reduced-motion: no-preference) {
