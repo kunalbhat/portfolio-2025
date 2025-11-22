@@ -13,6 +13,11 @@ export default function Home() {
   const theme = useTheme("light");
   const auraVideoBase = themedAsset("/videos/aura-rcs", theme);
   const waymoVideoSrc = "/videos/waymo.mp4";
+  const trmnlImage = themedAsset(
+    "/images/trmnl-spotify-dashboard-mobile",
+    theme,
+    "png"
+  );
   const unlockPassword = "samsonite";
 
   const handleUnlockAttempt = (password: string) => {
@@ -59,6 +64,26 @@ export default function Home() {
             </figcaption>
           </div>
 
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src={trmnlImage}
+                alt="Spotify dashboard for TRMNL"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h3>TRMNL Spotify Dashboard</h3>
+              <span>
+                Mobile dashboard concept tailored for the TRMNL commute
+                experience.
+              </span>
+            </figcaption>
+          </div>
+
           {isUnlocked ? (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -90,7 +115,7 @@ export default function Home() {
                 <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
                   <Image
                     src="/images/icon-lock.svg"
-                    alt=""
+                    alt="Unlock"
                     width={32}
                     height={32}
                     className="h-8 w-8"
@@ -103,7 +128,9 @@ export default function Home() {
               </figure>
               <figcaption>
                 <h3>Private project</h3>
-                <span className="text-(--muted)">Enter the password to view.</span>
+                <span className="text-(--muted)">
+                  Enter the password to view.
+                </span>
               </figcaption>
             </div>
           )}
