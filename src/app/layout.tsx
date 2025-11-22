@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Albert_Sans } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 /* Load Google Sans Flex from Google Fonts via <link> */
 export const metadata: Metadata = {
@@ -27,7 +28,10 @@ export default function RootLayout({
       className={albert.variable}
       suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
