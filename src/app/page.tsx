@@ -33,7 +33,7 @@ export default function Home() {
       <main className="py-8 min-h-screen">
         <AnimatedHeadline
           className="mb-12 md:mb-16"
-          text="Currently designing experiences that bring millions of families closer together."
+          text="Designing experiences that bring millions of families closer together."
         />
         <p className="mb-12 md:mb-24 ">
           At{" "}
@@ -84,8 +84,8 @@ export default function Home() {
               {/* <span className="eyebrow">Aura</span> */}
               <h3>Captions</h3>
               <span>
-                Captions add more context to photos and memories and display on
-                frame.
+                Captions add context to each photo, making memories feel more
+                personal on the frame.
               </span>
             </figcaption>
           </div>
