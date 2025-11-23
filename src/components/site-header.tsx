@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import ThemeToggle from "@/components/theme-toggle";
 import { FocusEvent, FormEvent, useRef, useState } from "react";
 
@@ -17,8 +17,14 @@ export default function SiteHeader({
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (value) => {
+    setIsAtTop(value < 40);
+  });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,7 +53,16 @@ export default function SiteHeader({
   };
 
   return (
-    <motion.header className="fixed inset-x-0 top-0 z-30 site-header">
+    <motion.header
+      className="fixed inset-x-0 top-0 z-30 site-header"
+      initial={false}
+      animate={{
+        opacity: isAtTop ? 1 : 0,
+        y: isAtTop ? 0 : -12,
+        pointerEvents: isAtTop ? "auto" : "none",
+      }}
+      transition={{ duration: 0.35, ease: [0.25, 0.8, 0.35, 1] }}
+    >
       <div className="max-w-8xl mx-auto px-6 md:px-16">
         <div className="flex items-center justify-between py-6 md:py-8">
           <motion.div
