@@ -84,8 +84,8 @@ export default function Home() {
               {/* <span className="eyebrow">Aura</span> */}
               <h3>Captions</h3>
               <span>
-                We made sending photos to Aura Frames beautifully simple with
-                RCS and the Aura Agent.
+                Captions add more context to photos and memories and display on
+                frame.
               </span>
             </figcaption>
           </div>

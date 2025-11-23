@@ -47,7 +47,7 @@ export default function SiteHeader({
   };
 
   return (
-    <motion.header className="fixed inset-x-0 top-0 z-30">
+    <motion.header className="fixed inset-x-0 top-0 z-30 site-header">
       <div className="max-w-8xl mx-auto px-6 md:px-16">
         <div className="flex items-center justify-between py-6 md:py-8">
           <motion.div
@@ -61,7 +61,7 @@ export default function SiteHeader({
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <motion.div
-              className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-lime-200 flex items-center justify-center shrink-0 overflow-hidden"
+              className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-(--accent) flex items-center justify-center shrink-0 overflow-hidden"
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{
                 scale: [0.7, 1.06, 0.98, 1],
@@ -85,7 +85,7 @@ export default function SiteHeader({
             </motion.div>
 
             <span
-              className={`font-bold text-2xl text-(--fg) transition-all duration-300 ${
+              className={`font-semibold text-2xl text-(--fg) transition-all duration-300 ${
                 showInput
                   ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
                   : "opacity-100 translate-y-0"
@@ -125,7 +125,7 @@ export default function SiteHeader({
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 12, scale: 0.98 }}
                   transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
-                  className="flex items-center gap-2 bg-(--bg-overlay) rounded-full px-3 py-1.5 text-sm"
+                  className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm"
                 >
                   <Image
                     src="/images/icon-lock.svg"
@@ -157,7 +157,7 @@ export default function SiteHeader({
                   key="lock-button"
                   type="button"
                   onClick={revealInput}
-                  className="h-11 w-11 rounded-full bg-(--bg-overlay) grid place-items-center transition-opacity cursor-pointer"
+                  className="h-11 w-11 rounded-full grid place-items-center transition-opacity cursor-pointer"
                   aria-label="Enter portfolio password"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.97 }}
