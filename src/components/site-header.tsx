@@ -1,7 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import ThemeToggle from "@/components/theme-toggle";
 import { FocusEvent, FormEvent, useRef, useState } from "react";
 
@@ -51,6 +56,8 @@ export default function SiteHeader({
       setError(false);
     }
   };
+
+  const iconShouldShift = showInput && !unlocked;
 
   return (
     <motion.header
@@ -111,86 +118,73 @@ export default function SiteHeader({
           </motion.div>
 
           <div className="flex items-center gap-4.5">
-            <AnimatePresence initial={false}>
-              {unlocked ? (
-                <motion.div
-                  key="unlocked"
-                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.95 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="h-11 w-11 rounded-full bg-(--bg-overlay) grid place-items-center"
-                >
-                  <Image
-                    src="/images/icon-unlock.svg"
-                    alt="Unlocked"
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 lock-icon"
-                    priority
-                  />
-                </motion.div>
-              ) : showInput ? (
-                <motion.form
-                  key="password-form"
-                  ref={formRef}
-                  onSubmit={handleSubmit}
-                  onBlur={handleBlur}
-                  initial={{ opacity: 0, x: 16, scale: 0.98 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: 12, scale: 0.98 }}
-                  transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
-                  className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm"
-                >
-                  <Image
-                    src="/images/icon-lock.svg"
-                    alt="Locked"
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 lock-icon"
-                  />
-                  <input
-                    ref={inputRef}
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    placeholder="Password"
-                    className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-lg w-32 md:w-36"
-                    autoComplete="off"
-                    spellCheck={false}
-                    data-1p-ignore
-                  />
-                  <button
-                    type="submit"
-                    className="px-3 py-1 rounded-full bg-(--fg) text-(--bg) font-medium hover:opacity-90 transition-opacity"
+            <div className="flex items-center gap-2">
+              <motion.button
+                type="button"
+                onClick={revealInput}
+                disabled={unlocked}
+                className="h-11 w-11 rounded-full grid place-items-center transition-opacity cursor-pointer disabled:cursor-default"
+                aria-label={
+                  unlocked ? "Portfolio unlocked" : "Enter portfolio password"
+                }
+                whileHover={!unlocked ? { scale: 1.1 } : undefined}
+                whileTap={!unlocked ? { scale: 0.97 } : undefined}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  x: iconShouldShift ? -10 : 0,
+                }}
+                transition={{ type: "spring", stiffness: 320, damping: 18 }}
+              >
+                <Image
+                  src={
+                    unlocked
+                      ? "/images/icon-unlock.svg"
+                      : "/images/icon-lock.svg"
+                  }
+                  alt={unlocked ? "Unlocked" : "Locked"}
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 lock-icon"
+                  priority
+                />
+              </motion.button>
+
+              <AnimatePresence initial={false}>
+                {!unlocked && showInput ? (
+                  <motion.form
+                    key="password-form"
+                    ref={formRef}
+                    onSubmit={handleSubmit}
+                    onBlur={handleBlur}
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "14.5rem" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.8, 0.35, 1] }}
+                    className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm bg-(--input-bg) backdrop-blur overflow-hidden"
                   >
-                    Unlock
-                  </button>
-                </motion.form>
-              ) : (
-                <motion.button
-                  key="lock-button"
-                  type="button"
-                  onClick={revealInput}
-                  className="h-11 w-11 rounded-full grid place-items-center transition-opacity cursor-pointer"
-                  aria-label="Enter portfolio password"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.97 }}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                >
-                  <Image
-                    src="/images/icon-lock.svg"
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 lock-icon"
-                  />
-                </motion.button>
-              )}
-            </AnimatePresence>
+                    <input
+                      ref={inputRef}
+                      type="password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      placeholder="Password"
+                      className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-md w-full min-w-0"
+                      autoComplete="off"
+                      spellCheck={false}
+                      data-1p-ignore
+                    />
+                    <button
+                      type="submit"
+                      className="px-3 py-1 rounded-full bg-(--fg) text-(--bg) font-medium hover:opacity-90 transition-opacity"
+                    >
+                      Unlock
+                    </button>
+                  </motion.form>
+                ) : null}
+              </AnimatePresence>
+            </div>
 
             <motion.div
               className={`transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
