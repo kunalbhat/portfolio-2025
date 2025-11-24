@@ -28,7 +28,14 @@ export default function Home() {
     return success;
   };
 
-  const caseStudies = [
+  type CaseStudy = {
+    key: string;
+    title: string;
+    description: string;
+    renderMedia: () => React.ReactNode;
+  };
+
+  const caseStudies: CaseStudy[] = [
     {
       key: "text-to-frame",
       title: "Text to Frame",
@@ -105,12 +112,7 @@ export default function Home() {
             </div>
           ),
         },
-  ].filter(Boolean) as {
-    key: string;
-    title: string;
-    description: string;
-    renderMedia: () => JSX.Element;
-  }[];
+  ].filter(Boolean) as CaseStudy[];
 
   const scrollToIndex = (index: number) => {
     const container = carouselRef.current;
