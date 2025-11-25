@@ -88,7 +88,7 @@
   }
 
   a {
-    @apply text-(--accent-soft) underline underline-offset-4 decoration-wavy decoration-2 hover:underline-offset-8 transition-all ease-in-out duration-650;
+    @apply bg-(--accent) text-(--accent-soft) underline underline-offset-4 decoration-wavy decoration-2 hover:underline-offset-8 transition-all ease-in-out duration-650;
     transition-property: transform, text-underline-offset, background-color,
       color;
     transition-duration: 0.25s, 0.25s, 0.65s, 0.65s;
