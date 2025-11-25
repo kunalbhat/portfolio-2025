@@ -189,6 +189,22 @@ export default function Home() {
           <div>
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
+                src="/images/skyteller-light.png"
+                alt="Crypto"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h3>Skyteller</h3>
+              <span>Crypto off-ramp.</span>
+            </figcaption>
+          </div>
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
                 src="/images/braintree-dashboard.gif"
                 alt="Braintree Control Panel"
                 width={800}
