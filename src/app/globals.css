@@ -72,7 +72,7 @@
   }
 
   h1 {
-    @apply text-6xl md:text-8xl lg:text-9xl font-bold md:tracking-tight;
+    @apply text-5xl md:text-8xl lg:text-9xl font-bold md:tracking-tight;
   }
 
   h2 {
@@ -80,7 +80,7 @@
   }
 
   h3 {
-    @apply text-2xl md:text-2xl font-semibold mb-1.5;
+    @apply text-3xl md:text-4xl font-bold mb-1.5;
   }
 
   p {
@@ -96,7 +96,7 @@
   }
 
   figcaption {
-    @apply text-lg my-8;
+    @apply text-xl my-8;
   }
 
   .portfolio-grid {
