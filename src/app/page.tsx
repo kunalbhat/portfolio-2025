@@ -31,7 +31,7 @@ export default function Home() {
       <SiteHeader onUnlockAttempt={handleUnlockAttempt} unlocked={isUnlocked} />
 
       <main className="py-8 min-h-screen">
-        <header className="my-8 md:mb-16">
+        <header className="max-w-6xl my-8 md:mb-16">
           <AnimatedHeadline
             className="mb-12 md:mb-16"
             text="Kunal Bhat, Product Designer"
