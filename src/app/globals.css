@@ -72,7 +72,7 @@
   }
 
   h1 {
-    @apply text-5xl md:text-6xl lg:text-8xl font-semibold md:tracking-tight;
+    @apply text-7xl md:text-8xl lg:text-9xl font-semibold md:tracking-tight;
   }
 
   h2 {
