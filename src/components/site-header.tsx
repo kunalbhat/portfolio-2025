@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   AnimatePresence,
   motion,
@@ -72,50 +73,67 @@ export default function SiteHeader({
     >
       <div className="max-w-8xl mx-auto px-6 md:px-16">
         <div className="flex items-center justify-between py-6 md:py-8">
-          <motion.div
-            className={`flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
-              showInput
-                ? "-translate-x-full opacity-0 md:translate-x-0 md:opacity-100"
-                : "translate-x-0 opacity-100"
-            }`}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-          >
+          <div className="flex items-center gap-6 md:gap-10">
             <motion.div
-              className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-(--accent) flex items-center justify-center shrink-0 overflow-hidden"
-              initial={{ scale: 0.7, opacity: 0 }}
-              animate={{
-                scale: [0.7, 1.06, 0.98, 1],
-                opacity: [0, 1, 1, 1],
-              }}
-              transition={{
-                duration: 0.9,
-                times: [0, 0.5, 0.82, 1],
-                ease: [0.26, 0.86, 0.44, 1],
-                delay: 0.05,
-              }}
+              className={`flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
+                showInput
+                  ? "-translate-x-full opacity-0 md:translate-x-0 md:opacity-100"
+                  : "translate-x-0 opacity-100"
+              }`}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
             >
-              <Image
-                src="/images/site-icon.svg"
-                alt="Site icon"
-                width={40}
-                height={40}
-                className="h-9 w-9 md:h-10 md:w-10 object-contain"
-                priority
-              />
+              <motion.div
+                className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-(--accent) flex items-center justify-center shrink-0 overflow-hidden"
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{
+                  scale: [0.7, 1.06, 0.98, 1],
+                  opacity: [0, 1, 1, 1],
+                }}
+                transition={{
+                  duration: 0.9,
+                  times: [0, 0.5, 0.82, 1],
+                  ease: [0.26, 0.86, 0.44, 1],
+                  delay: 0.05,
+                }}
+              >
+                <Image
+                  src="/images/site-icon.svg"
+                  alt="Site icon"
+                  width={40}
+                  height={40}
+                  className="h-9 w-9 md:h-10 md:w-10 object-contain"
+                  priority
+                />
+              </motion.div>
+
+              <span
+                className={`font-semibold text-2xl text-(--fg) transition-all duration-300 ${
+                  showInput
+                    ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
+                    : "opacity-100 translate-y-0"
+                }`}
+              >
+                Kunal Bhat
+              </span>
             </motion.div>
 
-            <span
-              className={`font-semibold text-2xl text-(--fg) transition-all duration-300 ${
-                showInput
-                  ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
-                  : "opacity-100 translate-y-0"
-              }`}
-            >
-              Kunal Bhat
-            </span>
-          </motion.div>
+            <nav className="flex flex-wrap items-center gap-2 text-sm font-medium">
+              <Link
+                href="/"
+                className="px-3 py-1.5 rounded-full border border-(--border) bg-transparent text-(--fg) hover:border-(--fg) transition-colors"
+              >
+                Work
+              </Link>
+              <Link
+                href="/about"
+                className="px-3 py-1.5 rounded-full border border-(--border) bg-transparent text-(--fg) hover:border-(--fg) transition-colors"
+              >
+                About
+              </Link>
+            </nav>
+          </div>
 
           <div className="flex items-center gap-4.5">
             <div className="flex items-center gap-2">

@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 export default function Home() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const theme = useTheme("light");
-  const auraVideoBase = themedAsset("/videos/aura-rcs", theme);
   const waymoVideoBase = "/videos/waymo-my-car";
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",

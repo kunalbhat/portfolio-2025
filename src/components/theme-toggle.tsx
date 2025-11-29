@@ -17,16 +17,21 @@ function getPreferredTheme(): Theme {
 }
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme | null>(null);
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   // Read initial preference
   useEffect(() => {
     const initial = getPreferredTheme();
-    queueMicrotask(() => setTheme(initial));
+    queueMicrotask(() => {
+      setTheme(initial);
+      setHasHydrated(true);
+    });
   }, []);
 
   // Reflect theme into DOM + localStorage
   useEffect(() => {
+    if (!theme) return;
     if (typeof document !== "undefined") {
       document.documentElement.setAttribute("data-theme", theme);
     }
@@ -35,10 +40,14 @@ export default function ThemeToggle() {
     }
   }, [theme]);
 
-  const isDark = theme === "dark";
+  const resolvedTheme: Theme = theme ?? "light";
+  const isDark = resolvedTheme === "dark";
 
   const toggle = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    if (!hasHydrated) {
+      setHasHydrated(true);
+    }
   };
 
   const iconTransition = {
