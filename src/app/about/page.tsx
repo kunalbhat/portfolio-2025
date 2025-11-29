@@ -4,8 +4,6 @@ import AnimatedHeadline from "@/components/animated-headline";
 import ExperienceCard from "@/components/experience-card";
 import SiteHeader from "@/components/site-header";
 
-const alwaysUnlocked = () => true;
-
 export default function AboutPage() {
   const experience = [
     {
@@ -13,39 +11,43 @@ export default function AboutPage() {
       company: "Aura Home",
       title: "Staff Product Designer",
       sector: "Photos",
+      tags: ["Consumer", "Growth"],
     },
     {
       date: "2023 — 2024",
       company: "Magic+Might",
       title: "Design Director",
       sector: "Autonomous ride-hail",
+      tags: ["Startup", "Mobility"],
     },
     {
       date: "2021 — 2023",
       company: "Galactic",
       title: "Senior Design Engineer",
       sector: "Crypto",
+      tags: ["Enterprise", "Infrastructure"],
     },
     {
       date: "2015 — 2021",
       company: "PayPal / Braintree",
       title: "Senior Technical Product Manager (L27)",
       sector: "Merchant Experience",
+      tags: ["Enterprise", "Payments"],
     },
   ];
 
   return (
     <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
-      <SiteHeader onUnlockAttempt={alwaysUnlocked} unlocked />
+      <SiteHeader />
 
       <main className="py-10 md:py-14 min-h-screen">
         <header className="mt-6 md:mt-12 mb-16 md:mb-32">
           <AnimatedHeadline
-            className="mb-3 md:text-8xl"
+            className="mb-3 md:text-7xl lg:text-8xl font-semibold"
             text="Solving complex problems through research, design, and technical depth."
           />
         </header>
-        <section className="max-w-5xl mx-auto flex flex-col space-y-24">
+        <section className="max-w-4xl mx-auto flex flex-col space-y-24">
           <article>
             <p className="md:text-4xl">
               First and foremost a designer, I&apos;m a technically inclined

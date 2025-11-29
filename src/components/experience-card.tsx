@@ -5,6 +5,7 @@ type ExperienceCardProps = {
   company: string;
   title: string;
   sector: string;
+  tags?: string[];
 };
 
 export default function ExperienceCard({
@@ -12,16 +13,31 @@ export default function ExperienceCard({
   company,
   title,
   sector,
+  tags = [],
 }: ExperienceCardProps) {
   return (
-    <li className="grid grid-flow-row md:grid-flow-col grid-cols-3 text-xl md:text-2xl font-medium gap-x-4">
-      <span>{date}</span>
-      <span>
+    <li className="grid gap-y-3 gap-x-6 md:grid-cols-3 items-start text-xl md:text-2xl font-medium">
+      <span className="md:text-left">{date}</span>
+      <span className="md:text-left">
         {company}
         <br />
         {title}
       </span>
-      <span className="text-right">{sector}</span>
+      <div className="flex flex-col items-start md:items-end gap-2 text-left md:text-right">
+        <div className="leading-tight">{sector}</div>
+        {tags.length ? (
+          <span className="flex flex-wrap gap-2 text-sm font-semibold text-(--muted) justify-start md:justify-end">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center px-2.5 py-1 rounded-full border border-(--border) bg-(--bg-overlay)"
+              >
+                {tag}
+              </span>
+            ))}
+          </span>
+        ) : null}
+      </div>
     </li>
   );
 }

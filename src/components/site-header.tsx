@@ -2,63 +2,30 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "framer-motion";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import ThemeToggle from "@/components/theme-toggle";
-import { FocusEvent, FormEvent, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-type SiteHeaderProps = {
-  onUnlockAttempt: (password: string) => boolean;
-  unlocked: boolean;
-};
-
-export default function SiteHeader({
-  onUnlockAttempt,
-  unlocked,
-}: SiteHeaderProps) {
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [showInput, setShowInput] = useState(false);
+export default function SiteHeader() {
   const [isAtTop, setIsAtTop] = useState(true);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (value) => {
     setIsAtTop(value < 40);
   });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const success = onUnlockAttempt(password);
-    setError(!success);
-    if (success) {
-      setPassword("");
-      setShowInput(false);
-    }
-  };
-
-  const revealInput = () => {
-    setShowInput(true);
-    setError(false);
-    requestAnimationFrame(() => inputRef.current?.focus());
-  };
-
-  const handleBlur = (event: FocusEvent<HTMLElement>) => {
-    if (!formRef.current) return;
-    const next = event.relatedTarget as Node | null;
-    if (!next || !formRef.current.contains(next)) {
-      setShowInput(false);
-      setPassword("");
-      setError(false);
-    }
-  };
-
-  const iconShouldShift = showInput && !unlocked;
+  // Close the mobile menu when scrolling down or resizing up.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <motion.header
@@ -75,11 +42,7 @@ export default function SiteHeader({
         <div className="flex items-center justify-between py-6 md:py-8">
           <div className="flex items-center gap-6 md:gap-10">
             <motion.div
-              className={`flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
-                showInput
-                  ? "-translate-x-full opacity-0 md:translate-x-0 md:opacity-100"
-                  : "translate-x-0 opacity-100"
-              }`}
+              className="flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)]"
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
@@ -108,120 +71,96 @@ export default function SiteHeader({
                 />
               </motion.div>
 
-              <span
-                className={`font-semibold text-2xl text-(--fg) transition-all duration-300 ${
-                  showInput
-                    ? "opacity-0 translate-y-1 md:opacity-100 md:translate-y-0"
-                    : "opacity-100 translate-y-0"
-                }`}
-              >
-                Kunal Bhat
-              </span>
-            </motion.div>
-
-            <nav className="flex flex-wrap items-center gap-2 text-sm font-medium">
               <Link
                 href="/"
-                className="px-3 py-1.5 rounded-full border border-(--border) bg-transparent text-(--fg) hover:border-(--fg) transition-colors"
+                className="font-semibold text-2xl text-(--fg) bg-transparent hover:opacity-85 transition-opacity"
+              >
+                Kunal Bhat
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className="flex items-center gap-4.5">
+            <nav
+              className="hidden md:flex items-center gap-4 bg-(--bg) px-5 py-3 rounded-full border border-(--border) drop-shadow-md transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)]"
+              aria-label="Primary"
+            >
+              <Link
+                href="/work"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
               >
                 Work
               </Link>
               <Link
                 href="/about"
-                className="px-3 py-1.5 rounded-full border border-(--border) bg-transparent text-(--fg) hover:border-(--fg) transition-colors"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
               >
                 About
               </Link>
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-4.5">
-            <div className="flex items-center gap-2">
-              <motion.button
-                type="button"
-                onClick={revealInput}
-                disabled={unlocked}
-                className="h-11 w-11 rounded-full grid place-items-center transition-opacity cursor-pointer disabled:cursor-default"
-                aria-label={
-                  unlocked ? "Portfolio unlocked" : "Enter portfolio password"
-                }
-                whileHover={!unlocked ? { scale: 1.1 } : undefined}
-                whileTap={!unlocked ? { scale: 0.97 } : undefined}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  x: iconShouldShift ? -10 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 320, damping: 18 }}
+              <a
+                href="https://www.linkedin.com/in/kunal-s-bhat/"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
               >
-                <Image
-                  src={
-                    unlocked
-                      ? "/images/icon-unlock.svg"
-                      : "/images/icon-lock.svg"
-                  }
-                  alt={unlocked ? "Unlocked" : "Locked"}
-                  width={32}
-                  height={32}
-                  className="h-8 w-8 lock-icon"
-                  priority
-                />
-              </motion.button>
+                Contact
+              </a>
+              <div className="pl-2">
+                <ThemeToggle />
+              </div>
+            </nav>
 
-              <AnimatePresence initial={false}>
-                {!unlocked && showInput ? (
-                  <motion.form
-                    key="password-form"
-                    ref={formRef}
-                    onSubmit={handleSubmit}
-                    onBlur={handleBlur}
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: "14.5rem" }}
-                    exit={{ opacity: 0, width: 0 }}
-                    transition={{ duration: 0.4, ease: [0.25, 0.8, 0.35, 1] }}
-                    className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm bg-(--input-bg) backdrop-blur overflow-hidden"
-                  >
-                    <input
-                      ref={inputRef}
-                      type="password"
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                      placeholder="Password"
-                      className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-md w-full min-w-0"
-                      autoComplete="off"
-                      spellCheck={false}
-                      data-1p-ignore
-                    />
-                    <button
-                      type="submit"
-                      className="px-3 py-1 rounded-full bg-(--fg) text-(--bg) font-medium hover:opacity-90 transition-opacity"
-                    >
-                      Unlock
-                    </button>
-                  </motion.form>
-                ) : null}
-              </AnimatePresence>
-            </div>
-
-            <motion.div
-              className={`transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
-                showInput
-                  ? "translate-x-full opacity-0 md:translate-x-0 md:opacity-100"
-                  : "translate-x-0 opacity-100"
-              }`}
-              initial={false}
-              animate={{}}
+            <button
+              type="button"
+              className="md:hidden h-12 w-12 rounded-full bg-(--bg) border border-(--border) drop-shadow-md grid place-items-center"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              onClick={() => setIsMenuOpen((open) => !open)}
             >
-              <ThemeToggle />
-            </motion.div>
+              <span className="flex flex-col gap-2">
+                <span className="block h-0.5 w-6 bg-(--fg) rounded-full" />
+                <span className="block h-0.5 w-6 bg-(--fg) rounded-full" />
+              </span>
+            </button>
           </div>
         </div>
-        {error && !unlocked ? (
-          <p className="text-sm text-red-500 pt-1">
-            Wrong password. Try again.
-          </p>
-        ) : null}
+        <motion.nav
+          className="md:hidden mt-3 origin-top"
+          initial={false}
+          animate={{
+            height: isMenuOpen ? "auto" : 0,
+            opacity: isMenuOpen ? 1 : 0,
+            marginTop: isMenuOpen ? 12 : 0,
+          }}
+          transition={{ duration: 0.3, ease: [0.25, 0.8, 0.35, 1] }}
+          aria-label="Mobile navigation"
+        >
+          {isMenuOpen ? (
+            <div className="flex flex-col gap-3 bg-(--bg) border border-(--border) rounded-2xl px-4 py-4 drop-shadow-md">
+              <Link
+                href="/work"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Work
+              </Link>
+              <Link
+                href="/about"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+              <a
+                href="https://www.linkedin.com/in/kunal-s-bhat/"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </a>
+              <div className="pt-2 border-t border-(--border)">
+                <ThemeToggle />
+              </div>
+            </div>
+          ) : null}
+        </motion.nav>
       </div>
     </motion.header>
   );
