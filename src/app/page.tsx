@@ -1,19 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
-import { useTheme } from "@/hooks/use-theme";
-import { themedAsset } from "@/utils/themed-asset";
+import Link from "next/link";
 
 export default function Home() {
-  const theme = useTheme("light");
-  const trmnlImage = themedAsset(
-    "/images/trmnl-spotify-dashboard-mobile",
-    theme,
-    "png"
-  );
-
   return (
     <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
@@ -35,7 +26,7 @@ export default function Home() {
         </header>
         <section className="mt-20 mb-24">
           <div className="md:grid md:grid-cols-[1.2fr_1fr]">
-            <figure className="rounded-3xl overflow-hidden relative h-96 border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
+            <figure className="rounded-3xl overflow-hidden relative aspect-square border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
               <video
                 autoPlay
                 muted
@@ -56,64 +47,6 @@ export default function Home() {
                 features at scale.
               </p>
             </div>
-          </div>
-        </section>
-        <header className="mb-8">
-          <h3>Showcase</h3>
-        </header>
-        <section className="portfolio-grid">
-          <div>
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src={trmnlImage}
-                alt="Spotify dashboard for TRMNL"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>TRMNL Spotify Plugin</h4>
-              <span>
-                A Spotify recently played plugin for the TRMNL e-ink display.
-              </span>
-            </figcaption>
-          </div>
-          <div>
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/skyteller-light.png"
-                alt="Crypto"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>Skyteller</h4>
-              <span>Crypto off-ramp.</span>
-            </figcaption>
-          </div>
-          <div>
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/braintree-dashboard.gif"
-                alt="Braintree Control Panel"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-                unoptimized
-              />
-            </figure>
-            <figcaption>
-              <h4>Braintree Control Panel</h4>
-              <span>
-                I led the redesign of Braintree&apos;s merchant dashboard.
-              </span>
-            </figcaption>
           </div>
         </section>
       </main>

@@ -82,35 +82,35 @@ export default function SiteHeader() {
 
           <div className="flex items-center gap-4.5">
             <nav
-              className="hidden md:flex items-center gap-4 bg-(--bg) px-5 py-3 rounded-full border border-(--border) drop-shadow-md transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)]"
+              className="hidden md:flex items-center gap-8 px-5 py-3 rounded-full border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)] transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)]"
               aria-label="Primary"
             >
               <Link
                 href="/work"
-                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                className="text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
                 Work
               </Link>
               <Link
                 href="/about"
-                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                className="text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
                 About
               </Link>
               <a
                 href="https://www.linkedin.com/in/kunal-s-bhat/"
-                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                className="text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
                 Contact
               </a>
-              <div className="pl-2">
+              <div>
                 <ThemeToggle />
               </div>
             </nav>
 
             <button
               type="button"
-              className="md:hidden h-12 w-12 rounded-full bg-(--bg) border border-(--border) drop-shadow-md grid place-items-center"
+              className="md:hidden h-12 w-12 rounded-full bg-[color-mix(in_srgb,var(--bg)70%,transparent)] border border-(--border) backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)] grid place-items-center"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsMenuOpen((open) => !open)}
             >
@@ -133,24 +133,24 @@ export default function SiteHeader() {
           aria-label="Mobile navigation"
         >
           {isMenuOpen ? (
-            <div className="flex flex-col gap-3 bg-(--bg) border border-(--border) rounded-2xl px-4 py-4 drop-shadow-md">
+            <div className="flex flex-col gap-3 bg-[color-mix(in_srgb,var(--bg)70%,transparent)] border border-(--border) rounded-2xl px-4 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.14)] backdrop-blur-xl">
               <Link
                 href="/work"
-                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Work
               </Link>
               <Link
                 href="/about"
-                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
               <a
                 href="https://www.linkedin.com/in/kunal-s-bhat/"
-                className="text-base font-semibold text-(--fg) bg-transparent hover:opacity-80 transition-opacity"
+                className="text-base font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact

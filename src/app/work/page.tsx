@@ -5,6 +5,8 @@ import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useTheme } from "@/hooks/use-theme";
+import { themedAsset } from "@/utils/themed-asset";
 
 const UNLOCK_PASSWORD = "samsonite";
 
@@ -12,6 +14,12 @@ export default function WorkPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const theme = useTheme("light");
+  const trmnlImage = themedAsset(
+    "/images/trmnl-spotify-dashboard-mobile",
+    theme,
+    "png"
+  );
 
   const handleUnlockAttempt = (input: string) => {
     const success = input.trim() === UNLOCK_PASSWORD;
@@ -34,7 +42,10 @@ export default function WorkPage() {
 
       <main className="py-12 min-h-screen">
         <header className="max-w-5xl mb-16">
-          <AnimatedHeadline className="mb-6" text="Selected Work" />
+          <AnimatedHeadline
+            className="mb-6 md:text-8xl font-semibold"
+            text="Selected Work"
+          />
           <p className="text-lg text-(--muted)">
             Password-protected explorations and in-progress pieces.
           </p>
@@ -77,6 +88,75 @@ export default function WorkPage() {
         </section>
 
         <section className="portfolio-grid">
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src={trmnlImage}
+                alt="Spotify dashboard for TRMNL"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>TRMNL Spotify Plugin</h4>
+              <span>
+                A Spotify recently played plugin for the TRMNL e-ink display.
+              </span>
+            </figcaption>
+          </div>
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/a1c-tracker-mobile-light.jpg"
+                alt="A1C tracker mobile UI"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>A1C Tracker</h4>
+              <span>Mobile health tracker with at-a-glance biomarker trends.</span>
+            </figcaption>
+          </div>
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/skyteller-light.png"
+                alt="Crypto"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>Skyteller</h4>
+              <span>Crypto off-ramp.</span>
+            </figcaption>
+          </div>
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/braintree-dashboard.gif"
+                alt="Braintree Control Panel"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+                unoptimized
+              />
+            </figure>
+            <figcaption>
+              <h4>Braintree Control Panel</h4>
+              <span>
+                I led the redesign of Braintree&apos;s merchant dashboard.
+              </span>
+            </figcaption>
+          </div>
           {isUnlocked ? (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
