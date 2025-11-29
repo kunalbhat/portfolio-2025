@@ -46,26 +46,26 @@ export default function Home() {
           </h2>
         </header>
         <section className="mt-20 mb-24">
-          <div className="rounded-4xl overflow-hidden border border-(--border) bg-(--bg-overlay) drop-shadow-xl md:grid md:grid-cols-[1.2fr_1fr]">
-            <figure className="relative aspect-video md:aspect-auto md:h-full">
+          <div className="md:grid md:grid-cols-[1.2fr_1fr]">
+            <figure className="rounded-3xl overflow-hidden relative h-96 border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
               <video
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               >
-                <source src="videos/aura-product-video.mp4" type="video/mp4" />
+                <source src="videos/aura-rcs-light.mp4" type="video/mp4" />
               </video>
             </figure>
 
             <div className="flex flex-col justify-center gap-4 px-6 py-10 md:px-12 bg-[color-mix(in_srgb,var(--bg)90%,transparent)]">
               <h3>Aura Frames</h3>
               <p>
-                As a Staff Product Designer, I lead growth initiatives and
-                product research—driving big-swing concepts, continuous customer
-                insight, and rapid experimentation to ship high-impact features
-                at scale.
+                As a Staff Product Designer, I design for growth initiatives and
+                lead product research—driving big-swing concepts, continuous
+                customer insight, and rapid experimentation to ship high-impact
+                features at scale.
               </p>
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function Home() {
               />
             </figure>
             <figcaption>
-              <h3>TRMNL Spotify Plugin</h3>
+              <h4>TRMNL Spotify Plugin</h4>
               <span>
                 A Spotify recently played plugin for the TRMNL e-ink display.
               </span>
@@ -104,7 +104,7 @@ export default function Home() {
               />
             </figure>
             <figcaption>
-              <h3>Skyteller</h3>
+              <h4>Skyteller</h4>
               <span>Crypto off-ramp.</span>
             </figcaption>
           </div>
@@ -121,7 +121,7 @@ export default function Home() {
               />
             </figure>
             <figcaption>
-              <h3>Braintree Control Panel</h3>
+              <h4>Braintree Control Panel</h4>
               <span>
                 I led the redesign of Braintree&apos;s merchant dashboard.
               </span>
@@ -147,7 +147,7 @@ export default function Home() {
                 </video>
               </figure>
               <figcaption>
-                <h3>Waymo</h3>
+                <h4>Waymo</h4>
                 <span>
                   Exploring future mobility experiences with a focus on clear,
                   calm in-car communication.

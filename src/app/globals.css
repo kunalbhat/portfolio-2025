@@ -83,12 +83,16 @@
     @apply text-3xl md:text-4xl font-bold mb-1.5;
   }
 
+  h4 {
+    @apply text-2xl mb-2 font-semibold;
+  }
+
   p {
     @apply text-xl font-normal md:leading-relaxed;
   }
 
   a {
-    @apply bg-(--accent) dark:text-(--fg);
+    @apply bg-(--accent) text-(--fg);
   }
 
   em {
@@ -96,7 +100,7 @@
   }
 
   figcaption {
-    @apply text-xl my-8;
+    @apply text-lg my-8;
   }
 
   .portfolio-grid {
