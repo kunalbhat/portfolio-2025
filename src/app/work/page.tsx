@@ -63,12 +63,12 @@ export default function WorkPage() {
         <header className="max-w-8xl my-12 md:my-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="max-w-5xl">
             <AnimatedHeadline
-              className="mb-2 md:mb-3 md:text-8xl font-semibold"
-              text="Selected Work"
+              className="mb-2 md:mb-3 md:text-7xl font-semibold"
+              text="Projects"
             />
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-center">
+          <div className="flex items-center gap-10 self-start md:self-center">
             {showInput && !isUnlocked ? (
               <form
                 ref={formRef}

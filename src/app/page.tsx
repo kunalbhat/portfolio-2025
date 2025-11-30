@@ -9,10 +9,10 @@ export default function Home() {
       <SiteHeader />
 
       <main className="py-8 min-h-screen">
-        <header className="max-w-6xl my-8 md:mb-16">
+        <header className="max-w-8xl my-8 md:mb-16">
           <AnimatedHeadline
-            className="my-16 md:my-32"
-            text="Creative builder with experience as a designer, PM, and engineer."
+            className="my-16 md:mt-16 md:mb-24 font-semibold"
+            text="Product designer with experience as a PM and engineer."
           />
           <h2 className="mb-12 md:mb-24">
             Currently at{" "}
@@ -23,7 +23,16 @@ export default function Home() {
             families closer together.
           </h2>
         </header>
-        <section className="mt-20 mb-24 max-w-4xl mx-auto">
+
+        <section className="md:grid grid-cols-3">
+          <div className="col-span-1">Bio</div>
+          <div className="col-span-1">
+            Designer with two decades of experience building experiences from
+            startups to enterprise.
+          </div>
+        </section>
+
+        {/* <section className="mt-20 mb-24 max-w-4xl mx-auto">
           <div className="md:grid md:grid-cols-[1.2fr_1fr]">
             <figure className="rounded-3xl overflow-hidden relative aspect-square border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
               <video
@@ -47,7 +56,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );

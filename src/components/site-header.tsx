@@ -7,14 +7,49 @@ import ThemeToggle from "@/components/theme-toggle";
 import { useEffect, useRef, useState } from "react";
 
 export default function SiteHeader() {
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
+  const lastScroll = useRef(0);
+  const lastHidePosition = useRef(0);
+  const [enterFrom, setEnterFrom] = useState(0);
 
   useMotionValueEvent(scrollY, "change", (value) => {
-    setIsAtTop(value < 40);
+    const current = value ?? 0;
+    const delta = current - lastScroll.current;
+
+    // Always show near the top
+    if (current < 20) {
+      setIsVisible(true);
+      lastHidePosition.current = current;
+      lastScroll.current = current;
+      return;
+    }
+
+    // If scrolling further down while hidden, update the hide anchor
+    if (!isVisible && delta > 0) {
+      lastHidePosition.current = current;
+    }
+
+    // Hide when scrolling down
+    if (delta > 0 && isVisible) {
+      setEnterFrom(0);
+      setIsVisible(false);
+      lastHidePosition.current = current;
+    }
+
+    // Reveal after 120px of upward travel from the last hide point
+    if (delta < 0 && !isVisible) {
+      const upDistance = lastHidePosition.current - current;
+      if (upDistance >= 120) {
+        setEnterFrom(50);
+        setIsVisible(true);
+      }
+    }
+
+    lastScroll.current = current;
   });
 
   // Close the mobile menu when scrolling down or resizing up.
@@ -54,20 +89,32 @@ export default function SiteHeader() {
   return (
     <motion.header
       className="fixed inset-x-0 top-0 z-30 site-header"
-      initial={false}
-      animate={{
-        opacity: isAtTop ? 1 : 0,
-        y: isAtTop ? 0 : -12,
-        pointerEvents: isAtTop ? "auto" : "none",
-      }}
-      transition={{ duration: 0.35, ease: [0.25, 0.8, 0.35, 1] }}
+      initial={{ opacity: 1, y: 0, pointerEvents: "auto" }}
+      animate={
+        isVisible
+          ? {
+              opacity: 1,
+              y: 0,
+              pointerEvents: "auto",
+              transition: {
+                opacity: { duration: 0.35, ease: [0.25, 0.8, 0.35, 1] },
+                y: { from: enterFrom, duration: 0.55, ease: [0.25, 0.8, 0.35, 1] },
+              },
+            }
+          : {
+              opacity: 0,
+              y: -12,
+              pointerEvents: "none",
+              transition: { duration: 0.3, ease: [0.25, 0.8, 0.35, 1] },
+            }
+      }
     >
       <div className="max-w-8xl mx-auto px-6 md:px-16">
-        <div className="flex items-center justify-between py-6 md:py-8">
+        <div className="flex items-center justify-between my-6 md:my-8">
           <div className="flex items-center gap-6 md:gap-10">
             <Link
               href="/"
-              className="group flex items-center gap-4 transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] hover:opacity-90"
+              className="group flex items-center gap-4 px-5 py-2 rounded-full border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)] transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] hover:opacity-90"
             >
               <motion.div
                 className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-(--accent) flex items-center justify-center shrink-0 overflow-hidden transition-transform duration-300 group-hover:scale-105"
@@ -106,19 +153,19 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className="text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className="text-xl font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
                 Work
               </Link>
               <Link
                 href="/about"
-                className="text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className="text-xl font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
                 About
               </Link>
               <a
                 href="https://www.linkedin.com/in/kunal-s-bhat/"
-                className="text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className="text-xl font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
                 Contact
               </a>
