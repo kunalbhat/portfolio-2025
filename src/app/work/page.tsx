@@ -1,12 +1,13 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, FocusEvent, useRef, useState } from "react";
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/use-theme";
 import { themedAsset } from "@/utils/themed-asset";
+import Link from "next/link";
 
 const UNLOCK_PASSWORD = "samsonite";
 
@@ -14,6 +15,8 @@ export default function WorkPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
   const theme = useTheme("light");
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",
@@ -27,6 +30,7 @@ export default function WorkPage() {
     setError(!success);
     if (success) {
       setPassword("");
+      setShowInput(false);
     }
     return success;
   };
@@ -36,58 +40,112 @@ export default function WorkPage() {
     handleUnlockAttempt(password);
   };
 
+  const revealInput = () => {
+    setShowInput(true);
+    setError(false);
+  };
+
+  const handleBlur = (event: FocusEvent<HTMLElement>) => {
+    if (!formRef.current) return;
+    const next = event.relatedTarget as Node | null;
+    if (!next || !formRef.current.contains(next)) {
+      setShowInput(false);
+      setPassword("");
+      setError(false);
+    }
+  };
+
   return (
     <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
 
       <main className="py-12 min-h-screen">
-        <header className="max-w-5xl mb-16">
-          <AnimatedHeadline
-            className="mb-6 md:text-8xl font-semibold"
-            text="Selected Work"
-          />
-          <p className="text-lg text-(--muted)">
-            Password-protected explorations and in-progress pieces.
-          </p>
+        <header className="max-w-8xl mb-12 md:mb-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="max-w-5xl">
+            <AnimatedHeadline
+              className="mb-2 md:mb-3 md:text-8xl font-semibold"
+              text="Selected Work"
+            />
+            <p className="text-lg text-(--muted)">
+              Password-protected explorations and in-progress pieces.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={revealInput}
+              disabled={isUnlocked}
+              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-(--bg-overlay) drop-shadow-md cursor-pointer disabled:cursor-default"
+              aria-label={isUnlocked ? "Portfolio unlocked" : "Enter portfolio password"}
+            >
+              <Image
+                src={isUnlocked ? "/images/icon-unlock.svg" : "/images/icon-lock.svg"}
+                alt={isUnlocked ? "Unlocked" : "Locked"}
+                width={32}
+                height={32}
+                className="h-7 w-7"
+                priority
+              />
+            </button>
+
+            {showInput && !isUnlocked ? (
+              <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                onBlur={handleBlur}
+                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur border border-(--border)"
+              >
+                <label htmlFor="work-password" className="sr-only">
+                  Password
+                </label>
+                <input
+                  id="work-password"
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Password"
+                  className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-md w-full min-w-0"
+                  autoComplete="off"
+                  spellCheck={false}
+                  data-1p-ignore
+                />
+                <button
+                  type="submit"
+                  className="px-3 py-1 rounded-full bg-(--fg) text-(--bg) font-medium hover:opacity-90 transition-opacity"
+                >
+                  Unlock
+                </button>
+              </form>
+            ) : null}
+          </div>
         </header>
 
-        <section className="mb-12">
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-wrap items-center gap-3 rounded-2xl border border-(--border) bg-(--bg-overlay) px-4 py-3 md:px-5 md:py-4 drop-shadow-sm"
-          >
-            <label htmlFor="work-password" className="text-sm font-semibold">
-              Enter password
-            </label>
-            <input
-              id="work-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Password"
-              className="flex-1 min-w-[160px] md:min-w-[220px] bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-base border border-(--border) rounded-full px-4 py-2"
-              autoComplete="off"
-              spellCheck={false}
-              data-1p-ignore
-            />
-            <button
-              type="submit"
-              className="px-4 py-2 rounded-full bg-(--fg) text-(--bg) font-semibold hover:opacity-90 transition-opacity"
-            >
-              Unlock
-            </button>
-            {isUnlocked ? (
-              <span className="text-sm text-green-500 font-semibold">
-                Unlocked
-              </span>
-            ) : null}
-          </form>
-          {error && !isUnlocked ? (
-            <p className="text-sm text-red-500 mt-2">Wrong password. Try again.</p>
-          ) : null}
-        </section>
+        {error && !isUnlocked ? (
+          <p className="text-sm text-red-500 mt-1 mb-4">
+            Wrong password. Try again.
+          </p>
+        ) : null}
 
         <section className="portfolio-grid">
+          <Link
+            href="/work/daily-dispatch"
+            className="rounded-3xl border border-(--border) bg-(--bg-overlay) drop-shadow-xl p-6 md:p-8 flex flex-col gap-3 hover:opacity-95 transition-opacity"
+          >
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-(--muted)">
+              Case Study
+              <span className="px-2 py-1 rounded-full border border-(--border)">
+                Concept
+              </span>
+            </div>
+            <h4 className="mb-1">Over-Engineered — Daily Dispatch</h4>
+            <span className="text-lg text-(--muted)">
+              Reducing friction in sharing daily game scores across multiple chats.
+            </span>
+            <span className="text-sm font-semibold text-(--muted)">
+              Read more →
+            </span>
+          </Link>
           <div>
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image

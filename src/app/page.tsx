@@ -2,7 +2,6 @@
 
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
-import Link from "next/link";
 
 export default function Home() {
   return (
@@ -24,7 +23,7 @@ export default function Home() {
             families closer together.
           </h2>
         </header>
-        <section className="mt-20 mb-24">
+        <section className="mt-20 mb-24 max-w-4xl mx-auto">
           <div className="md:grid md:grid-cols-[1.2fr_1fr]">
             <figure className="rounded-3xl overflow-hidden relative aspect-square border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
               <video
@@ -32,7 +31,7 @@ export default function Home() {
                 muted
                 loop
                 playsInline
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover"
               >
                 <source src="videos/aura-rcs-light.mp4" type="video/mp4" />
               </video>

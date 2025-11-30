@@ -34,6 +34,27 @@ export default function AboutPage() {
       sector: "Merchant Experience",
       tags: ["Enterprise", "Payments"],
     },
+    {
+      date: "2014 — 2015",
+      company: "Modest (acquired by PayPal)",
+      title: "Design Lead",
+      sector: "Contextual Commerce",
+      tags: ["Consumer", "Mobile"],
+    },
+    {
+      date: "2012 — 2014",
+      company: "dscout",
+      title: "Design Lead",
+      sector: "User Research",
+      tags: ["B2B", "Mobile"],
+    },
+    {
+      date: "2010 — 2012",
+      company: "gravitytank",
+      title: "Design Lead",
+      sector: "Innovation",
+      tags: ["B2B", "Mobile"],
+    },
   ];
 
   return (
@@ -49,7 +70,7 @@ export default function AboutPage() {
         </header>
         <section className="max-w-4xl mx-auto flex flex-col space-y-24">
           <article>
-            <p className="md:text-4xl">
+            <p className="md:text-4xl leading-normal">
               First and foremost a designer, I&apos;m a technically inclined
               builder who thrives in every stage of the product process &ndash;
               from early insights to delivery. With nearly two decades of
@@ -59,7 +80,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article id="experience">
-            <h2 className="mb-6 md:mb-12 text-3xl">Experience</h2>
+            <h4 className="mb-10 md:mb-20 font-semibold">Experience</h4>
             <ul className="flex flex-col gap-12">
               {experience.map((role) => (
                 <ExperienceCard

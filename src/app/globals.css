@@ -68,7 +68,7 @@
   }
 
   .site-header {
-    background: transparent;
+    @apply my-8;
   }
 
   h1 {
@@ -76,7 +76,7 @@
   }
 
   h2 {
-    @apply text-3xl md:text-4xl md:leading-relaxed;
+    @apply text-3xl md:text-4xl md:leading-tight leading-tight;
   }
 
   h3 {
