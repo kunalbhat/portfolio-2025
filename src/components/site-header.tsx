@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 export default function SiteHeader() {
   const [isVisible, setIsVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const { scrollY } = useScroll();
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
@@ -18,6 +19,7 @@ export default function SiteHeader() {
 
   useMotionValueEvent(scrollY, "change", (value) => {
     const current = value ?? 0;
+    setHasScrolled(current > 12);
     const delta = current - lastScroll.current;
 
     // Always show near the top
@@ -114,7 +116,11 @@ export default function SiteHeader() {
           <div className="flex items-center gap-6 md:gap-10">
             <Link
               href="/"
-              className="group flex items-center gap-4 px-5 py-2 rounded-full border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)] transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] hover:opacity-90"
+              className={`group flex items-center gap-4 rounded-full transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] hover:opacity-90 ${
+                hasScrolled
+                  ? "pl-3 pr-5 py-2 border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
+                  : "border border-transparent bg-transparent shadow-none"
+              }`}
             >
               <motion.div
                 className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-(--accent) flex items-center justify-center shrink-0 overflow-hidden transition-transform duration-300 group-hover:scale-105"
@@ -148,7 +154,11 @@ export default function SiteHeader() {
 
           <div className="flex items-center gap-4">
             <nav
-              className="hidden md:flex items-center gap-8 px-5 py-3 rounded-full border border-(--border) bg-(--bg) shadow-[0_18px_60px_rgba(0,0,0,0.14)] transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)]"
+              className={`hidden md:flex items-center gap-8 px-5 py-3 rounded-full transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
+                hasScrolled
+                  ? "border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
+                  : "border border-transparent bg-transparent shadow-none"
+              }`}
               aria-label="Primary"
             >
               <Link
@@ -177,7 +187,11 @@ export default function SiteHeader() {
             <button
               type="button"
               ref={mobileToggleRef}
-              className="md:hidden h-12 w-12 rounded-full bg-[color-mix(in_srgb,var(--bg)70%,transparent)] border border-(--border) backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)] grid place-items-center"
+              className={`md:hidden h-12 w-12 rounded-full grid place-items-center transition-all duration-300 ${
+                hasScrolled
+                  ? "bg-[color-mix(in_srgb,var(--bg)70%,transparent)] border border-(--border) backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
+                  : "bg-transparent border border-transparent shadow-none"
+              }`}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsMenuOpen((open) => !open)}
             >

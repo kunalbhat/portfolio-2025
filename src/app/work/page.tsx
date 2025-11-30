@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, FocusEvent, useRef, useState } from "react";
+import { FormEvent, FocusEvent, useEffect, useRef, useState } from "react";
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import Image from "next/image";
@@ -17,6 +17,7 @@ export default function WorkPage() {
   const [error, setError] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const theme = useTheme("light");
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",
@@ -55,20 +56,42 @@ export default function WorkPage() {
     }
   };
 
+  useEffect(() => {
+    if (!showInput || isUnlocked) return;
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (
+        (formRef.current && formRef.current.contains(target)) ||
+        (triggerRef.current && triggerRef.current.contains(target))
+      ) {
+        return;
+      }
+      setShowInput(false);
+      setPassword("");
+      setError(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [showInput, isUnlocked]);
+
   return (
     <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
 
       <main className="py-12 min-h-screen">
-        <header className="max-w-8xl my-12 md:my-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="max-w-5xl">
+        <header className="max-w-8xl my-12 md:my-16 flex items-center justify-between gap-4">
+          <div className="max-w-5xl flex-1 min-w-0">
             <AnimatedHeadline
-              className="mb-2 md:mb-3 md:text-7xl font-semibold"
+              className="mb-2 md:mb-3 text-5xl md:text-7xl font-semibold"
               text="Projects"
             />
           </div>
 
-          <div className="flex items-center gap-10 self-start md:self-center">
+          <div className="flex items-center gap-3 md:gap-10 self-start md:self-center flex-shrink-0">
             {showInput && !isUnlocked ? (
               <form
                 ref={formRef}
@@ -101,6 +124,7 @@ export default function WorkPage() {
 
             <button
               type="button"
+              ref={triggerRef}
               onClick={revealInput}
               disabled={isUnlocked}
               className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-(--bg-overlay) drop-shadow-md cursor-pointer disabled:cursor-default"
