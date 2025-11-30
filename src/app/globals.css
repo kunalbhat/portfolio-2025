@@ -72,7 +72,7 @@
   }
 
   h1 {
-    @apply text-6xl md:text-8xl lg:text-9xl font-bold md:tracking-tight;
+    @apply text-6xl md:text-7xl lg:text-8xl font-bold md:tracking-tight;
   }
 
   h2 {
@@ -94,6 +94,16 @@
   h2 a,
   p a {
     @apply bg-(--accent) text-(--fg);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  [data-theme="light"] ::selection {
+    background: var(--accent);
+    color: var(--fg);
   }
 
   em {
