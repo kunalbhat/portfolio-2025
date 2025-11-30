@@ -96,7 +96,8 @@
     @apply bg-(--accent) text-(--fg);
   }
 
-  ::selection {
+  [data-theme="dark"] h2 a,
+  [data-theme="dark"] p a {
     background: var(--accent);
     color: var(--bg);
   }

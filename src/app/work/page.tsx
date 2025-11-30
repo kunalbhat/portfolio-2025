@@ -127,7 +127,7 @@ export default function WorkPage() {
               ref={triggerRef}
               onClick={revealInput}
               disabled={isUnlocked}
-              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-(--bg-overlay) drop-shadow-md cursor-pointer disabled:cursor-default"
+              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.4)] transition-colors drop-shadow-md cursor-pointer disabled:cursor-default"
               aria-label={
                 isUnlocked ? "Portfolio unlocked" : "Enter portfolio password"
               }
@@ -141,7 +141,7 @@ export default function WorkPage() {
                 alt={isUnlocked ? "Unlocked" : "Locked"}
                 width={32}
                 height={32}
-                className="h-7 w-7"
+                className="h-7 w-7 invert"
                 priority
               />
             </button>

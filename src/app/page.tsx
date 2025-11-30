@@ -12,7 +12,7 @@ export default function Home() {
         <header className="max-w-8xl my-8 md:mb-16">
           <AnimatedHeadline
             className="my-16 md:mt-16 md:mb-24 font-semibold"
-            text="Product designer with experience as a PM and engineer."
+            text="Hi, I'm Kunal - a product designer with PM and engineering experience."
           />
           <h2 className="mb-12 md:mb-24">
             Currently at{" "}
