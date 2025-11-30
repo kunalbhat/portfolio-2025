@@ -88,12 +88,12 @@
   }
 
   p {
-    @apply text-xl font-normal md:leading-relaxed;
+    @apply text-2xl font-normal md:leading-relaxed;
   }
 
   h2 a,
   p a {
-    @apply bg-(--accent) text-(--fg);
+    @apply bg-(--accent) text-(--fg) hover:opacity-70 transition-opacity;
   }
 
   [data-theme="dark"] h2 a,

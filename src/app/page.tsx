@@ -2,6 +2,7 @@
 
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,23 +19,30 @@ export default function Home() {
             Currently at{" "}
             <a href="https://www.auraframes.com" target="_blank">
               Aura
-            </a>
-            , building photo-sharing experiences that bring <em>millions</em> of
-            families closer together.
+            </a>{" "}
+            &mdash; building photo-sharing experiences that bring{" "}
+            <em>millions</em> of families closer together.
           </h2>
         </header>
 
         <section className="md:grid grid-cols-3">
-          <div className="col-span-1">Bio</div>
           <div className="col-span-1">
-            Designer with two decades of experience building experiences from
-            startups to enterprise.
+            <h4>Mini Bio</h4>
+          </div>
+          <div className="col-span-1">
+            <p>
+              Designer with two decades of experience building experiences at
+              startups to enterprise.
+            </p>
+            <p>
+              <Link href="/about">Learn more about me</Link>
+            </p>
           </div>
         </section>
 
-        {/* <section className="mt-20 mb-24 max-w-4xl mx-auto">
+        <section className="mt-20 mb-24">
           <div className="md:grid md:grid-cols-[1.2fr_1fr]">
-            <figure className="rounded-3xl overflow-hidden relative aspect-square border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
+            <figure className="rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
               <video
                 autoPlay
                 muted
@@ -47,7 +55,7 @@ export default function Home() {
             </figure>
 
             <div className="flex flex-col justify-center gap-4 px-6 py-10 md:px-12 bg-[color-mix(in_srgb,var(--bg)90%,transparent)]">
-              <h3>Aura Frames</h3>
+              <h4>Aura Frames</h4>
               <p>
                 As a Staff Product Designer, I design for growth initiatives and
                 lead product research—driving big-swing concepts, continuous
@@ -56,7 +64,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </section> */}
+        </section>
       </main>
     </div>
   );
