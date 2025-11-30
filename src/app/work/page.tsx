@@ -60,35 +60,15 @@ export default function WorkPage() {
       <SiteHeader />
 
       <main className="py-12 min-h-screen">
-        <header className="max-w-8xl mb-12 md:mb-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <header className="max-w-8xl my-12 md:my-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="max-w-5xl">
             <AnimatedHeadline
               className="mb-2 md:mb-3 md:text-8xl font-semibold"
               text="Selected Work"
             />
-            <p className="text-lg text-(--muted)">
-              Password-protected explorations and in-progress pieces.
-            </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={revealInput}
-              disabled={isUnlocked}
-              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-(--bg-overlay) drop-shadow-md cursor-pointer disabled:cursor-default"
-              aria-label={isUnlocked ? "Portfolio unlocked" : "Enter portfolio password"}
-            >
-              <Image
-                src={isUnlocked ? "/images/icon-unlock.svg" : "/images/icon-lock.svg"}
-                alt={isUnlocked ? "Unlocked" : "Locked"}
-                width={32}
-                height={32}
-                className="h-7 w-7"
-                priority
-              />
-            </button>
-
+          <div className="flex items-center gap-3 self-start md:self-center">
             {showInput && !isUnlocked ? (
               <form
                 ref={formRef}
@@ -118,6 +98,29 @@ export default function WorkPage() {
                 </button>
               </form>
             ) : null}
+
+            <button
+              type="button"
+              onClick={revealInput}
+              disabled={isUnlocked}
+              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-(--bg-overlay) drop-shadow-md cursor-pointer disabled:cursor-default"
+              aria-label={
+                isUnlocked ? "Portfolio unlocked" : "Enter portfolio password"
+              }
+            >
+              <Image
+                src={
+                  isUnlocked
+                    ? "/images/icon-unlock.svg"
+                    : "/images/icon-lock.svg"
+                }
+                alt={isUnlocked ? "Unlocked" : "Locked"}
+                width={32}
+                height={32}
+                className="h-7 w-7"
+                priority
+              />
+            </button>
           </div>
         </header>
 
@@ -130,39 +133,46 @@ export default function WorkPage() {
         <section className="portfolio-grid">
           <Link
             href="/work/daily-dispatch"
-            className="rounded-3xl border border-(--border) bg-(--bg-overlay) drop-shadow-xl p-6 md:p-8 flex flex-col gap-3 hover:opacity-95 transition-opacity"
+            className="block rounded-3xl hover:opacity-95 transition-opacity"
           >
-            <div className="inline-flex items-center gap-2 text-sm font-semibold text-(--muted)">
-              Case Study
-              <span className="px-2 py-1 rounded-full border border-(--border)">
-                Concept
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/daily-dispatch.jpg"
+                alt="Over-Engineered — Daily Dispatch cover"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>Over-Engineered: Daily Dispatch</h4>
+              <span>
+                I design a hypothetical app end-to-end based on a workflow
+                problem.
               </span>
-            </div>
-            <h4 className="mb-1">Over-Engineered — Daily Dispatch</h4>
-            <span className="text-lg text-(--muted)">
-              Reducing friction in sharing daily game scores across multiple chats.
-            </span>
-            <span className="text-sm font-semibold text-(--muted)">
-              Read more →
-            </span>
+            </figcaption>
           </Link>
           <Link
             href="/work/connections"
-            className="rounded-3xl border border-(--border) bg-(--bg-overlay) drop-shadow-xl p-6 md:p-8 flex flex-col gap-3 hover:opacity-95 transition-opacity"
+            className="block rounded-3xl hover:opacity-95 transition-opacity"
           >
-            <div className="inline-flex items-center gap-2 text-sm font-semibold text-(--muted)">
-              Case Study
-              <span className="px-2 py-1 rounded-full border border-(--border)">
-                Reverse Engineering
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/reverse-engineering.jpg"
+                alt="Reverse Engineering - Connections cover"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>Reverse Engineering: Connections</h4>
+              <span>
+                I break down an existing experience with a technical focus.
               </span>
-            </div>
-            <h4 className="mb-1">Reverse Engineering - Connections</h4>
-            <span className="text-lg text-(--muted)">
-              Breaking down the NYT daily Connections game into product and engineering steps.
-            </span>
-            <span className="text-sm font-semibold text-(--muted)">
-              Read more →
-            </span>
+            </figcaption>
           </Link>
           <Link
             href="/work/trmnl"
@@ -198,7 +208,9 @@ export default function WorkPage() {
             </figure>
             <figcaption>
               <h4>A1C Tracker</h4>
-              <span>Mobile health tracker with at-a-glance biomarker trends.</span>
+              <span>
+                Mobile health tracker with at-a-glance biomarker trends.
+              </span>
             </figcaption>
           </div>
           <div>

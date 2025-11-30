@@ -11,10 +11,10 @@ export default function Home() {
       <main className="py-8 min-h-screen">
         <header className="max-w-6xl my-8 md:mb-16">
           <AnimatedHeadline
-            className="mb-12 md:mb-16"
-            text="Kunal Bhat, Product Designer"
+            className="my-16 md:my-32"
+            text="Creative builder with experience as a designer, PM, and engineer."
           />
-          <h2 className="mb-12 md:mb-24 ">
+          <h2 className="mb-12 md:mb-24">
             Currently at{" "}
             <a href="https://www.auraframes.com" target="_blank">
               Aura
