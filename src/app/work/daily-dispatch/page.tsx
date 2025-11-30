@@ -63,23 +63,24 @@ export default function DailyDispatchPage() {
             <p>WhatsApp group</p>
             <p>A quick aside</p>
             <p>
-              This sharing mechanism (that I suppose Wordle popularized – check
-              me on that) is actually an ingenious visual framework for
+              This sharing mechanism (that I suppose Wordle popularized &ndash;
+              check me on that) is actually an ingenious visual framework for
               socializing scores. It&apos;s fun, lightweight, and viral.
             </p>
             <p>
               As you saw in the screenshots above, each game utilize this
               mechanism in different and clever ways:
             </p>
-            <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
-              {`Wordle 1,200 4/6
+            <div className="grid grid-cols-4 gap-8">
+              <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
+                {`Wordle 1,200 4/6
 ⬛️ ⬛️ ⬛️ ⬛️ ⬛️
 ⬛️ ⬛️ ⬛️ 🟩 🟨
 🟩 ⬛️ ⬛️ 🟩 ⬛️
 🟩 🟩 🟩 🟩 🟩`}
-            </pre>
-            <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
-              {`Connections
+              </pre>
+              <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
+                {`Connections
 Puzzle #342
 🟨 🟨 🟨 🟨 
 🟦 🟪 🟦 🟦 
@@ -87,20 +88,21 @@ Puzzle #342
 🟦 🟦 🟦 🟦 
 🟩 🟩 🟩 🟩
 🟪 🟪 🟪 🟪`}
-            </pre>
-            <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
-              {`Strands #76
+              </pre>
+              <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
+                {`Strands #76
 ”Parts of the equation”
 🟡 🔵 🔵 🔵
 🔵 🔵`}
-            </pre>
-            <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
-              {`Coffee Golf - May 18
+              </pre>
+              <pre className="whitespace-pre-wrap text-sm md:text-base bg-(--bg-overlay) p-3 rounded-2xl border border-(--border)">
+                {`Coffee Golf - May 18
 8 Strokes - Top 1% 🏆
 
 🟨 🟦 🟩 🟥 🟪
 1️⃣ 2️⃣ 2️⃣ 1️⃣ 2️⃣`}
-            </pre>
+              </pre>
+            </div>
             <p>
               Now, let&apos;s get back to the reason I need to solve this
               problem.

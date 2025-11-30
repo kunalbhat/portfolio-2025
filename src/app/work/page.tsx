@@ -146,7 +146,28 @@ export default function WorkPage() {
               Read more →
             </span>
           </Link>
-          <div>
+          <Link
+            href="/work/connections"
+            className="rounded-3xl border border-(--border) bg-(--bg-overlay) drop-shadow-xl p-6 md:p-8 flex flex-col gap-3 hover:opacity-95 transition-opacity"
+          >
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-(--muted)">
+              Case Study
+              <span className="px-2 py-1 rounded-full border border-(--border)">
+                Reverse Engineering
+              </span>
+            </div>
+            <h4 className="mb-1">Reverse Engineering - Connections</h4>
+            <span className="text-lg text-(--muted)">
+              Breaking down the NYT daily Connections game into product and engineering steps.
+            </span>
+            <span className="text-sm font-semibold text-(--muted)">
+              Read more →
+            </span>
+          </Link>
+          <Link
+            href="/work/trmnl"
+            className="block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
                 src={trmnlImage}
@@ -163,7 +184,7 @@ export default function WorkPage() {
                 A Spotify recently played plugin for the TRMNL e-ink display.
               </span>
             </figcaption>
-          </div>
+          </Link>
           <div>
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
