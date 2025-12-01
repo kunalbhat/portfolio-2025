@@ -169,20 +169,20 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className={`text-xl font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-xl font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/work" || pathname.startsWith("/work/")
-                    ? "bg-(--accent) text-(--on-accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
+                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
               >
                 Projects
               </Link>
               <Link
                 href="/about"
-                className={`text-xl font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-xl font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/about"
-                    ? "bg-(--accent) text-(--on-accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
+                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
               >
                 About
@@ -242,10 +242,10 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className={`text-lg font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-lg font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/work" || pathname.startsWith("/work/")
-                    ? "bg-(--accent) text-(--on-accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
+                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -253,10 +253,10 @@ export default function SiteHeader() {
               </Link>
               <Link
                 href="/about"
-                className={`text-lg font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-lg font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/about"
-                    ? "bg-(--accent) text-(--on-accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
+                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >

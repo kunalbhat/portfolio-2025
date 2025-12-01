@@ -13,6 +13,8 @@
     --accent: rgba(83, 148, 251, 1);
     --accent-soft: rgba(46, 69, 150, 1);
     --on-accent: #0b1326;
+    --active-nav-bg: color-mix(in srgb, var(--bg) 55%, white 45%);
+    --active-nav-fg: #f8fafc;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
     --input-bg: #162338;
     --header-gradient-start: var(--bg-overlay);
@@ -45,6 +47,8 @@
     --accent: rgba(83, 148, 251, 1);
     --accent-soft: rgba(46, 69, 150, 1);
     --on-accent: #0b1326;
+    --active-nav-bg: color-mix(in srgb, var(--bg) 55%, white 45%);
+    --active-nav-fg: #f8fafc;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
     --input-bg: #162338;
     --header-gradient-start: var(--bg-overlay);
@@ -60,6 +64,8 @@
     --accent: #d9f99d;
     --accent-soft: rgba(16, 185, 129, 1);
     --on-accent: #03061a;
+    --active-nav-bg: color-mix(in srgb, var(--bg) 85%, white 15%);
+    --active-nav-fg: #03061a;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
     --input-bg: #e5edf7;
     --header-gradient-start: color-mix(in srgb, var(--bg) 94%, transparent);
@@ -138,8 +144,12 @@
     @apply transition-transform duration-300 ease-[cubic-bezier(0.25,0.8,0.35,1)];
   }
 
-  .group:hover .card-media {
-    transform: translateY(-8px);
+  .card-hover {
+    @apply transition-transform duration-300 ease-[cubic-bezier(0.25,0.8,0.35,1)];
+  }
+
+  .card-hover:hover {
+    transform: scale(1.025);
   }
 
   @media (prefers-reduced-motion: no-preference) {

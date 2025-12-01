@@ -155,7 +155,7 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <div className="group">
+          <div className="group card-hover">
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <video
                 controls
@@ -175,7 +175,7 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </div>
-          <div className="group">
+          <div className="group card-hover">
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <video
                 controls
@@ -197,7 +197,7 @@ export default function WorkPage() {
           </div>
           {isUnlocked ? (
             <motion.div
-              className="group"
+              className="group card-hover"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
@@ -223,7 +223,7 @@ export default function WorkPage() {
               </figcaption>
             </motion.div>
           ) : (
-            <div className="group">
+            <div className="group card-hover">
               <figure className="aspect-square rounded-3xl drop-shadow-xl bg-(--bg-overlay) grid place-items-center px-6 text-center">
                 <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
                   <Image
@@ -244,7 +244,7 @@ export default function WorkPage() {
               </figcaption>
             </div>
           )}
-          <div className="group">
+          <div className="group card-hover">
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
                 src="/images/skyteller-light.png"
@@ -263,7 +263,7 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </div>
-          <div className="group">
+          <div className="group card-hover">
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
                 src="/images/braintree-dashboard.gif"
@@ -289,7 +289,7 @@ export default function WorkPage() {
           <div className="portfolio-grid">
             <Link
               href="/work/trmnl"
-              className="group block rounded-3xl hover:opacity-95 transition-opacity"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
@@ -308,7 +308,7 @@ export default function WorkPage() {
                 </span>
               </figcaption>
             </Link>
-            <div className="group">
+            <div className="group card-hover">
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
                   src="/images/a1c-tracker-mobile-light.jpg"
@@ -335,7 +335,7 @@ export default function WorkPage() {
           <div className="portfolio-grid">
             <Link
               href="/work/daily-dispatch"
-              className="group block rounded-3xl hover:opacity-95 transition-opacity"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
@@ -357,7 +357,7 @@ export default function WorkPage() {
             </Link>
             <Link
               href="/work/connections"
-              className="group block rounded-3xl hover:opacity-95 transition-opacity"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
