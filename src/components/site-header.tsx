@@ -100,7 +100,11 @@ export default function SiteHeader() {
               pointerEvents: "auto",
               transition: {
                 opacity: { duration: 0.35, ease: [0.25, 0.8, 0.35, 1] },
-                y: { from: enterFrom, duration: 0.55, ease: [0.25, 0.8, 0.35, 1] },
+                y: {
+                  from: enterFrom,
+                  duration: 0.55,
+                  ease: [0.25, 0.8, 0.35, 1],
+                },
               },
             }
           : {
@@ -177,7 +181,7 @@ export default function SiteHeader() {
                 href="https://www.linkedin.com/in/kunal-s-bhat/"
                 className="text-xl font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
               >
-                Contact
+                LinkedIn
               </a>
               <div>
                 <ThemeToggle />

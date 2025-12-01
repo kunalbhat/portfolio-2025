@@ -127,7 +127,7 @@ export default function WorkPage() {
               ref={triggerRef}
               onClick={revealInput}
               disabled={isUnlocked}
-              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.4)] transition-colors drop-shadow-md cursor-pointer disabled:cursor-default"
+              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.4)] transition-all drop-shadow-md cursor-pointer disabled:cursor-default hover:scale-105"
               aria-label={
                 isUnlocked ? "Portfolio unlocked" : "Enter portfolio password"
               }
@@ -141,7 +141,7 @@ export default function WorkPage() {
                 alt={isUnlocked ? "Unlocked" : "Locked"}
                 width={32}
                 height={32}
-                className="h-7 w-7 invert"
+                className="h-7 w-7 lock-icon"
                 priority
               />
             </button>
@@ -231,9 +231,10 @@ export default function WorkPage() {
               />
             </figure>
             <figcaption>
-              <h4>A1C Tracker</h4>
+              <h4>Nutrition Coach</h4>
               <span>
-                Mobile health tracker with at-a-glance biomarker trends.
+                I built a ChatGPT powered nutrition coach to help me lower my
+                A1C.
               </span>
             </figcaption>
           </div>
@@ -250,7 +251,10 @@ export default function WorkPage() {
             </figure>
             <figcaption>
               <h4>Skyteller</h4>
-              <span>Crypto off-ramp.</span>
+              <span>
+                Skyteller turned crypto into cash in just one click, to make the
+                crypto world more accessible and user-friendly.
+              </span>
             </figcaption>
           </div>
           <div>

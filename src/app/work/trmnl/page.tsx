@@ -11,7 +11,6 @@ export default function TrmnlCaseStudyPage() {
       <main className="py-10 md:py-14 min-h-screen">
         <WorkDetailLayout
           title="TMRNL - Spotify “Recently played” Dashboard"
-          tags={["Plugin", "Spotify", "TRMNL"]}
         >
           <figure className="mb-8">
             <Image
