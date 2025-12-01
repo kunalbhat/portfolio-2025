@@ -154,9 +154,9 @@ export default function SiteHeader() {
 
           <div className="flex items-center gap-4">
             <nav
-              className={`hidden md:flex items-center gap-8 px-5 py-3 rounded-full transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
+              className={`hidden md:flex items-center gap-8 rounded-full transform-gpu transition-all duration-400 ease-[cubic-bezier(0.25,0.8,0.35,1)] ${
                 hasScrolled
-                  ? "border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
+                  ? "px-5 py-3 border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
                   : "border border-transparent bg-transparent shadow-none"
               }`}
               aria-label="Primary"

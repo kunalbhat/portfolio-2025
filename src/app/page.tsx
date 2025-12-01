@@ -42,13 +42,13 @@ export default function Home() {
 
         <section className="mt-20 mb-24">
           <div className="md:grid md:grid-cols-[1.2fr_1fr]">
-            <figure className="rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg-overlay) drop-shadow-xl">
+            <figure className="rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg) drop-shadow-xl">
               <video
                 autoPlay
                 muted
                 loop
                 playsInline
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               >
                 <source src="videos/aura-rcs-light.mp4" type="video/mp4" />
               </video>

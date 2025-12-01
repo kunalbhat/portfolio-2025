@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 type WorkDetailLayoutProps = {
   title: string;
@@ -21,26 +22,26 @@ export default function WorkDetailLayout({
         <div className="flex flex-wrap items-center gap-3 text-sm font-semibold text-(--muted)">
           <Link
             href="/work"
-            className="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-(--border) bg-(--bg-overlay) hover:opacity-90 transition-opacity"
+            className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-[color-mix(in_srgb,var(--bg)70%,transparent)] backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.14)] hover:opacity-90 transition-all"
+            aria-label="Back to Work"
           >
-            ← Back to Work
+            <Image
+              src="/images/icon-arrow-back.svg"
+              alt="Back"
+              width={28}
+              height={28}
+              className="h-7 w-7"
+              priority
+            />
           </Link>
-          {tags.length ? (
-            <span className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2.5 py-1 rounded-full border border-(--border) text-xs font-semibold text-(--muted)"
-                >
-                  {tag}
-                </span>
-              ))}
-            </span>
-          ) : null}
         </div>
-        <h1 className="text-4xl md:text-6xl font-semibold">{title}</h1>
+        <h1 className="text-3xl md:text-6xl font-semibold mt-4 md:mt-6">
+          {title}
+        </h1>
         {summary ? (
-          <p className="text-lg md:text-xl text-(--muted) max-w-3xl">{summary}</p>
+          <p className="text-lg md:text-xl text-(--muted) max-w-3xl">
+            {summary}
+          </p>
         ) : null}
       </header>
 
