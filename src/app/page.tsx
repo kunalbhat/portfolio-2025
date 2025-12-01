@@ -31,8 +31,8 @@ export default function Home() {
           </div>
           <div className="col-span-1">
             <p>
-              Designer with two decades of experience building experiences at
-              startups to enterprise.
+              Staff-level IC with two decades of experience building experiences
+              at startups to enterprise.
             </p>
             <p>
               <Link href="/about">Learn more about me</Link>
@@ -42,7 +42,7 @@ export default function Home() {
 
         <section className="mt-20 mb-24">
           <div className="md:grid md:grid-cols-[1.2fr_1fr]">
-            <figure className="rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg) drop-shadow-xl">
+            <figure className="feature-figure">
               <video
                 autoPlay
                 muted
@@ -57,10 +57,10 @@ export default function Home() {
             <div className="flex flex-col justify-center gap-4 px-6 py-10 md:px-12 bg-[color-mix(in_srgb,var(--bg)90%,transparent)]">
               <h4>Aura Frames</h4>
               <p>
-                As a Staff Product Designer, I design for growth initiatives and
-                lead product research—driving big-swing concepts, continuous
-                customer insight, and rapid experimentation to ship high-impact
-                features at scale.
+                At Aura, I design for growth initiatives and lead product
+                research—driving big-swing concepts, continuous customer
+                insight, and rapid experimentation to ship high-impact features
+                at scale.
               </p>
             </div>
           </div>

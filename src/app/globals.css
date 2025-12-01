@@ -119,6 +119,10 @@
     @apply grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 md:gap-y-16 mb-8 md:mb-16;
   }
 
+  .feature-figure {
+    @apply rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg) drop-shadow-xl;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     :root,
     body {

@@ -11,7 +11,6 @@ export default function ConnectionsCaseStudyPage() {
       <main className="py-10 md:py-14 min-h-screen">
         <WorkDetailLayout
           title="Reverse Engineering - Connections by NYT"
-          tags={["Product thinking", "Game", "Case study"]}
         >
           <p className="bg-(--bg-overlay) border border-(--border) rounded-2xl p-4 text-sm">
             💡 *Note: I’m not affiliated with the New York Times or the original
