@@ -169,20 +169,20 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-xl font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/work" || pathname.startsWith("/work/")
-                    ? "bg-(--accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay)"
+                    ? "bg-(--accent) text-(--on-accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
               >
                 Projects
               </Link>
               <Link
                 href="/about"
-                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-xl font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/about"
-                    ? "bg-(--accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay)"
+                    ? "bg-(--accent) text-(--on-accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
               >
                 About
@@ -242,10 +242,10 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-lg font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/work" || pathname.startsWith("/work/")
-                    ? "bg-(--accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay)"
+                    ? "bg-(--accent) text-(--on-accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -253,10 +253,10 @@ export default function SiteHeader() {
               </Link>
               <Link
                 href="/about"
-                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
+                className={`text-lg font-semibold hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/about"
-                    ? "bg-(--accent)"
-                    : "bg-transparent hover:bg-(--bg-overlay)"
+                    ? "bg-(--accent) text-(--on-accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >

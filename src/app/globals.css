@@ -12,6 +12,7 @@
     --border: #1f2937; /* slate-800 */
     --accent: rgba(83, 148, 251, 1);
     --accent-soft: rgba(46, 69, 150, 1);
+    --on-accent: #0b1326;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
     --input-bg: #162338;
     --header-gradient-start: var(--bg-overlay);
@@ -43,6 +44,7 @@
     --border: #1f2937;
     --accent: rgba(83, 148, 251, 1);
     --accent-soft: rgba(46, 69, 150, 1);
+    --on-accent: #0b1326;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
     --input-bg: #162338;
     --header-gradient-start: var(--bg-overlay);
@@ -57,6 +59,7 @@
     --border: #e5e7eb;
     --accent: #d9f99d;
     --accent-soft: rgba(16, 185, 129, 1);
+    --on-accent: #03061a;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
     --input-bg: #e5edf7;
     --header-gradient-start: color-mix(in srgb, var(--bg) 94%, transparent);
