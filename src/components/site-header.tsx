@@ -169,7 +169,7 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/work" || pathname.startsWith("/work/")
                     ? "bg-(--accent)"
                     : "bg-transparent hover:bg-(--bg-overlay)"
@@ -179,7 +179,7 @@ export default function SiteHeader() {
               </Link>
               <Link
                 href="/about"
-                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/about"
                     ? "bg-(--accent)"
                     : "bg-transparent hover:bg-(--bg-overlay)"
@@ -242,7 +242,7 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/work" || pathname.startsWith("/work/")
                     ? "bg-(--accent)"
                     : "bg-transparent hover:bg-(--bg-overlay)"
@@ -253,7 +253,7 @@ export default function SiteHeader() {
               </Link>
               <Link
                 href="/about"
-                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 ${
                   pathname === "/about"
                     ? "bg-(--accent)"
                     : "bg-transparent hover:bg-(--bg-overlay)"
