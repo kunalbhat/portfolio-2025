@@ -82,13 +82,10 @@ export default function WorkPage() {
     <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
 
-      <main className="py-12 min-h-screen">
-        <header className="max-w-8xl my-12 md:my-16 flex items-center justify-between gap-4">
+      <main className="pb-8 md:pb-16">
+        <header className="my-12 md:my-16 flex items-center justify-between gap-4">
           <div className="max-w-5xl flex-1 min-w-0">
-            <AnimatedHeadline
-              className="mb-2 md:mb-3 text-5xl md:text-7xl font-semibold"
-              text="Projects"
-            />
+            <AnimatedHeadline className="font-semibold" text="Projects" />
           </div>
 
           <div className="flex items-center gap-3 md:gap-10 self-start md:self-center shrink-0">
@@ -170,8 +167,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>Aura RCS Messaging</h4>
               <span>
-                Helping families share moments seamlessly with rich messaging on
-                Aura frames.
+                Helping families share moments to their Aura frames even more
+                seamlessly with rich messaging.
               </span>
             </figcaption>
           </div>
@@ -189,10 +186,7 @@ export default function WorkPage() {
             </figure>
             <figcaption>
               <h4>Aura Captions</h4>
-              <span>
-                Auto-generated photo captions to bring context to shared
-                memories.
-              </span>
+              <span>Photo captions to bring context to shared memories.</span>
             </figcaption>
           </div>
           {isUnlocked ? (

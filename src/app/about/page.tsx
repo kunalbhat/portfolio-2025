@@ -72,10 +72,10 @@ export default function AboutPage() {
     <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
 
-      <main className="py-10 md:py-14 min-h-screen">
+      <main className="py-10">
         <header className="mt-6 md:mt-12 mb-16 md:mb-32">
           <AnimatedHeadline
-            className="mb-3 md:text-7xl lg:text-8xl font-semibold"
+            className="font-semibold"
             text="Solving complex problems through research, design, and technical depth."
           />
         </header>
