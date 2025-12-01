@@ -27,6 +27,14 @@
     filter: none;
   }
 
+  .invert-on-dark {
+    filter: invert(1);
+  }
+
+  [data-theme="light"] .invert-on-dark {
+    filter: none;
+  }
+
   [data-theme="dark"] {
     color-scheme: dark;
     --bg: #020617;

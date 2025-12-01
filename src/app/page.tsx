@@ -3,6 +3,7 @@
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -25,44 +26,58 @@ export default function Home() {
           </h2>
         </header>
 
-        <section className="md:grid grid-cols-3">
+        <section className="mb-24">
+          <figure className="feature-figure flex">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="h-full w-full object-contain"
+            >
+              <source src="videos/aura-product-video.mp4" type="video/mp4" />
+            </video>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="h-full w-fit object-contain"
+            >
+              <source src="videos/aura-rcs-light.mp4" type="video/mp4" />
+            </video>
+          </figure>
+        </section>
+
+        <section className="md:grid grid-cols-3 my-16">
           <div className="col-span-1">
             <h4>Mini Bio</h4>
           </div>
-          <div className="col-span-1">
-            <p>
-              Staff-level IC with two decades of experience building experiences
-              at startups to enterprise.
+          <div className="col-span-2">
+            <p className="mb-4">
+              Experienced enough to lead, hands-on enough to build. A
+              staff-level IC with 18 years spanning design, product, and
+              engineering.
             </p>
             <p>
-              <Link href="/about">Learn more about me</Link>
+              Aura, Magic+Might, Galactic, PayPal, Braintree, Modest, dscout,
+              gravitytank, VSA Partners.
             </p>
-          </div>
-        </section>
-
-        <section className="mt-20 mb-24">
-          <div className="md:grid md:grid-cols-[1.2fr_1fr]">
-            <figure className="feature-figure">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-contain"
+            <p className="flex my-4 gap-4">
+              Learn more about me
+              <Link
+                href="/about"
+                className="flex items-center justify-center rounded-full h-10 w-10"
               >
-                <source src="videos/aura-rcs-light.mp4" type="video/mp4" />
-              </video>
-            </figure>
-
-            <div className="flex flex-col justify-center gap-4 px-6 py-10 md:px-12 bg-[color-mix(in_srgb,var(--bg)90%,transparent)]">
-              <h4>Aura Frames</h4>
-              <p>
-                At Aura, I design for growth initiatives and lead product
-                research—driving big-swing concepts, continuous customer
-                insight, and rapid experimentation to ship high-impact features
-                at scale.
-              </p>
-            </div>
+                <Image
+                  src="/images/icon-arrow-forward.svg"
+                  alt="Forward arrow icon"
+                  width={32}
+                  height={32}
+                  className="hover:translate-x-1 transition-transform duration-300"
+                />
+              </Link>
+            </p>
           </div>
         </section>
       </main>

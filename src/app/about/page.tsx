@@ -25,12 +25,16 @@ export default function AboutPage() {
       company: "Galactic",
       title: "Senior Design Engineer",
       sector: "Crypto",
-      tags: ["Enterprise", "Infrastructure"],
+      tags: ["Defi", "Web3"],
     },
     {
       date: "2015 — 2021",
       company: "PayPal / Braintree",
-      title: "Senior Technical Product Manager (L27)",
+      title: [
+        "Senior Technical Product Manager (L25)",
+        "Product Manager (L24)",
+        "Product Design Engineer (L24)",
+      ],
       sector: "Merchant Experience",
       tags: ["Enterprise", "Payments"],
     },
@@ -49,10 +53,17 @@ export default function AboutPage() {
       tags: ["B2B", "Mobile"],
     },
     {
-      date: "2010 — 2012",
+      date: "2009 — 2012",
       company: "gravitytank",
       title: "Design Lead",
       sector: "Innovation",
+      tags: ["Consulting", "Consumer electronics"],
+    },
+    {
+      date: "2007 — 2009",
+      company: "VSA Partners",
+      title: "Designer",
+      sector: "Agency",
       tags: ["B2B", "Mobile"],
     },
   ];
@@ -77,6 +88,11 @@ export default function AboutPage() {
               experience across design, product management, and engineering,
               I&apos;m an end-to-end contributor who leads through
               collaboration.
+              <br />
+              <br />
+              My favorite activities include 0-1 product definition,
+              prototyping, research design &amp; analysis, and multi-variant
+              experimentation.
             </h2>
           </article>
           <article className="space-y-6">
@@ -97,7 +113,7 @@ export default function AboutPage() {
             </p>
             <p>
               Prior to that, I spent 6 years at <a href="#">PayPal</a> building
-              merchant experiences spanning from redefining the UX of{" "}
+              merchant experiences spanning from rearchitecting{" "}
               <a href="#">Braintree</a>&apos;s merchant dashboard to going deep
               into the Identity domain. I launched Braintree&apos;s Enterprise
               SSO offering, broke ground on a merchant data platform, and led
@@ -111,12 +127,22 @@ export default function AboutPage() {
               Android apps.
             </p>
             <p>
-              Prior to that, I designed and built the first iterations of
+              Prior to that, I designed and built the first iterations of{" "}
               <a href="#">dscout</a>&apos;s mobile research platform.
+            </p>
+            <p>
+              Outside of work, I enjoy tennis, chess, and doing my daily
+              puzzles.
             </p>
           </article>
           <article id="experience">
-            <h4 className="mb-10 md:mb-20 font-semibold">Experience</h4>
+            <header className="mb-8 md:mb-16">
+              <h4>History</h4>
+              <p>
+                Throughout my career, I&apos;ve focused on new and emergent
+                spaces, complexity, and scale.
+              </p>
+            </header>
             <ul className="flex flex-col gap-12">
               {experience.map((role) => (
                 <ExperienceCard

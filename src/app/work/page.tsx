@@ -155,127 +155,6 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <Link
-            href="/work/daily-dispatch"
-            className="block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/daily-dispatch.jpg"
-                alt="Over-Engineered — Daily Dispatch cover"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>Over-Engineered: Daily Dispatch</h4>
-              <span>
-                I design a hypothetical app end-to-end based on a workflow
-                problem.
-              </span>
-            </figcaption>
-          </Link>
-          <Link
-            href="/work/connections"
-            className="block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/reverse-engineering.jpg"
-                alt="Reverse Engineering - Connections cover"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>Reverse Engineering: Connections</h4>
-              <span>
-                I break down an existing experience with a technical focus.
-              </span>
-            </figcaption>
-          </Link>
-          <Link
-            href="/work/trmnl"
-            className="block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src={trmnlImage}
-                alt="Spotify dashboard for TRMNL"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>TRMNL Spotify Plugin</h4>
-              <span>
-                A Spotify recently played plugin for the TRMNL e-ink display.
-              </span>
-            </figcaption>
-          </Link>
-          <div>
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/a1c-tracker-mobile-light.jpg"
-                alt="A1C tracker mobile UI"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>Nutrition Coach</h4>
-              <span>
-                I built a ChatGPT powered nutrition coach to help me lower my
-                A1C.
-              </span>
-            </figcaption>
-          </div>
-          <div>
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/skyteller-light.png"
-                alt="Crypto"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>Skyteller</h4>
-              <span>
-                Skyteller turned crypto into cash in just one click, to make the
-                crypto world more accessible and user-friendly.
-              </span>
-            </figcaption>
-          </div>
-          <div>
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
-              <Image
-                src="/images/braintree-dashboard.gif"
-                alt="Braintree Control Panel"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover"
-                priority
-                unoptimized
-              />
-            </figure>
-            <figcaption>
-              <h4>Braintree Control Panel</h4>
-              <span>
-                I led the redesign of Braintree&apos;s merchant dashboard.
-              </span>
-            </figcaption>
-          </div>
           {isUnlocked ? (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -317,13 +196,146 @@ export default function WorkPage() {
                 </div>
               </figure>
               <figcaption>
-                <h3>Confidential</h3>
+                <h4>Confidential</h4>
                 <span className="text-(--muted)">
                   Enter the password to view.
                 </span>
               </figcaption>
             </div>
           )}
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/skyteller-light.png"
+                alt="Crypto"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>Skyteller</h4>
+              <span>
+                Skyteller turned crypto into cash in just one click, to make the
+                crypto world more accessible and user-friendly.
+              </span>
+            </figcaption>
+          </div>
+          <div>
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <Image
+                src="/images/braintree-dashboard.gif"
+                alt="Braintree Control Panel"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+                unoptimized
+              />
+            </figure>
+            <figcaption>
+              <h4>Braintree Control Panel</h4>
+              <span>
+                I led the redesign of Braintree&apos;s merchant dashboard.
+              </span>
+            </figcaption>
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <h3 className="mb-6 text-3xl font-bold">Side Projects</h3>
+          <div className="portfolio-grid">
+            <Link
+              href="/work/trmnl"
+              className="block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+                <Image
+                  src={trmnlImage}
+                  alt="Spotify dashboard for TRMNL"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>TRMNL Spotify Plugin</h4>
+                <span>
+                  A Spotify recently played plugin for the TRMNL e-ink display.
+                </span>
+              </figcaption>
+            </Link>
+            <div>
+              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+                <Image
+                  src="/images/a1c-tracker-mobile-light.jpg"
+                  alt="A1C tracker mobile UI"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>Nutrition Coach</h4>
+                <span>
+                  I built a ChatGPT powered nutrition coach to help me lower my
+                  A1C.
+                </span>
+              </figcaption>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <h3 className="mb-6 text-3xl font-bold">Articles</h3>
+          <div className="portfolio-grid">
+            <Link
+              href="/work/daily-dispatch"
+              className="block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+                <Image
+                  src="/images/daily-dispatch.jpg"
+                  alt="Over-Engineered — Daily Dispatch cover"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>Over-Engineered: Daily Dispatch</h4>
+                <span>
+                  I design a hypothetical app end-to-end based on a workflow
+                  problem.
+                </span>
+              </figcaption>
+            </Link>
+            <Link
+              href="/work/connections"
+              className="block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+                <Image
+                  src="/images/reverse-engineering.jpg"
+                  alt="Reverse Engineering - Connections cover"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>Reverse Engineering: Connections</h4>
+                <span>
+                  I break down an existing experience with a technical focus.
+                </span>
+              </figcaption>
+            </Link>
+          </div>
         </section>
       </main>
     </div>
