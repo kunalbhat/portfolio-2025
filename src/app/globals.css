@@ -80,7 +80,7 @@
   }
 
   h1 {
-    @apply text-6xl md:text-7xl lg:text-8xl font-bold md:tracking-tight;
+    @apply text-5xl md:text-7xl lg:text-8xl font-bold md:tracking-tight;
   }
 
   h2 {
