@@ -27,7 +27,7 @@ export default function Home() {
         </header>
 
         <section className="mb-24">
-          <figure className="feature-figure flex">
+          <figure className="feature-figure aspect-square sm:aspect-video flex">
             <video
               autoPlay
               muted
