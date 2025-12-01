@@ -9,10 +9,7 @@ export default function DailyDispatchPage() {
     <div className="max-w-4xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
       <SiteHeader />
       <main className="py-10 md:py-14 min-h-screen">
-        <WorkDetailLayout
-          title="Over-Engineered - “Daily Dispatch”"
-          tags={["Concept", "Product Thinking", "Workflow"]}
-        >
+        <WorkDetailLayout title="Over-Engineered - “Daily Dispatch”">
           <section className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-semibold">Context</h2>
             <p>

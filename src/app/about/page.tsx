@@ -70,13 +70,49 @@ export default function AboutPage() {
         </header>
         <section className="max-w-4xl mx-auto flex flex-col space-y-24">
           <article>
-            <p className="md:text-4xl leading-normal">
+            <h2>
               First and foremost a designer, I&apos;m a technically inclined
               builder who thrives in every stage of the product process &ndash;
               from early insights to delivery. With nearly two decades of
               experience across design, product management, and engineering,
               I&apos;m an end-to-end contributor who leads through
               collaboration.
+            </h2>
+          </article>
+          <article className="space-y-6">
+            <p>
+              Currently, at <a href="#">Aura</a>, I design for growth
+              experimentation and lead continuous research.
+            </p>
+            <p>
+              Before that, through <a href="#">Magic+Might</a>, I dove deep into
+              the autonomous ride-hail space working with <a href="#">Waymo</a>{" "}
+              to understand rider sentiment and design future experiences.
+            </p>
+            <p>
+              At <a href="#">Galactic</a>, a seed-staged startup (backed by
+              Redpoint, Bloomberg Beta and Betaworks, among others) I explored
+              crypto and building products that bridged the traditional finance
+              world with web3.
+            </p>
+            <p>
+              Prior to that, I spent 6 years at <a href="#">PayPal</a> building
+              merchant experiences spanning from redefining the UX of{" "}
+              <a href="#">Braintree</a>&apos;s merchant dashboard to going deep
+              into the Identity domain. I launched Braintree&apos;s Enterprise
+              SSO offering, broke ground on a merchant data platform, and led
+              the Identity component of PayPal&apos;s cross-organizational
+              platform unification efforts.
+            </p>
+            <p>
+              Prior to that, I led design at <a href="#">Modest</a> (acquired by
+              PayPal) where we built a contextual commerce platform to help
+              small and medium businesses launch quickly on native iOS and
+              Android apps.
+            </p>
+            <p>
+              Prior to that, I designed and built the first iterations of
+              <a href="#">dscout</a>&apos;s mobile research platform.
             </p>
           </article>
           <article id="experience">

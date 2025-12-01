@@ -6,14 +6,12 @@ import Image from "next/image";
 type WorkDetailLayoutProps = {
   title: string;
   summary?: string;
-  tags?: string[];
   children: React.ReactNode;
 };
 
 export default function WorkDetailLayout({
   title,
   summary,
-  tags = [],
   children,
 }: WorkDetailLayoutProps) {
   return (

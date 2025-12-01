@@ -76,7 +76,7 @@
   }
 
   h2 {
-    @apply text-2xl md:text-4xl leading-relaxed md:leading-tight;
+    @apply text-2xl md:text-4xl leading-relaxed;
   }
 
   h3 {

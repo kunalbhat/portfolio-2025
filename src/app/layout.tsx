@@ -29,7 +29,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        {children}
+        <div className="lg:max-w-7xl mx-auto">{children}</div>
         <Analytics />
       </body>
     </html>

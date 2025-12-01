@@ -91,7 +91,7 @@ export default function WorkPage() {
             />
           </div>
 
-          <div className="flex items-center gap-3 md:gap-10 self-start md:self-center flex-shrink-0">
+          <div className="flex items-center gap-3 md:gap-10 self-start md:self-center shrink-0">
             {showInput && !isUnlocked ? (
               <form
                 ref={formRef}
