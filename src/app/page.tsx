@@ -60,8 +60,8 @@ export default function Home() {
               engineering.
             </p>
             <p>
-              Aura, Magic+Might, Galactic, PayPal, Braintree, Modest, dscout,
-              gravitytank, VSA Partners.
+              Previously at Magic+Might, Galactic, PayPal, Braintree, Modest,
+              dscout, gravitytank, VSA Partners.
             </p>
             <p className="flex my-4 gap-4">
               Learn more about me

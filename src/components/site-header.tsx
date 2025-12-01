@@ -5,12 +5,14 @@ import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import ThemeToggle from "@/components/theme-toggle";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function SiteHeader() {
   const [isVisible, setIsVisible] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const { scrollY } = useScroll();
+  const pathname = usePathname();
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileToggleRef = useRef<HTMLButtonElement | null>(null);
   const lastScroll = useRef(0);
@@ -167,13 +169,21 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className="text-xl font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                  pathname === "/work" || pathname.startsWith("/work/")
+                    ? "bg-(--accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay)"
+                }`}
               >
                 Projects
               </Link>
               <Link
                 href="/about"
-                className="text-xl font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className={`text-xl font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                  pathname === "/about"
+                    ? "bg-(--accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay)"
+                }`}
               >
                 About
               </Link>
@@ -232,14 +242,22 @@ export default function SiteHeader() {
             >
               <Link
                 href="/work"
-                className="text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                  pathname === "/work" || pathname.startsWith("/work/")
+                    ? "bg-(--accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay)"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Work
+                Projects
               </Link>
               <Link
                 href="/about"
-                className="text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className={`text-lg font-semibold text-(--fg) hover:opacity-90 transition-colors px-3 py-1 rounded-full ${
+                  pathname === "/about"
+                    ? "bg-(--accent)"
+                    : "bg-transparent hover:bg-(--bg-overlay)"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 About

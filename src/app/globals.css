@@ -131,6 +131,14 @@
     @apply rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg) drop-shadow-xl;
   }
 
+  .card-media {
+    @apply transition-transform duration-300 ease-[cubic-bezier(0.25,0.8,0.35,1)];
+  }
+
+  .group:hover .card-media {
+    transform: translateY(-8px);
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     :root,
     body {

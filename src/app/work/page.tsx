@@ -155,19 +155,60 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
+          <div className="group">
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <video
+                controls
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover card-media"
+              >
+                <source src="/videos/aura-rcs-dark.mp4" type="video/mp4" />
+              </video>
+            </figure>
+            <figcaption>
+              <h4>Aura RCS Messaging</h4>
+              <span>
+                Helping families share moments seamlessly with rich messaging on
+                Aura frames.
+              </span>
+            </figcaption>
+          </div>
+          <div className="group">
+            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <video
+                controls
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover card-media"
+              >
+                <source src="/videos/aura-product-video.mp4" type="video/mp4" />
+              </video>
+            </figure>
+            <figcaption>
+              <h4>Aura Captions</h4>
+              <span>
+                Auto-generated photo captions to bring context to shared
+                memories.
+              </span>
+            </figcaption>
+          </div>
           {isUnlocked ? (
             <motion.div
+              className="group"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <video
-                  autoPlay
+                  controls
                   muted
                   loop
                   playsInline
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover card-media"
                 >
                   <source src="/videos/waymo-my-car.webm" type="video/webm" />
                   <source src="/videos/waymo-my-car.mp4" type="video/mp4" />
@@ -182,7 +223,7 @@ export default function WorkPage() {
               </figcaption>
             </motion.div>
           ) : (
-            <div>
+            <div className="group">
               <figure className="aspect-square rounded-3xl drop-shadow-xl bg-(--bg-overlay) grid place-items-center px-6 text-center">
                 <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
                   <Image
@@ -203,14 +244,14 @@ export default function WorkPage() {
               </figcaption>
             </div>
           )}
-          <div>
+          <div className="group">
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
                 src="/images/skyteller-light.png"
                 alt="Crypto"
                 width={800}
                 height={800}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover card-media"
                 priority
               />
             </figure>
@@ -222,14 +263,14 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </div>
-          <div>
+          <div className="group">
             <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
               <Image
                 src="/images/braintree-dashboard.gif"
                 alt="Braintree Control Panel"
                 width={800}
                 height={800}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover card-media"
                 priority
                 unoptimized
               />
@@ -248,7 +289,7 @@ export default function WorkPage() {
           <div className="portfolio-grid">
             <Link
               href="/work/trmnl"
-              className="block rounded-3xl hover:opacity-95 transition-opacity"
+              className="group block rounded-3xl hover:opacity-95 transition-opacity"
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
@@ -256,7 +297,7 @@ export default function WorkPage() {
                   alt="Spotify dashboard for TRMNL"
                   width={800}
                   height={800}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover card-media"
                   priority
                 />
               </figure>
@@ -267,14 +308,14 @@ export default function WorkPage() {
                 </span>
               </figcaption>
             </Link>
-            <div>
+            <div className="group">
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
                   src="/images/a1c-tracker-mobile-light.jpg"
                   alt="A1C tracker mobile UI"
                   width={800}
                   height={800}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover card-media"
                   priority
                 />
               </figure>
@@ -294,7 +335,7 @@ export default function WorkPage() {
           <div className="portfolio-grid">
             <Link
               href="/work/daily-dispatch"
-              className="block rounded-3xl hover:opacity-95 transition-opacity"
+              className="group block rounded-3xl hover:opacity-95 transition-opacity"
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
@@ -302,7 +343,7 @@ export default function WorkPage() {
                   alt="Over-Engineered — Daily Dispatch cover"
                   width={800}
                   height={800}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover card-media"
                   priority
                 />
               </figure>
@@ -316,7 +357,7 @@ export default function WorkPage() {
             </Link>
             <Link
               href="/work/connections"
-              className="block rounded-3xl hover:opacity-95 transition-opacity"
+              className="group block rounded-3xl hover:opacity-95 transition-opacity"
             >
               <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
                 <Image
@@ -324,7 +365,7 @@ export default function WorkPage() {
                   alt="Reverse Engineering - Connections cover"
                   width={800}
                   height={800}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover card-media"
                   priority
                 />
               </figure>
