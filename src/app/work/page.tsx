@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, FocusEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import Image from "next/image";
@@ -15,9 +15,6 @@ export default function WorkPage() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
-  const [showInput, setShowInput] = useState(false);
-  const formRef = useRef<HTMLFormElement | null>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const theme = useTheme("light");
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",
@@ -31,7 +28,6 @@ export default function WorkPage() {
     setError(!success);
     if (success) {
       setPassword("");
-      setShowInput(false);
     }
     return success;
   };
@@ -41,60 +37,21 @@ export default function WorkPage() {
     handleUnlockAttempt(password);
   };
 
-  const revealInput = () => {
-    setShowInput(true);
-    setError(false);
-  };
-
-  const handleBlur = (event: FocusEvent<HTMLElement>) => {
-    if (!formRef.current) return;
-    const next = event.relatedTarget as Node | null;
-    if (!next || !formRef.current.contains(next)) {
-      setShowInput(false);
-      setPassword("");
-      setError(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!showInput || isUnlocked) return;
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as Node | null;
-      if (
-        (formRef.current && formRef.current.contains(target)) ||
-        (triggerRef.current && triggerRef.current.contains(target))
-      ) {
-        return;
-      }
-      setShowInput(false);
-      setPassword("");
-      setError(false);
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [showInput, isUnlocked]);
-
   return (
     <div className="page-container">
       <SiteHeader />
 
       <main className="pb-8 md:pb-16">
-        <header className="my-12 md:my-16 flex items-center justify-between gap-4">
-          <div className="max-w-5xl flex-1 min-w-0">
+        <header className="my-12 md:my-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4 w-full">
+          <div className="max-w-5xl flex-1 min-w-0 w-full">
             <AnimatedHeadline className="font-semibold" text="Projects" />
           </div>
 
-          <div className="flex items-center gap-3 md:gap-10 self-start md:self-center shrink-0">
-            {showInput && !isUnlocked ? (
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-10 self-start md:self-center shrink-0 w-full md:w-auto">
+            {!isUnlocked ? (
               <form
-                ref={formRef}
                 onSubmit={handleSubmit}
-                onBlur={handleBlur}
-                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur border border-(--border)"
+                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur border border-(--border) w-full md:w-auto"
               >
                 <label htmlFor="work-password" className="sr-only">
                   Password
@@ -105,7 +62,7 @@ export default function WorkPage() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   placeholder="Password"
-                  className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-md w-full min-w-0"
+                  className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-lg w-full min-w-0 px-1.5 py-1"
                   autoComplete="off"
                   spellCheck={false}
                   data-1p-ignore
@@ -119,15 +76,12 @@ export default function WorkPage() {
               </form>
             ) : null}
 
-            <button
-              type="button"
-              ref={triggerRef}
-              onClick={revealInput}
-              disabled={isUnlocked}
-              className="h-12 w-12 rounded-full grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)] hover:bg-[rgba(255,255,255,0.4)] transition-all drop-shadow-md cursor-pointer disabled:cursor-default hover:scale-105"
+            <div
+              className="h-12 w-12 rounded-full hidden md:grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)] drop-shadow-md"
               aria-label={
-                isUnlocked ? "Portfolio unlocked" : "Enter portfolio password"
+                isUnlocked ? "Portfolio unlocked" : "Portfolio locked"
               }
+              role="status"
             >
               <Image
                 src={
@@ -141,7 +95,7 @@ export default function WorkPage() {
                 className="h-7 w-7 lock-icon"
                 priority
               />
-            </button>
+            </div>
           </div>
         </header>
 
@@ -165,7 +119,7 @@ export default function WorkPage() {
               </video>
             </figure>
             <figcaption>
-              <h4>Aura RCS Messaging</h4>
+              <h4>Aura Text-to-Frame</h4>
               <span>
                 Helping families share moments to their Aura frames even more
                 seamlessly with rich messaging.
@@ -186,7 +140,11 @@ export default function WorkPage() {
             </figure>
             <figcaption>
               <h4>Aura Captions</h4>
-              <span>Photo captions to bring context to shared memories.</span>
+              <span>
+                From 0&ndash;5M photo captions, I launched a brand new
+                multi-surface experience that helped Aura users bring more
+                context to cherished memories.
+              </span>
             </figcaption>
           </div>
           {isUnlocked ? (
@@ -211,8 +169,9 @@ export default function WorkPage() {
               <figcaption>
                 <h4>Waymo</h4>
                 <span>
-                  Exploring future mobility experiences with a focus on clear,
-                  calm in-car communication.
+                  Explored rider sentiment on personalization and in-car
+                  preferences - resulting in the new My Car tab in the Waymo
+                  app.
                 </span>
               </figcaption>
             </motion.div>
@@ -252,8 +211,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>Skyteller</h4>
               <span>
-                Skyteller turned crypto into cash in just one click, to make the
-                crypto world more accessible and user-friendly.
+                As an engineer, I helped build Skyteller a Defi off-ramp that
+                turned crypto into cash in your bank account in one click.
               </span>
             </figcaption>
           </div>
@@ -272,7 +231,9 @@ export default function WorkPage() {
             <figcaption>
               <h4>Braintree Control Panel</h4>
               <span>
-                I led the redesign of Braintree&apos;s merchant dashboard.
+                As a PM, I led the redesign of Braintree&apos;s merchant
+                dashboard used by companies like Uber and Airbnb to manage their
+                payments.
               </span>
             </figcaption>
           </div>
