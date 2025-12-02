@@ -88,6 +88,10 @@
     @apply my-8;
   }
 
+  .page-container {
+    @apply px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)];
+  }
+
   h1 {
     @apply text-5xl md:text-7xl lg:text-8xl font-bold md:tracking-tight;
   }
@@ -105,7 +109,7 @@
   }
 
   p {
-    @apply text-2xl font-normal md:leading-relaxed;
+    @apply text-2xl font-normal leading-relaxed;
   }
 
   h2 a,
@@ -134,6 +138,10 @@
 
   .portfolio-grid {
     @apply grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 md:gap-y-16 mb-8 md:mb-16;
+  }
+
+  .portfolio-card {
+    @apply aspect-square rounded-3xl drop-shadow-xl overflow-hidden;
   }
 
   .feature-figure {

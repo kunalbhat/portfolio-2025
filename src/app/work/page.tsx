@@ -79,7 +79,7 @@ export default function WorkPage() {
   }, [showInput, isUnlocked]);
 
   return (
-    <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
+    <div className="page-container">
       <SiteHeader />
 
       <main className="pb-8 md:pb-16">
@@ -153,7 +153,7 @@ export default function WorkPage() {
 
         <section className="portfolio-grid">
           <div className="group card-hover">
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+            <figure className="portfolio-card">
               <video
                 controls
                 muted
@@ -173,7 +173,7 @@ export default function WorkPage() {
             </figcaption>
           </div>
           <div className="group card-hover">
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+            <figure className="portfolio-card">
               <video
                 controls
                 muted
@@ -196,7 +196,7 @@ export default function WorkPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
             >
-              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <figure className="portfolio-card">
                 <video
                   controls
                   muted
@@ -218,7 +218,7 @@ export default function WorkPage() {
             </motion.div>
           ) : (
             <div className="group card-hover">
-              <figure className="aspect-square rounded-3xl drop-shadow-xl bg-(--bg-overlay) grid place-items-center px-6 text-center">
+              <figure className="portfolio-card bg-(--bg-overlay) grid place-items-center px-6 text-center">
                 <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
                   <Image
                     src="/images/icon-lock.svg"
@@ -239,7 +239,7 @@ export default function WorkPage() {
             </div>
           )}
           <div className="group card-hover">
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+            <figure className="portfolio-card">
               <Image
                 src="/images/skyteller-light.png"
                 alt="Crypto"
@@ -258,7 +258,7 @@ export default function WorkPage() {
             </figcaption>
           </div>
           <div className="group card-hover">
-            <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+            <figure className="portfolio-card">
               <Image
                 src="/images/braintree-dashboard.gif"
                 alt="Braintree Control Panel"
@@ -285,7 +285,7 @@ export default function WorkPage() {
               href="/work/trmnl"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <figure className="portfolio-card">
                 <Image
                   src={trmnlImage}
                   alt="Spotify dashboard for TRMNL"
@@ -303,7 +303,7 @@ export default function WorkPage() {
               </figcaption>
             </Link>
             <div className="group card-hover">
-              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <figure className="portfolio-card">
                 <Image
                   src="/images/a1c-tracker-mobile-light.jpg"
                   alt="A1C tracker mobile UI"
@@ -331,7 +331,7 @@ export default function WorkPage() {
               href="/work/daily-dispatch"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <figure className="portfolio-card">
                 <Image
                   src="/images/daily-dispatch.jpg"
                   alt="Over-Engineered — Daily Dispatch cover"
@@ -353,7 +353,7 @@ export default function WorkPage() {
               href="/work/connections"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="aspect-square rounded-3xl drop-shadow-xl overflow-hidden">
+              <figure className="portfolio-card">
                 <Image
                   src="/images/reverse-engineering.jpg"
                   alt="Reverse Engineering - Connections cover"

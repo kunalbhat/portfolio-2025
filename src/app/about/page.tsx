@@ -3,6 +3,7 @@
 import AnimatedHeadline from "@/components/animated-headline";
 import ExperienceCard from "@/components/experience-card";
 import SiteHeader from "@/components/site-header";
+import Image from "next/image";
 
 export default function AboutPage() {
   const experience = [
@@ -69,7 +70,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="max-w-8xl px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)]">
+    <div className="page-container">
       <SiteHeader />
 
       <main className="py-10">
@@ -79,7 +80,7 @@ export default function AboutPage() {
             text="Solving complex problems through research, design, and technical depth."
           />
         </header>
-        <section className="max-w-4xl mx-auto flex flex-col space-y-24">
+        <section className="max-w-4xl mx-auto flex flex-col space-y-28">
           <article>
             <h2>
               First and foremost a designer, I&apos;m a technically inclined
@@ -95,41 +96,117 @@ export default function AboutPage() {
               experimentation.
             </h2>
           </article>
-          <article className="space-y-6">
+          <article className="space-y-10">
             <p>
               Currently, at <a href="#">Aura</a>, I design for growth
               experimentation and lead continuous research.
             </p>
-            <p>
-              Before that, through <a href="#">Magic+Might</a>, I dove deep into
-              the autonomous ride-hail space working with <a href="#">Waymo</a>{" "}
-              to understand rider sentiment and design future experiences.
-            </p>
-            <p>
-              At <a href="#">Galactic</a>, a seed-staged startup (backed by
-              Redpoint, Bloomberg Beta and Betaworks, among others) I explored
-              crypto and building products that bridged the traditional finance
-              world with web3.
-            </p>
-            <p>
-              Prior to that, I spent 6 years at <a href="#">PayPal</a> building
-              merchant experiences spanning from rearchitecting{" "}
-              <a href="#">Braintree</a>&apos;s merchant dashboard to going deep
-              into the Identity domain. I launched Braintree&apos;s Enterprise
-              SSO offering, broke ground on a merchant data platform, and led
-              the Identity component of PayPal&apos;s cross-organizational
-              platform unification efforts.
-            </p>
-            <p>
-              Prior to that, I led design at <a href="#">Modest</a> (acquired by
-              PayPal) where we built a contextual commerce platform to help
-              small and medium businesses launch quickly on native iOS and
-              Android apps.
-            </p>
-            <p>
-              Prior to that, I designed and built the first iterations of{" "}
-              <a href="#">dscout</a>&apos;s mobile research platform.
-            </p>
+            <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:gap-12">
+              <p className="md:flex-1">
+                Before that, through <a href="#">Magic+Might</a>, I dove deep
+                into the autonomous ride-hail space working with{" "}
+                <a href="#">Waymo</a> to understand rider sentiment and design
+                future experiences.
+              </p>
+              <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-[2deg] hover:rotate-[3deg] transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
+                <video
+                  src="/videos/kunal-waymo.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-12">
+              <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-[-2deg] hover:rotate-[-1deg] transition-transform duration-300 md:-ml-10 drop-shadow-2xl">
+                <video
+                  src="/videos/kunal-galactic.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <p className="md:flex-1">
+                At <a href="#">Galactic</a>, a seed-staged startup (backed by
+                Redpoint, Bloomberg Beta and Betaworks, among others) I explored
+                crypto and building products that bridged the traditional
+                finance world with web3.
+              </p>
+            </div>
+            <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:gap-12">
+              <p className="md:flex-1">
+                Prior to that, I spent 6 years at <a href="#">PayPal</a>{" "}
+                building merchant experiences spanning from rearchitecting{" "}
+                <a href="#">Braintree</a>&apos;s merchant dashboard to going
+                deep into the Identity domain. I launched Braintree&apos;s
+                Enterprise SSO offering, broke ground on a merchant data
+                platform, and led the Identity component of PayPal&apos;s
+                cross-organizational platform unification efforts.
+              </p>
+              <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-[2deg] hover:rotate-[3deg] transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
+                <Image
+                  src="/images/kunal-braintree.jpg"
+                  alt="Kunal at Braintree"
+                  fill
+                  sizes="(min-width: 768px) 16rem, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-12">
+              <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-[-2deg] hover:rotate-[-1deg] transition-transform duration-300 md:-ml-10 drop-shadow-2xl">
+                <Image
+                  src="/images/kunal-modest.jpg"
+                  alt="Kunal at Modest"
+                  fill
+                  sizes="(min-width: 768px) 16rem, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <p className="md:flex-1">
+                Prior to that, I led design at{" "}
+                <a
+                  href="https://fortune.com/2015/08/19/paypal-acquisition-ebay-modest/"
+                  target="_blank"
+                >
+                  Modest
+                </a>{" "}
+                (acquired by PayPal) where we built a contextual commerce
+                platform to help small and medium businesses launch quickly on
+                native iOS and Android apps.
+              </p>
+            </div>
+            <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:gap-12">
+              <p className="md:flex-1">
+                Prior to that while at{" "}
+                <a
+                  href="https://www.businessinsider.com/salesforce-buys-gravitytank-2016-9"
+                  target="_blank"
+                >
+                  gravitytank
+                </a>{" "}
+                I imagined future experiences for companies like Skype (I got to
+                travel to Tokyo for research), Coinstar, and Samsung. I then
+                moved on to design and build the first iterations of{" "}
+                <a href="https://www.dscout.com" target="_blank">
+                  dscout
+                </a>
+                &apos;s mobile research platform
+              </p>
+              <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-[2deg] hover:rotate-[3deg] transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
+                <Image
+                  src="/images/kunal-gravitytank.jpg"
+                  alt="Kunal at gravitytank"
+                  fill
+                  sizes="(min-width: 768px) 16rem, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
             <p>
               Outside of work, I enjoy tennis, chess, and doing my daily
               puzzles.
