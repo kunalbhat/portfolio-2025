@@ -155,7 +155,7 @@ export default function WorkPage() {
           <div className="group card-hover">
             <figure className="portfolio-card">
               <video
-                controls
+                autoPlay
                 muted
                 loop
                 playsInline
@@ -175,7 +175,7 @@ export default function WorkPage() {
           <div className="group card-hover">
             <figure className="portfolio-card">
               <video
-                controls
+                autoPlay
                 muted
                 loop
                 playsInline
@@ -198,7 +198,7 @@ export default function WorkPage() {
             >
               <figure className="portfolio-card">
                 <video
-                  controls
+                  autoPlay
                   muted
                   loop
                   playsInline
