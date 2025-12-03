@@ -77,15 +77,15 @@ export default function AboutPage() {
         <header className="mt-6 md:mt-12 mb-16 md:mb-32">
           <AnimatedHeadline
             className="font-semibold"
-            text="Solving complex problems through research, design, and technical depth."
+            text="First and foremost a designer, I&apos;m a technically inclined
+              builder who thrives in every stage of the product process - 
+              from early insights to delivery."
           />
         </header>
         <section className="max-w-4xl mx-auto flex flex-col space-y-28">
           <article>
             <h2>
-              First and foremost a designer, I&apos;m a technically inclined
-              builder who thrives in every stage of the product process &ndash;
-              from early insights to delivery. With nearly two decades of
+              With nearly two decades of
               experience across design, product management, and engineering,
               I&apos;m an end-to-end contributor who leads through
               collaboration.
