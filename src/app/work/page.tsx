@@ -277,7 +277,7 @@ export default function WorkPage() {
               <figcaption>
                 <h4>Nutrition Coach</h4>
                 <span>
-                  I built a ChatGPT powered nutrition coach to help me lower my
+                  I built a ChatGPT powered nutrition coach to help lower my
                   A1C.
                 </span>
               </figcaption>
