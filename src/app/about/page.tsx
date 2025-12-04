@@ -150,10 +150,17 @@ export default function AboutPage() {
                     Braintree
                   </a>
                   &apos;s merchant dashboard to going deep into the Identity
-                  domain. I launched Braintree&apos;s Enterprise SSO offering,
-                  broke ground on a merchant data platform, and led the Identity
-                  component of PayPal&apos;s cross-organizational platform
-                  unification efforts.
+                  domain. I launched{" "}
+                  <a
+                    href="https://developer.paypal.com/braintree/articles/guides/single-sign-on-sso"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Braintree&apos;s Enterprise SSO
+                  </a>
+                  , broke ground on a merchant data platform, and led the
+                  Identity component of PayPal&apos;s cross-organizational
+                  platform unification efforts.
                 </p>
               </div>
               <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-2 hover:rotate-3 transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
@@ -181,17 +188,17 @@ export default function AboutPage() {
                   2014 — 2015 · Contextual Commerce · Consumer • Mobile
                 </p>
                 <p>
-                  Prior to that, I led design at{" "}
+                  I joined PayPal via it&apos;s acquisition of{" "}
                   <a
                     href="https://fortune.com/2015/08/19/paypal-acquisition-ebay-modest/"
                     target="_blank"
                     rel="noreferrer"
                   >
                     Modest
-                  </a>{" "}
-                  (acquired by PayPal) where we built a contextual commerce
-                  platform to help small and medium businesses launch quickly on
-                  native iOS and Android apps.
+                  </a>
+                  , where I led design and built a contextual commerce platform
+                  to help small and medium businesses launch buying experiences
+                  quickly on iOS and Android apps, web, and email.
                 </p>
               </div>
             </div>
