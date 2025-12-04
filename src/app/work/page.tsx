@@ -339,6 +339,69 @@ export default function WorkPage() {
             </Link>
           </div>
         </section>
+
+        <section className="mt-12">
+          <header className="mb-6 md:mb-12">
+            <h3 className="text-3xl font-bold">GitHub</h3>
+            <p className="text-lg">
+              Remember when we used to code without co-pilots? Projects from my{" "}
+              <a
+                href="https://github.com/kunalbhat/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Github
+              </a>{" "}
+              archives!
+            </p>
+          </header>
+          <div className="portfolio-grid">
+            <Link
+              href="/work/maze-of-games"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card">
+                <Image
+                  src="https://raw.githubusercontent.com/kunalbhat/maze-of-games/master/puzzle_1/screenshots/puzzle_1_interface.png"
+                  alt="Maze of Games - Puzzle interface"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover card-media"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>Maze of Games (2016)</h4>
+                <span>
+                  Interactive puzzle interfaces inspired by the Maze of Games
+                  novel.
+                </span>
+              </figcaption>
+            </Link>
+            <Link
+              href="/work/freddie-alerts"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card">
+                <Image
+                  src="https://raw.githubusercontent.com/kunalbhat/replyall-scraper/master/screenshots/all_gone.png"
+                  alt="Freddie Alerts - Giveaway watcher"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-contain card-media"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>Freddie Alerts (2016)</h4>
+                <span>
+                  Scrapes Mailchimp giveaways and emails when a new Freddie
+                  appears.
+                </span>
+              </figcaption>
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );

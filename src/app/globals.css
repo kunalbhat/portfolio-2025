@@ -88,6 +88,10 @@
     @apply my-8;
   }
 
+  .site-footer {
+    @apply px-6 md:px-16 mt-8 md:mt-16 pb-10 md:pb-12 text-base text-(--muted) font-normal;
+  }
+
   .page-container {
     @apply px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)];
   }

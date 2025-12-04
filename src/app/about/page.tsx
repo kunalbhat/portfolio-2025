@@ -19,14 +19,17 @@ export default function AboutPage() {
         </header>
         <section className="max-w-4xl mx-auto flex flex-col space-y-28">
           <article>
-            <h2>
-              With nearly two decades of experience across design, product
-              management, and engineering, I&apos;m an end-to-end contributor
-              who leads through collaboration.
-              <br />
-              <br />
-              My favorite activities include 0-1 product definition, prototyping
-              &amp; concept testing, talking to users, and shipping 😎.
+            <h2 className="flex flex-col space-y-4 md:space-y-8">
+              <span>
+                With nearly two decades of experience across design, product
+                management, and engineering, I&apos;m an end-to-end contributor
+                who leads through collaboration.
+              </span>
+              <span>
+                My favorite activities include 0-1 product definition,
+                prototyping &amp; concept testing, talking to users, and
+                shipping 😎. Motivated by data and measurable outcomes.
+              </span>
             </h2>
           </article>
           <article className="space-y-10">

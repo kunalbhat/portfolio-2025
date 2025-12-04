@@ -21,6 +21,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <html
       lang="en"
@@ -30,6 +32,9 @@ export default function RootLayout({
     >
       <body>
         {children}
+        <footer className="site-footer">
+          &copy; Kunal Bhat - {currentYear} - Chicago
+        </footer>
         <Analytics />
       </body>
     </html>
