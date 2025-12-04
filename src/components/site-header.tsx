@@ -171,7 +171,7 @@ export default function SiteHeader() {
                 href="/work"
                 className={`text-xl font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/work" || pathname.startsWith("/work/")
-                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    ? "px-4 py-2 bg-(--active-nav-bg) text-(--active-nav-fg) shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
                     : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
               >
@@ -181,7 +181,7 @@ export default function SiteHeader() {
                 href="/about"
                 className={`text-xl font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/about"
-                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    ? "px-4 py-2 bg-(--active-nav-bg) text-(--active-nav-fg) shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
                     : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
               >
@@ -238,13 +238,13 @@ export default function SiteHeader() {
           {isMenuOpen ? (
             <div
               ref={mobileMenuRef}
-              className="flex flex-col gap-3 bg-[color-mix(in_srgb,var(--bg)70%,transparent)] border border-(--border) rounded-2xl px-4 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.14)] backdrop-blur-xl"
+              className="flex flex-col gap-3 bg-(--bg) border border-(--border) rounded-2xl px-4 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.14)] backdrop-blur-xl"
             >
               <Link
                 href="/work"
                 className={`text-lg font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/work" || pathname.startsWith("/work/")
-                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    ? "px-4 py-2 bg-(--active-nav-bg) text-(--active-nav-fg) shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
                     : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
@@ -255,7 +255,7 @@ export default function SiteHeader() {
                 href="/about"
                 className={`text-lg font-semibold hover:opacity-90 transition-colors rounded-full ${
                   pathname === "/about"
-                    ? "px-4 py-2 bg-[var(--active-nav-bg)] text-[var(--active-nav-fg)] shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                    ? "px-4 py-2 bg-(--active-nav-bg) text-(--active-nav-fg) shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
                     : "px-3 py-1 bg-transparent hover:bg-(--bg-overlay) text-(--fg)"
                 }`}
                 onClick={() => setIsMenuOpen(false)}

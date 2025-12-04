@@ -121,7 +121,7 @@ export default function WorkPage() {
                 playsInline
                 className="h-full w-full object-cover card-media"
               >
-                <source src="/videos/aura-rcs-dark.mp4" type="video/mp4" />
+                <source src="/videos/aura-rcs-light.mp4" type="video/mp4" />
               </video>
             </figure>
             <figcaption>
