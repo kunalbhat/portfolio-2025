@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/hooks/use-theme";
 import { themedAsset } from "@/utils/themed-asset";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 
 export default function WorkPage() {
   const UNLOCK_PASSWORD = useMemo(
@@ -34,6 +35,9 @@ export default function WorkPage() {
     setError(!success);
     if (success) {
       setPassword("");
+      track("work_unlock_success");
+    } else {
+      track("work_unlock_failure");
     }
     return success;
   };
