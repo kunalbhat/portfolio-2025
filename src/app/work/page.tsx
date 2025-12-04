@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
 import Image from "next/image";
@@ -9,9 +9,11 @@ import { useTheme } from "@/hooks/use-theme";
 import { themedAsset } from "@/utils/themed-asset";
 import Link from "next/link";
 
-const UNLOCK_PASSWORD = "samsonite";
-
 export default function WorkPage() {
+  const UNLOCK_PASSWORD = useMemo(
+    () => process.env.NEXT_PUBLIC_WORK_PASSWORD || "",
+    []
+  );
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -23,6 +25,10 @@ export default function WorkPage() {
   );
 
   const handleUnlockAttempt = (input: string) => {
+    if (!UNLOCK_PASSWORD) {
+      setError(true);
+      return false;
+    }
     const success = input.trim() === UNLOCK_PASSWORD;
     setIsUnlocked(success);
     setError(!success);

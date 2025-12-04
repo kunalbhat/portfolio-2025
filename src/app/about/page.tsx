@@ -25,9 +25,8 @@ export default function AboutPage() {
               who leads through collaboration.
               <br />
               <br />
-              My favorite activities include 0-1 product definition,
-              prototyping, research design &amp; analysis, and multi-variant
-              experimentation.
+              My favorite activities include 0-1 product definition, prototyping
+              &amp; concept testing, talking to users, and shipping 😎.
             </h2>
           </article>
           <article className="space-y-10">
