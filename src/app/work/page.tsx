@@ -57,7 +57,7 @@ export default function WorkPage() {
             {!isUnlocked ? (
               <form
                 onSubmit={handleSubmit}
-                className="flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur border border-(--border) w-full md:w-auto"
+                className="work-password-form flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur border border-(--border) w-full md:w-auto"
               >
                 <label htmlFor="work-password" className="sr-only">
                   Password

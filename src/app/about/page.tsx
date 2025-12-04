@@ -26,9 +26,9 @@ export default function AboutPage() {
                 who leads through collaboration.
               </span>
               <span>
-                My favorite activities include 0-1 product definition,
-                prototyping &amp; concept testing, talking to users, and
-                shipping 😎. Motivated by data and measurable outcomes.
+                I&apos;m most at home in 0-1 product definition, prototyping,
+                user conversations, and shipping work shaped by clear data and
+                measurable outcomes.
               </span>
             </h2>
           </article>
@@ -45,7 +45,7 @@ export default function AboutPage() {
               </div>
               <div className="md:flex-1 space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-(--muted)">
-                  2024 — Present · Photos · Consumer • Growth
+                  2024 &ndash; Present
                 </p>
                 <p>
                   At{" "}
@@ -59,12 +59,18 @@ export default function AboutPage() {
                   , I design for growth experimentation and lead product
                   research to uncover our next big strategic opportunities.
                 </p>
+                <ul className="tag-list">
+                  <li className="tag-pill">Photo Sharing</li>
+                  <li className="tag-pill">Hardware</li>
+                  <li className="tag-pill">Consumer</li>
+                  <li className="tag-pill">Growth</li>
+                </ul>
               </div>
             </div>
             <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:gap-12">
               <div className="md:flex-1 space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-(--muted)">
-                  2023 — 2024 · Design Innovation &bull; Autonomous Ride-Hail
+                  2023 &ndash; 2024
                 </p>
                 <p>
                   Through{" "}
@@ -86,6 +92,11 @@ export default function AboutPage() {
                   </a>{" "}
                   to understand rider sentiment and design future experiences.
                 </p>
+                <ul className="tag-list">
+                  <li className="tag-pill">Autonomous Ride-hail</li>
+                  <li className="tag-pill">UXR</li>
+                  <li className="tag-pill">UXD</li>
+                </ul>
               </div>
               <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-2 hover:rotate-3 transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
                 <video
@@ -111,7 +122,7 @@ export default function AboutPage() {
               </div>
               <div className="md:flex-1 space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-(--muted)">
-                  2021 — 2023 · Crypto · Defi • Web3
+                  2021 &ndash; 2023
                 </p>
                 <p>
                   At{" "}
@@ -127,15 +138,21 @@ export default function AboutPage() {
                   explored crypto by building products that bridged the
                   traditional finance world with web3.
                 </p>
+                <ul className="tag-list">
+                  <li className="tag-pill">Crypto</li>
+                  <li className="tag-pill">Defi</li>
+                  <li className="tag-pill">Web3</li>
+                  <li className="tag-pill">Engineering</li>
+                </ul>
               </div>
             </div>
             <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:gap-12">
               <div className="md:flex-1 space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-(--muted)">
-                  2015 — 2021 · Merchant Experience · Enterprise • Payments
+                  2015 &ndash; 2021
                 </p>
                 <p>
-                  Prior to that, I spent 6 years at{" "}
+                  I spent 6 years at{" "}
                   <a
                     href="https://www.paypal.com"
                     target="_blank"
@@ -146,7 +163,7 @@ export default function AboutPage() {
                   as a PM, building merchant experiences spanning from
                   rearchitecting{" "}
                   <a
-                    href="https://wwww.braintreepayments.com"
+                    href="https://www.braintreepayments.com"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -165,6 +182,12 @@ export default function AboutPage() {
                   Identity component of PayPal&apos;s cross-organizational
                   platform unification efforts.
                 </p>
+                <ul className="tag-list">
+                  <li className="tag-pill">Enterprise</li>
+                  <li className="tag-pill">Payments</li>
+                  <li className="tag-pill">Identity</li>
+                  <li className="tag-pill">Data Platforms</li>
+                </ul>
               </div>
               <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-2 hover:rotate-3 transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
                 <Image
@@ -188,7 +211,7 @@ export default function AboutPage() {
               </div>
               <div className="md:flex-1 space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-(--muted)">
-                  2014 — 2015 · Contextual Commerce · Consumer • Mobile
+                  2014 &ndash; 2015
                 </p>
                 <p>
                   I joined PayPal via it&apos;s acquisition of{" "}
@@ -203,16 +226,21 @@ export default function AboutPage() {
                   to help small and medium businesses launch buying experiences
                   quickly on iOS and Android apps, web, and email.
                 </p>
+                <ul className="tag-list">
+                  <li className="tag-pill">Contextual Commerce</li>
+                  <li className="tag-pill">Mobile</li>
+                  <li className="tag-pill">SMB</li>
+                  <li className="tag-pill">Product Design</li>
+                </ul>
               </div>
             </div>
             <div className="flex flex-col-reverse gap-6 md:flex-row md:items-center md:gap-12">
               <div className="md:flex-1 space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-wide text-(--muted)">
-                  2009 — 2014 · Innovation &amp; User Research • Consumer
-                  Electronics
+                  2009 &ndash; 2014
                 </p>
                 <p>
-                  Prior to that while at{" "}
+                  While at{" "}
                   <a
                     href="https://www.businessinsider.com/salesforce-buys-gravitytank-2016-9"
                     target="_blank"
@@ -233,6 +261,12 @@ export default function AboutPage() {
                   </a>
                   &apos;s mobile user research platform.
                 </p>
+                <ul className="tag-list">
+                  <li className="tag-pill">User Research</li>
+                  <li className="tag-pill">Innovation</li>
+                  <li className="tag-pill">Consumer Electronics</li>
+                  <li className="tag-pill">Mobile</li>
+                </ul>
               </div>
               <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) rotate-2 hover:rotate-3 transition-transform duration-300 md:-mr-10 drop-shadow-2xl">
                 <Image

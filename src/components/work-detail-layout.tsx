@@ -43,7 +43,7 @@ export default function WorkDetailLayout({
         ) : null}
       </header>
 
-      <article className="space-y-10 leading-relaxed text-lg md:text-xl">
+      <article className="space-y-10 leading-relaxed text-lg md:text-xl work-detail-content">
         {children}
       </article>
     </div>
