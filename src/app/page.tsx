@@ -55,9 +55,8 @@ export default function Home() {
           </div>
           <div className="col-span-2">
             <p className="mb-4">
-              Experienced enough to lead, hands-on enough to build. A
-              staff-level IC with 18 years spanning design, product, and
-              engineering.
+              Experienced enough to lead, hands-on enough to build. Staff-level
+              IC with 18 years spanning design, product, and engineering.
             </p>
             <p>
               Previously at Magic+Might, Galactic, PayPal, Braintree, Modest,
