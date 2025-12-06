@@ -19,9 +19,16 @@ export default function WorkPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const theme = useTheme("light");
+  const invertedTheme = theme === "light" ? "dark" : "light";
+  const auraRcsVideoMp4 = themedAsset("/videos/aura-rcs", invertedTheme, "mp4");
+  const auraRcsVideoWebm = themedAsset(
+    "/videos/aura-rcs",
+    invertedTheme,
+    "webm"
+  );
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",
-    theme,
+    invertedTheme,
     "png"
   );
 
@@ -57,11 +64,11 @@ export default function WorkPage() {
             <AnimatedHeadline className="font-semibold" text="Projects" />
           </div>
 
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-10 self-start md:self-center shrink-0 w-full md:w-auto">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4 self-start md:self-center shrink-0 w-full md:w-auto">
             {!isUnlocked ? (
               <form
                 onSubmit={handleSubmit}
-                className="work-password-form flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur border border-(--border) w-full md:w-auto"
+                className="work-password-form flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur w-full md:w-auto"
               >
                 <label htmlFor="work-password" className="sr-only">
                   Password
@@ -71,7 +78,7 @@ export default function WorkPage() {
                   type="password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  placeholder="Password"
+                  placeholder="Enter password"
                   className="bg-transparent outline-none placeholder:text-(--muted) text-(--fg) text-lg w-full min-w-0 px-1.5 py-1"
                   autoComplete="off"
                   spellCheck={false}
@@ -87,7 +94,7 @@ export default function WorkPage() {
             ) : null}
 
             <div
-              className="h-12 w-12 rounded-full hidden md:grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)] drop-shadow-md"
+              className="h-12 w-12 rounded-full hidden md:grid place-items-center border border-(--border) bg-[rgba(255,255,255,0.25)]"
               aria-label={
                 isUnlocked ? "Portfolio unlocked" : "Portfolio locked"
               }
@@ -116,16 +123,21 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <div className="group card-hover">
+          <Link
+            href="/work/aura-text-to-frame"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card">
               <video
+                key={auraRcsVideoMp4}
                 autoPlay
                 muted
                 loop
                 playsInline
                 className="h-full w-full object-cover card-media"
               >
-                <source src="/videos/aura-rcs-light.mp4" type="video/mp4" />
+                <source src={auraRcsVideoWebm} type="video/webm" />
+                <source src={auraRcsVideoMp4} type="video/mp4" />
               </video>
             </figure>
             <figcaption>
@@ -135,8 +147,11 @@ export default function WorkPage() {
                 seamlessly with rich messaging.
               </span>
             </figcaption>
-          </div>
-          <div className="group card-hover">
+          </Link>
+          <Link
+            href="/work/aura-captions"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card">
               <video
                 autoPlay
@@ -152,38 +167,42 @@ export default function WorkPage() {
               <h4>Aura Captions</h4>
               <span>
                 From 0&ndash;5M photo captions, I launched a brand new
-                multi-surface experience that helped Aura users bring more
-                context to cherished memories.
+                multi-surface experience that let Aura users add context to
+                cherished memories.
               </span>
             </figcaption>
-          </div>
+          </Link>
           {isUnlocked ? (
             <motion.div
-              className="group card-hover"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
             >
-              <figure className="portfolio-card">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="h-full w-full object-cover card-media"
-                >
-                  <source src="/videos/waymo-my-car.webm" type="video/webm" />
-                  <source src="/videos/waymo-my-car.mp4" type="video/mp4" />
-                </video>
-              </figure>
-              <figcaption>
-                <h4>Waymo</h4>
-                <span>
-                  Explored rider sentiment on personalization and in-car
-                  preferences - resulting in the new My Car tab in the Waymo
-                  app.
-                </span>
-              </figcaption>
+              <Link
+                href="/work/waymo"
+                className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+              >
+                <figure className="portfolio-card">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="h-full w-full object-cover card-media"
+                  >
+                    <source src="/videos/waymo-my-car.webm" type="video/webm" />
+                    <source src="/videos/waymo-my-car.mp4" type="video/mp4" />
+                  </video>
+                </figure>
+                <figcaption>
+                  <h4>Waymo</h4>
+                  <span>
+                    Explored rider sentiment on personalization and in-car
+                    preferences - resulting in the new My Car tab in the Waymo
+                    app.
+                  </span>
+                </figcaption>
+              </Link>
             </motion.div>
           ) : (
             <div className="group card-hover">
@@ -207,7 +226,10 @@ export default function WorkPage() {
               </figcaption>
             </div>
           )}
-          <div className="group card-hover">
+          <Link
+            href="/work/skyteller"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card">
               <Image
                 src="/images/skyteller-light.png"
@@ -225,8 +247,11 @@ export default function WorkPage() {
                 turned crypto into cash in your bank account in one click.
               </span>
             </figcaption>
-          </div>
-          <div className="group card-hover">
+          </Link>
+          <Link
+            href="/work/braintree-control-panel"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card">
               <Image
                 src="/images/braintree-dashboard.gif"
@@ -246,7 +271,7 @@ export default function WorkPage() {
                 payments.
               </span>
             </figcaption>
-          </div>
+          </Link>
         </section>
 
         <section className="mt-12">
@@ -273,7 +298,10 @@ export default function WorkPage() {
                 </span>
               </figcaption>
             </Link>
-            <div className="group card-hover">
+            <Link
+              href="/work/nutrition-coach"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
               <figure className="portfolio-card">
                 <Image
                   src="/images/a1c-tracker-mobile-light.jpg"
@@ -291,7 +319,7 @@ export default function WorkPage() {
                   A1C.
                 </span>
               </figcaption>
-            </div>
+            </Link>
           </div>
         </section>
 
