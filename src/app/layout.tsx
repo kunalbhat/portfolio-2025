@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Albert_Sans } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 /* Load Google Sans Flex from Google Fonts via <link> */
 export const metadata: Metadata = {
@@ -33,8 +34,9 @@ export default function RootLayout({
       <body>
         {children}
         <footer className="site-footer">
-          &copy; Kunal Bhat - {currentYear} - Chicago
+          &copy; Kunal Bhat &ndash; {currentYear} &ndash; Chicago
         </footer>
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>
