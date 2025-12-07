@@ -1,7 +1,6 @@
-"use client";
-
 import AnimatedHeadline from "@/components/animated-headline";
 import SiteHeader from "@/components/site-header";
+import TrmnlSpotifyFeed from "@/components/trmnl-spotify-feed";
 import Image from "next/image";
 
 export default function AboutPage() {
@@ -289,6 +288,9 @@ export default function AboutPage() {
               </a>
               , and doing my daily puzzles.
             </p>
+          </article>
+          <article className="max-w-2xs mx-auto">
+            <TrmnlSpotifyFeed title="What I'm listening to" limit={6} />
           </article>
         </section>
       </main>
