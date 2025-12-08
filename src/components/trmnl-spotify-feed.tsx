@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import Link from "next/link";
 
 const ENDPOINT = "https://trmnl-spotify-server.vercel.app/api/spotify";
 
@@ -40,6 +40,37 @@ type NormalizedSpotifyItem = {
   image?: string;
   link?: string;
 };
+
+function pickFirstArrayCandidate(data: unknown): RawSpotifyItem[] {
+  if (!data) return [];
+  const asObject = (value: unknown) =>
+    value && typeof value === "object"
+      ? (value as Record<string, unknown>)
+      : undefined;
+
+  const root = asObject(data);
+  const items = root?.items;
+  const tracks = asObject(root?.tracks);
+  const dataNode = asObject(root?.data);
+  const body = asObject(root?.body);
+
+  const candidates: unknown[] = [
+    data,
+    items,
+    root?.tracks,
+    tracks?.items,
+    root?.data,
+    dataNode?.items,
+    root?.body,
+    body?.items,
+    root?.recently_played,
+  ];
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) return candidate as RawSpotifyItem[];
+  }
+  return [];
+}
 
 function pickImage(candidate: unknown): string | undefined {
   if (!candidate) return undefined;
@@ -99,23 +130,14 @@ function normalizeItem(
 
 async function fetchSpotifyItems(limit?: number) {
   try {
-    const res = await fetch(ENDPOINT, {
-      next: { revalidate: 300 },
-    });
-
+    const res = await fetch(ENDPOINT, { cache: "no-store" });
     if (!res.ok) {
       throw new Error(`Request failed: ${res.status}`);
     }
-
     const data = await res.json();
-    const list: RawSpotifyItem[] = Array.isArray(data)
-      ? data
-      : data?.items || data?.tracks || data?.data || [];
-
+    const list: RawSpotifyItem[] = pickFirstArrayCandidate(data);
     const normalized = list.map(normalizeItem).filter((item) => item.title);
-
-    const sliced = normalized.slice(0, limit || normalized.length);
-    return sliced.reverse();
+    return normalized.slice(0, limit || normalized.length);
   } catch {
     return [];
   }
@@ -126,9 +148,6 @@ type TrmnlSpotifyFeedProps = {
   limit?: number;
 };
 
-/**
- * Server component that fetches Spotify data from the TRMNL endpoint and renders it as cards.
- */
 export default async function TrmnlSpotifyFeed({
   title = "TRMNL Spotify Feed",
   limit,
@@ -146,39 +165,31 @@ export default async function TrmnlSpotifyFeed({
     );
   }
 
-  const columns = Math.max(1, Math.ceil(Math.sqrt(items.length)));
-  const rows = Math.max(1, Math.ceil(items.length / columns));
-  const midCol = (columns - 1) / 2;
-  const midRow = (rows - 1) / 2;
+  const visible = items.slice(0, limit ?? 6);
 
   return (
     <section className="space-y-4">
-      <div className="flex items-baseline gap-3">
-        <h3 className="text-2xl font-semibold">{title}</h3>
+      <div className="space-y-1">
+        <div className="flex items-baseline gap-3">
+          <h3 className="text-2xl font-semibold">{title}</h3>
+        </div>
+        <p className="text-sm text-(--muted)">
+          Powered by my Spotify endpoint —{" "}
+          <Link href="/work/trmnl" className="underline underline-offset-4">
+            wanna learn more?
+          </Link>
+        </p>
       </div>
-      <div className="space-y-0 group/list relative pt-12 md:pt-14">
-        {items.map((item, index) => (
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        {visible.map((item) => (
           <div
             key={item.id}
-            tabIndex={0}
-            className="group relative flex items-center gap-2 rounded-2xl border border-(--border) bg-(--bg) px-2 py-0.5 md:px-3 md:py-0.5 shadow-[0_12px_24px_rgba(0,0,0,0.14)] transition-transform duration-400 ease-out -mt-24 first:mt-0 transform translate-x-[var(--x)] translate-y-[var(--y)] skew-y-[var(--skew-base)] group-hover/list:translate-x-[var(--x-hover)] group-hover/list:translate-y-[var(--y-hover)] group-hover/list:skew-y-0 group-hover/list:scale-[1.05] group-hover/list:shadow-[0_18px_36px_rgba(0,0,0,0.2)] focus:translate-x-[var(--x-hover)] focus:translate-y-[var(--y-hover)] focus:skew-y-0 focus:scale-[1.05] focus:shadow-[0_18px_36px_rgba(0,0,0,0.2)] focus:outline-none"
-            style={
-              {
-                zIndex: 50 - index,
-                "--x": "0px",
-                "--y": "0px",
-                "--x-hover": `${
-                  (index % columns - midCol) * 120
-                }px`,
-                "--y-hover": `${
-                  (Math.floor(index / columns) - midRow) * 100
-                }px`,
-                "--skew-base": index % 2 === 0 ? "2deg" : "-2deg",
-                "--skew": index % 2 === 0 ? "2deg" : "-2deg",
-              } as CSSProperties
-            }
+            className="flex flex-col sm:flex-row items-center gap-3 rounded-2xl border border-(--border) bg-(--bg) px-2 py-1.5 md:px-3 md:py-2 shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
           >
-            <figure className="h-16 w-16 rounded-xl overflow-hidden border border-(--border) bg-(--bg-muted) shrink-0">
+            <figure
+              className="h-16 w-16 rounded-xl overflow-hidden border border-(--border) bg-(--bg-muted) shrink-0"
+              style={{ width: 64, height: 64 }}
+            >
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -195,11 +206,11 @@ export default async function TrmnlSpotifyFeed({
                 </div>
               )}
             </figure>
-            <figcaption className="flex-1 min-w-0 my-4 space-y-0.5">
-              <h4 className="text-base md:text-xl font-semibold leading-snug truncate">
+            <figcaption className="flex-1 min-w-0 my-2 space-y-0.5">
+              <h4 className="text-base md:text-xl font-semibold leading-snug break-word">
                 {item.title}
               </h4>
-              <span className="block text-xs md:text-sm text-(--muted) truncate">
+              <span className="block text-xs md:text-sm text-(--muted) break-word">
                 {item.artist || "Unknown artist"}
                 {item.album ? ` • ${item.album}` : ""}
               </span>

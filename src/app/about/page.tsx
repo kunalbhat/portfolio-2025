@@ -289,9 +289,8 @@ export default function AboutPage() {
               , and doing my daily puzzles.
             </p>
           </article>
-          <article className="max-w-2xs mx-auto">
-            <TrmnlSpotifyFeed title="What I'm listening to" limit={6} />
-          </article>
+
+          <TrmnlSpotifyFeed title="What I'm listening to" limit={6} />
         </section>
       </main>
     </div>
