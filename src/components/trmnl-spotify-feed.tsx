@@ -174,7 +174,7 @@ export default async function TrmnlSpotifyFeed({
           <h3 className="text-2xl font-semibold">{title}</h3>
         </div>
         <p className="text-base text-(--muted)">
-          Powered by my Spotify endpoint —{" "}
+          Recently played songs powered by my Spotify endpoint —{" "}
           <Link href="/work/trmnl" className="underline underline-offset-4">
             learn more!
           </Link>
@@ -207,7 +207,9 @@ export default async function TrmnlSpotifyFeed({
               )}
             </figure>
             <figcaption className="flex-1 min-w-0 my-2 space-y-0.5">
-              <h5 className="font-semibold mb-0 break-word">{item.title}</h5>
+              <h5 className="font-semibold leading-tight mb-0 break-word">
+                {item.title}
+              </h5>
               <span className="block text-xs md:text-sm text-(--muted) break-word">
                 {item.artist || "Unknown artist"}
                 {item.album ? ` • ${item.album}` : ""}

@@ -3,6 +3,7 @@ import { Albert_Sans } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Image from "next/image";
 
 /* Load Google Sans Flex from Google Fonts via <link> */
 export const metadata: Metadata = {
@@ -22,8 +23,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const currentYear = new Date().getFullYear();
-
   return (
     <html
       lang="en"
@@ -33,8 +32,21 @@ export default function RootLayout({
     >
       <body>
         {children}
-        <footer className="site-footer">
-          &copy; Kunal Bhat &ndash; {currentYear} &ndash; Chicago
+        <footer className="site-footer flex flex-wrap items-center justify-center gap-2 px-4 md:px-8 text-base text-center">
+          <span>&copy; 2025 Kunal Bhat — Chicago</span>
+          <span className="hidden sm:inline text-(--muted)">•</span>
+          <span className="flex items-center gap-1">
+            Built with ❤️ Next.js +
+            <Image
+              src="/images/logo-open-ai.svg"
+              alt="OpenAI"
+              width={18}
+              height={18}
+              className="inline-block h-4 w-4 align-middle"
+            />
+            <span className="hidden sm:inline text-(--muted)">•</span> Deployed
+            to Vercel.
+          </span>
         </footer>
         <SpeedInsights />
         <Analytics />
