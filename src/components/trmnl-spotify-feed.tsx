@@ -169,14 +169,14 @@ export default async function TrmnlSpotifyFeed({
 
   return (
     <section className="space-y-4">
-      <div className="space-y-1">
+      <div className="space-y-1 mb-8">
         <div className="flex items-baseline gap-3">
           <h3 className="text-2xl font-semibold">{title}</h3>
         </div>
-        <p className="text-sm text-(--muted)">
+        <p className="text-base text-(--muted)">
           Powered by my Spotify endpoint —{" "}
           <Link href="/work/trmnl" className="underline underline-offset-4">
-            wanna learn more?
+            learn more!
           </Link>
         </p>
       </div>
@@ -184,7 +184,7 @@ export default async function TrmnlSpotifyFeed({
         {visible.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row items-center gap-3 rounded-2xl border border-(--border) bg-(--bg) px-2 py-1.5 md:px-3 md:py-2 shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
+            className="flex items-center gap-3 rounded-2xl border border-(--border) bg-(--bg) px-2 py-1.5 md:px-3 md:py-2 shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
           >
             <figure
               className="h-16 w-16 rounded-xl overflow-hidden border border-(--border) bg-(--bg-muted) shrink-0"
@@ -207,9 +207,7 @@ export default async function TrmnlSpotifyFeed({
               )}
             </figure>
             <figcaption className="flex-1 min-w-0 my-2 space-y-0.5">
-              <h4 className="text-base md:text-xl font-semibold leading-snug break-word">
-                {item.title}
-              </h4>
+              <h5 className="font-semibold mb-0 break-word">{item.title}</h5>
               <span className="block text-xs md:text-sm text-(--muted) break-word">
                 {item.artist || "Unknown artist"}
                 {item.album ? ` • ${item.album}` : ""}
