@@ -153,21 +153,6 @@
 
   .tooltip-trigger {
     @apply relative inline-block cursor-help text-(--fg);
-    background: linear-gradient(
-      120deg,
-      var(--fg) 0%,
-      color-mix(in srgb, var(--accent) 35%, var(--fg) 65%) 20%,
-      var(--fg) 45%,
-      color-mix(in srgb, var(--accent) 35%, var(--fg) 65%) 70%,
-      var(--fg) 100%
-    );
-    background-size: 200% 100%;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: tooltip-shimmer 4.5s ease-in-out infinite;
-    line-height: 1.08;
-    padding-bottom: 0.08em;
   }
 
   .tooltip-trigger::after {
@@ -204,22 +189,6 @@
     transform: translate(-50%, -50%) scale(1) rotate(-12deg);
   }
 
-  @keyframes tooltip-shimmer {
-    0% {
-      background-position: 180% 0;
-    }
-    100% {
-      background-position: -20% 0;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .tooltip-trigger {
-      animation: none;
-      background: none;
-      color: var(--fg);
-    }
-  }
 
   em {
     @apply not-italic underline underline-offset-4 decoration-wavy decoration-2;
