@@ -15,6 +15,10 @@ export default function Home() {
           <AnimatedHeadline
             className="my-16 md:mt-16 md:mb-24 font-semibold"
             text="Hi, I'm Kunal - a product designer with PM and engineering experience."
+            highlightedWords={{
+              PM: "5 years as a product manager at PayPal and Braintree.",
+              engineering: "2 years integrating with crypto tools at Galactic.",
+            }}
           />
           <h2 className="mb-12 md:mb-24">
             Currently at{" "}
