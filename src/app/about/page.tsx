@@ -31,7 +31,7 @@ export default function AboutPage() {
               </span>
             </h2>
           </article>
-          <article className="space-y-10">
+          <article className="space-y-16 md:space-y-24">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-12">
               <div className="relative w-56 md:w-64 aspect-4/5 rounded-2xl border border-(--border) overflow-hidden bg-(--bg) -rotate-2 hover:-rotate-1 transition-transform duration-300 md:-ml-10 drop-shadow-2xl">
                 <Image
