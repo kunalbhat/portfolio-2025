@@ -324,13 +324,19 @@ export default function WorkPage() {
         </section>
 
         <section className="mt-12">
-          <h3 className="mb-6 text-3xl font-bold">Articles</h3>
-          <div className="portfolio-grid">
+          <header className="mb-6 md:mb-10">
+            <h3 className="text-3xl font-bold">Explorations</h3>
+            <p className="text-lg">
+              Articles and GitHub experiments from writing prompts to code
+              archives.
+            </p>
+          </header>
+          <div className="portfolio-grid-compact">
             <Link
               href="/work/daily-dispatch"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card">
+              <figure className="portfolio-card-compact">
                 <Image
                   src="/images/daily-dispatch.jpg"
                   alt="Over-Engineered — Daily Dispatch cover"
@@ -352,7 +358,7 @@ export default function WorkPage() {
               href="/work/connections"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card">
+              <figure className="portfolio-card-compact">
                 <Image
                   src="/images/reverse-engineering.jpg"
                   alt="Reverse Engineering - Connections cover"
@@ -369,30 +375,11 @@ export default function WorkPage() {
                 </span>
               </figcaption>
             </Link>
-          </div>
-        </section>
-
-        <section className="mt-12">
-          <header className="mb-6 md:mb-12">
-            <h3 className="text-3xl font-bold">GitHub</h3>
-            <p className="text-lg">
-              Remember when we used to code without co-pilots? Projects from my{" "}
-              <a
-                href="https://github.com/kunalbhat/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Github
-              </a>{" "}
-              archives!
-            </p>
-          </header>
-          <div className="portfolio-grid">
             <Link
               href="/work/maze-of-games"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card">
+              <figure className="portfolio-card-compact">
                 <Image
                   src="https://raw.githubusercontent.com/kunalbhat/maze-of-games/master/puzzle_1/screenshots/puzzle_1_interface.png"
                   alt="Maze of Games - Puzzle interface"
@@ -414,7 +401,7 @@ export default function WorkPage() {
               href="/work/freddie-alerts"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card">
+              <figure className="portfolio-card-compact">
                 <Image
                   src="https://raw.githubusercontent.com/kunalbhat/replyall-scraper/master/screenshots/all_gone.png"
                   alt="Freddie Alerts - Giveaway watcher"

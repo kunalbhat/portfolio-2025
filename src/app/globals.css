@@ -210,6 +210,14 @@
     @apply rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg) drop-shadow-xl;
   }
 
+  .portfolio-grid-compact {
+    @apply grid grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10 md:gap-x-10 md:gap-y-12 lg:grid-cols-4 w-full mb-8 md:mb-12;
+  }
+
+  .portfolio-card-compact {
+    @apply aspect-[4/5] w-full max-w-[15rem] sm:max-w-[16rem] md:max-w-[18rem] rounded-2xl drop-shadow-lg overflow-hidden mx-auto;
+  }
+
   .card-media {
     @apply transition-transform duration-300 ease-[cubic-bezier(0.25,0.8,0.35,1)];
   }
