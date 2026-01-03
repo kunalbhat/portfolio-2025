@@ -123,11 +123,8 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <Link
-            href="/work/aura-text-to-frame"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card">
+          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+            <figure className="portfolio-card relative">
               <video
                 key={auraRcsVideoMp4}
                 autoPlay
@@ -139,6 +136,9 @@ export default function WorkPage() {
                 <source src={auraRcsVideoWebm} type="video/webm" />
                 <source src={auraRcsVideoMp4} type="video/mp4" />
               </video>
+              <div className="coming-soon-overlay">
+                <span className="coming-soon-pill">Coming Soon</span>
+              </div>
             </figure>
             <figcaption>
               <h4>Aura Text-to-Frame</h4>
@@ -147,12 +147,9 @@ export default function WorkPage() {
                 seamlessly with rich messaging.
               </span>
             </figcaption>
-          </Link>
-          <Link
-            href="/work/aura-captions"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card">
+          </div>
+          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+            <figure className="portfolio-card relative">
               <video
                 autoPlay
                 muted
@@ -162,27 +159,27 @@ export default function WorkPage() {
               >
                 <source src="/videos/aura-product-video.mp4" type="video/mp4" />
               </video>
+              <div className="coming-soon-overlay">
+                <span className="coming-soon-pill">Coming Soon</span>
+              </div>
             </figure>
             <figcaption>
               <h4>Aura Captions</h4>
               <span>
-                From 0&ndash;5M photo captions, I launched a brand new
+                From 0 → millions of photo captions, I launched a brand new
                 multi-surface experience that let Aura users add context to
                 cherished memories.
               </span>
             </figcaption>
-          </Link>
+          </div>
           {isUnlocked ? (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
             >
-              <Link
-                href="/work/waymo"
-                className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-              >
-                <figure className="portfolio-card">
+              <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+                <figure className="portfolio-card relative">
                   <video
                     autoPlay
                     muted
@@ -193,6 +190,9 @@ export default function WorkPage() {
                     <source src="/videos/waymo-my-car.webm" type="video/webm" />
                     <source src="/videos/waymo-my-car.mp4" type="video/mp4" />
                   </video>
+                  <div className="coming-soon-overlay">
+                    <span className="coming-soon-pill">Coming Soon</span>
+                  </div>
                 </figure>
                 <figcaption>
                   <h4>Waymo</h4>
@@ -202,7 +202,7 @@ export default function WorkPage() {
                     app.
                   </span>
                 </figcaption>
-              </Link>
+              </div>
             </motion.div>
           ) : (
             <div className="group card-hover">
@@ -226,11 +226,8 @@ export default function WorkPage() {
               </figcaption>
             </div>
           )}
-          <Link
-            href="/work/skyteller"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card">
+          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+            <figure className="portfolio-card relative">
               <Image
                 src="/images/skyteller-light.png"
                 alt="Crypto"
@@ -239,6 +236,9 @@ export default function WorkPage() {
                 className="h-full w-full object-cover card-media"
                 priority
               />
+              <div className="coming-soon-overlay">
+                <span className="coming-soon-pill">Coming Soon</span>
+              </div>
             </figure>
             <figcaption>
               <h4>Skyteller</h4>
@@ -247,12 +247,9 @@ export default function WorkPage() {
                 turned crypto into cash in your bank account in one click.
               </span>
             </figcaption>
-          </Link>
-          <Link
-            href="/work/braintree-control-panel"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card">
+          </div>
+          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+            <figure className="portfolio-card relative">
               <Image
                 src="/images/braintree-dashboard.gif"
                 alt="Braintree Control Panel"
@@ -262,6 +259,9 @@ export default function WorkPage() {
                 priority
                 unoptimized
               />
+              <div className="coming-soon-overlay">
+                <span className="coming-soon-pill">Coming Soon</span>
+              </div>
             </figure>
             <figcaption>
               <h4>Braintree Control Panel</h4>
@@ -271,17 +271,23 @@ export default function WorkPage() {
                 payments.
               </span>
             </figcaption>
-          </Link>
+          </div>
         </section>
 
         <section className="mt-12">
-          <h3 className="mb-6 text-3xl font-bold">Side Projects</h3>
-          <div className="portfolio-grid">
+          <header className="mb-6 md:mb-10">
+            <h3 className="text-3xl font-bold">Explorations</h3>
+            <p className="text-lg">
+              Experiments that showcase my passion for various aspects of the
+              design process.
+            </p>
+          </header>
+          <div className="portfolio-grid-compact">
             <Link
               href="/work/trmnl"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card">
+              <figure className="portfolio-card-compact">
                 <Image
                   src={trmnlImage}
                   alt="Spotify dashboard for TRMNL"
@@ -292,7 +298,7 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4>TRMNL Spotify Plugin</h4>
+                <h4 className="compact-card-title">TRMNL Spotify Plugin</h4>
                 <span>
                   A Spotify recently played plugin for the TRMNL e-ink display.
                 </span>
@@ -302,7 +308,7 @@ export default function WorkPage() {
               href="/work/nutrition-coach"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card">
+              <figure className="portfolio-card-compact">
                 <Image
                   src="/images/a1c-tracker-mobile-light.jpg"
                   alt="A1C tracker mobile UI"
@@ -313,25 +319,13 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4>Nutrition Coach</h4>
+                <h4 className="compact-card-title">Nutrition Coach</h4>
                 <span>
                   I built a ChatGPT powered nutrition coach to help lower my
                   A1C.
                 </span>
               </figcaption>
             </Link>
-          </div>
-        </section>
-
-        <section className="mt-12">
-          <header className="mb-6 md:mb-10">
-            <h3 className="text-3xl font-bold">Explorations</h3>
-            <p className="text-lg">
-              Articles and GitHub experiments from writing prompts to code
-              archives.
-            </p>
-          </header>
-          <div className="portfolio-grid-compact">
             <Link
               href="/work/daily-dispatch"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
@@ -347,7 +341,7 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4>Over-Engineered: Daily Dispatch</h4>
+                <h4 className="compact-card-title">Over-Engineered: Daily Dispatch</h4>
                 <span>
                   I design a hypothetical app end-to-end based on a workflow
                   problem.
@@ -369,7 +363,7 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4>Reverse Engineering: Connections</h4>
+                <h4 className="compact-card-title">Reverse Engineering: Connections</h4>
                 <span>
                   I break down an existing experience with a technical focus.
                 </span>
@@ -390,7 +384,7 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4>Maze of Games (2016)</h4>
+                <h4 className="compact-card-title">Maze of Games (2016)</h4>
                 <span>
                   Interactive puzzle interfaces inspired by the Maze of Games
                   novel.
@@ -401,7 +395,7 @@ export default function WorkPage() {
               href="/work/freddie-alerts"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
             >
-              <figure className="portfolio-card-compact">
+              <figure className="portfolio-card-compact bg-[#e8f3ff]">
                 <Image
                   src="https://raw.githubusercontent.com/kunalbhat/replyall-scraper/master/screenshots/all_gone.png"
                   alt="Freddie Alerts - Giveaway watcher"
@@ -412,10 +406,9 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4>Freddie Alerts (2016)</h4>
+                <h4 className="compact-card-title">Freddie Alerts (2016)</h4>
                 <span>
-                  Scrapes Mailchimp giveaways and emails when a new Freddie
-                  appears.
+                  Small Ruby web-scraping utility for Mailchimp giveaways.
                 </span>
               </figcaption>
             </Link>

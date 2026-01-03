@@ -215,7 +215,19 @@
   }
 
   .portfolio-card-compact {
-    @apply aspect-[4/5] w-full max-w-[15rem] sm:max-w-[16rem] md:max-w-[18rem] rounded-2xl drop-shadow-lg overflow-hidden mx-auto;
+    @apply aspect-[4/5] w-full rounded-2xl drop-shadow-lg overflow-hidden mx-auto;
+  }
+
+  .coming-soon-overlay {
+    @apply absolute inset-0 grid place-items-center bg-[rgba(0,0,0,0.08)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none;
+  }
+
+  .coming-soon-pill {
+    @apply px-4 py-2 bg-white text-black text-sm font-semibold rounded-full shadow-lg border border-(--border);
+  }
+
+  .compact-card-title {
+    @apply text-xl font-semibold mb-2;
   }
 
   .card-media {
