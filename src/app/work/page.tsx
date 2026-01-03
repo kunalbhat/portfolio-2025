@@ -243,7 +243,7 @@ export default function WorkPage() {
             <figcaption>
               <h4>Skyteller</h4>
               <span>
-                As an engineer, I helped build Skyteller a Defi off-ramp that
+                As an engineer, I helped build Skyteller, a Defi off-ramp that
                 turned crypto into cash in your bank account in one click.
               </span>
             </figcaption>
@@ -304,11 +304,8 @@ export default function WorkPage() {
                 </span>
               </figcaption>
             </Link>
-            <Link
-              href="/work/nutrition-coach"
-              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-            >
-              <figure className="portfolio-card-compact">
+            <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+              <figure className="portfolio-card-compact relative">
                 <Image
                   src="/images/a1c-tracker-mobile-light.jpg"
                   alt="A1C tracker mobile UI"
@@ -317,15 +314,18 @@ export default function WorkPage() {
                   className="h-full w-full object-cover card-media"
                   priority
                 />
+                <div className="coming-soon-overlay">
+                  <span className="coming-soon-pill">Coming Soon</span>
+                </div>
               </figure>
               <figcaption>
-                <h4 className="compact-card-title">Nutrition Coach</h4>
+                <h4 className="compact-card-title">AI Nutrition Coach</h4>
                 <span>
-                  I built a ChatGPT powered nutrition coach to help lower my
-                  A1C.
+                  ChatGPT nutrition coach that meaningfully lowered my blood
+                  sugar levels.
                 </span>
               </figcaption>
-            </Link>
+            </div>
             <Link
               href="/work/daily-dispatch"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
@@ -341,7 +341,9 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4 className="compact-card-title">Over-Engineered: Daily Dispatch</h4>
+                <h4 className="compact-card-title">
+                  Over-Engineered: Daily Dispatch
+                </h4>
                 <span>
                   I design a hypothetical app end-to-end based on a workflow
                   problem.
@@ -363,7 +365,9 @@ export default function WorkPage() {
                 />
               </figure>
               <figcaption>
-                <h4 className="compact-card-title">Reverse Engineering: Connections</h4>
+                <h4 className="compact-card-title">
+                  Reverse Engineering: Connections
+                </h4>
                 <span>
                   I break down an existing experience with a technical focus.
                 </span>
