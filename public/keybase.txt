@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/knullbot
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://kunalbhat.com
+  * I am knullbot (https://keybase.io/knullbot) on keybase.
+  * I have a public key ASBGbzgCpsKTtDTi3bgyBwcY3PBJbF87IMwoGXCns-JgFQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120466f3802a6c293b434e2ddb832070718dcf0496c5f3b20cc281970a7b3e260150a",
+      "host": "keybase.io",
+      "kid": "0120466f3802a6c293b434e2ddb832070718dcf0496c5f3b20cc281970a7b3e260150a",
+      "uid": "d0f36543114e0a98c65f5315ab954d19",
+      "username": "knullbot"
+    },
+    "merkle_root": {
+      "ctime": 1624547715,
+      "hash": "e80435528d913976dfb22c35e99a27990d81d7a82928c1630e5f549cd1547b14c0d46e59271c76b6fced0ba81d9d20a2a33b7034cf5e2f29b542f767a960f99d",
+      "hash_meta": "12cc785704e72d9f6f049f5c4674c6e82254c24e25c78e976f9ae0bc75700eeb",
+      "seqno": 20250464
+    },
+    "service": {
+      "entropy": "4KxCNjd8gYAVU6ftsRl5Vwps",
+      "hostname": "kunalbhat.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "5.7.0"
+  },
+  "ctime": 1624547722,
+  "expire_in": 504576000,
+  "prev": "7fa44d2920ae8f33454ddd273eb62958043802d13d22c2861a900a93162a4559",
+  "seqno": 6,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgRm84AqbCk7Q04t24MgcHGNzwSWxfOyDMKBlwp7PiYBUKp3BheWxvYWTESpcCBsQgf6RNKSCujzNFTd0nPrYpWAQ4AtE9IsKGGpAKkxYqRVnEIDN3Zpcnxur1DO+Gs6C67Eie8IIlrC4u17/FUVs6hw8VAgHCo3NpZ8RAvtSzRdVpiPFnK/VWkNIGi+yw12Rf/ZC/Z73EOGFRWPZ4yYXA8r0BvyWPlyelOWRbvvCXDSxGNqs36+yhCDg2DKhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEILrCBfjamKbRyPXEic3qwUOvrQgZOHqCG0su2OLk8mwLo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/knullbot
+
+==================================================================
