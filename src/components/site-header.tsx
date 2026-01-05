@@ -264,10 +264,18 @@ export default function SiteHeader() {
               </Link>
               <a
                 href="https://www.linkedin.com/in/kunal-s-bhat/"
-                className="text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full"
+                className="inline-flex items-center gap-2 text-lg font-semibold text-(--fg) bg-transparent hover:bg-(--bg-overlay) hover:opacity-90 transition-colors px-3 py-1 rounded-full group/link"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Contact
+                LinkedIn
+                <Image
+                  src="/images/icon-arrow-link.png"
+                  alt="External link arrow icon"
+                  width={24}
+                  height={24}
+                  className="h-6 w-6 transition-transform duration-200 group-hover/link:scale-110 invert-on-dark"
+                  priority
+                />
               </a>
               <div className="pt-2 border-t border-(--border)">
                 <ThemeToggle />
