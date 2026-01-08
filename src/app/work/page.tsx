@@ -123,7 +123,12 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+          <a
+            href="https://www.theverge.com/news/840142/aura-text-to-frame-digital-picture-frame-share-photos"
+            target="_blank"
+            rel="noreferrer"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card relative">
               <video
                 key={auraRcsVideoMp4}
@@ -136,9 +141,6 @@ export default function WorkPage() {
                 <source src={auraRcsVideoWebm} type="video/webm" />
                 <source src={auraRcsVideoMp4} type="video/mp4" />
               </video>
-              <div className="coming-soon-overlay">
-                <span className="coming-soon-pill">Coming Soon</span>
-              </div>
             </figure>
             <figcaption>
               <h4>Aura Text-to-Frame</h4>
@@ -147,7 +149,7 @@ export default function WorkPage() {
                 seamlessly with rich messaging.
               </span>
             </figcaption>
-          </div>
+          </a>
           <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
             <figure className="portfolio-card relative">
               <video
@@ -178,7 +180,12 @@ export default function WorkPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
             >
-              <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+              <a
+                href="https://www.instagram.com/reel/DOwM55uErwy/"
+                target="_blank"
+                rel="noreferrer"
+                className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+              >
                 <figure className="portfolio-card relative">
                   <video
                     autoPlay
@@ -190,9 +197,6 @@ export default function WorkPage() {
                     <source src="/videos/waymo-my-car.webm" type="video/webm" />
                     <source src="/videos/waymo-my-car.mp4" type="video/mp4" />
                   </video>
-                  <div className="coming-soon-overlay">
-                    <span className="coming-soon-pill">Coming Soon</span>
-                  </div>
                 </figure>
                 <figcaption>
                   <h4>Waymo</h4>
@@ -202,7 +206,7 @@ export default function WorkPage() {
                     app.
                   </span>
                 </figcaption>
-              </div>
+              </a>
             </motion.div>
           ) : (
             <div className="group card-hover">
@@ -272,6 +276,28 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </div>
+          <Link
+            href="/work/nutrition-coach"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
+            <figure className="portfolio-card relative">
+              <Image
+                src="/images/a1c-tracker-mobile-light.jpg"
+                alt="A1C tracker mobile UI"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover card-media"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>AI Nutrition Coach</h4>
+              <span>
+                ChatGPT nutrition coach that meaningfully lowered my blood
+                sugar levels.
+              </span>
+            </figcaption>
+          </Link>
         </section>
 
         <section className="mt-12">
@@ -304,28 +330,6 @@ export default function WorkPage() {
                 </span>
               </figcaption>
             </Link>
-            <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
-              <figure className="portfolio-card-compact relative">
-                <Image
-                  src="/images/a1c-tracker-mobile-light.jpg"
-                  alt="A1C tracker mobile UI"
-                  width={800}
-                  height={800}
-                  className="h-full w-full object-cover card-media"
-                  priority
-                />
-                <div className="coming-soon-overlay">
-                  <span className="coming-soon-pill">Coming Soon</span>
-                </div>
-              </figure>
-              <figcaption>
-                <h4 className="compact-card-title">AI Nutrition Coach</h4>
-                <span>
-                  ChatGPT nutrition coach that meaningfully lowered my blood
-                  sugar levels.
-                </span>
-              </figcaption>
-            </div>
             <Link
               href="/work/daily-dispatch"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
