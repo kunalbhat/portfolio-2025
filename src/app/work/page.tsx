@@ -159,7 +159,7 @@ export default function WorkPage() {
                 playsInline
                 className="h-full w-full object-cover card-media"
               >
-                <source src="/videos/aura-product-video.mp4" type="video/mp4" />
+                <source src="/videos/aura-captions-cover.mp4" type="video/mp4" />
               </video>
               <div className="coming-soon-overlay">
                 <span className="coming-soon-pill">Coming Soon</span>
@@ -230,6 +230,28 @@ export default function WorkPage() {
               </figcaption>
             </div>
           )}
+          <Link
+            href="/work/nutrition-coach"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
+            <figure className="portfolio-card relative">
+              <Image
+                src="/images/a1c-tracker-mobile-light.jpg"
+                alt="A1C tracker mobile UI"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover card-media"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>AI Nutrition Coach</h4>
+              <span>
+                ChatGPT nutrition coach that meaningfully lowered my blood
+                sugar levels.
+              </span>
+            </figcaption>
+          </Link>
           <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
             <figure className="portfolio-card relative">
               <Image
@@ -276,28 +298,6 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </div>
-          <Link
-            href="/work/nutrition-coach"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card relative">
-              <Image
-                src="/images/a1c-tracker-mobile-light.jpg"
-                alt="A1C tracker mobile UI"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover card-media"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>AI Nutrition Coach</h4>
-              <span>
-                ChatGPT nutrition coach that meaningfully lowered my blood
-                sugar levels.
-              </span>
-            </figcaption>
-          </Link>
         </section>
 
         <section className="mt-12">
