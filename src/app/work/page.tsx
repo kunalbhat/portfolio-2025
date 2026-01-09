@@ -252,6 +252,27 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </Link>
+          <Link
+            href="/work/trmnl"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
+            <figure className="portfolio-card relative">
+              <Image
+                src={trmnlImage}
+                alt="Spotify dashboard for TRMNL"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover card-media"
+                priority
+              />
+            </figure>
+            <figcaption>
+              <h4>TRMNL Spotify Plugin</h4>
+              <span>
+                A Spotify recently played plugin for the TRMNL e-ink display.
+              </span>
+            </figcaption>
+          </Link>
           <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
             <figure className="portfolio-card relative">
               <Image
@@ -309,27 +330,6 @@ export default function WorkPage() {
             </p>
           </header>
           <div className="portfolio-grid-compact">
-            <Link
-              href="/work/trmnl"
-              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-            >
-              <figure className="portfolio-card-compact">
-                <Image
-                  src={trmnlImage}
-                  alt="Spotify dashboard for TRMNL"
-                  width={800}
-                  height={800}
-                  className="h-full w-full object-cover card-media"
-                  priority
-                />
-              </figure>
-              <figcaption>
-                <h4 className="compact-card-title">TRMNL Spotify Plugin</h4>
-                <span>
-                  A Spotify recently played plugin for the TRMNL e-ink display.
-                </span>
-              </figcaption>
-            </Link>
             <Link
               href="/work/daily-dispatch"
               className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
