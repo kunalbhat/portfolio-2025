@@ -63,7 +63,7 @@ export default function NutritionCoachPage() {
                 Timeline
               </p>
               <p className="text-lg md:text-xl font-semibold">
-                July 1 – August 31 (2 months)
+                July 1 &ndash; August 31 (2 months)
               </p>
             </div>
           </section>

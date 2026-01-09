@@ -55,8 +55,10 @@ export default function AboutPage() {
                   >
                     Aura
                   </a>
-                  , I design for growth experimentation and lead product
-                  research to uncover our next big strategic opportunities.
+                  , I design experiences in our iOS, Android, and frame
+                  surfaces, building for growth experimentation and leading
+                  product research to uncover our next big strategic
+                  opportunities.
                 </p>
                 <ul className="tag-list">
                   <li className="tag-pill">Photo Sharing</li>
