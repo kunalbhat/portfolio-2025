@@ -73,8 +73,8 @@ export default function NutritionCoachPage() {
             <p className="text-lg md:text-xl text-(--muted)">
               I didn&apos;t have complicated target metrics to hit—just a
               curiosity around building a tool to spur meaningful behavioral
-              change. Two months later, as of the end of August, I had measurable
-              impact.
+              change. Two months later, as of the end of August, I had
+              measurable impact.
             </p>
             <div className="grid gap-8 md:grid-cols-3 py-4 md:py-6">
               <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#F2F3F6]">
@@ -150,6 +150,37 @@ export default function NutritionCoachPage() {
                 className="w-full h-auto rounded-xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
               />
             </figure>
+            <div className="rounded-2xl bg-(--bg-overlay) px-6 py-6 md:px-8 md:py-8">
+              <h3 className="text-xl md:text-2xl font-semibold">
+                Agent instructions
+              </h3>
+              <p className="text-lg md:text-xl text-(--muted) mt-3">
+                To make the workflow consistent, I trained the agent with a
+                clear prompt and formatting rules so every log looked the same
+                and every insight was actionable.
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-lg md:text-xl text-(--muted) mt-4">
+                <li>
+                  Ask for missing context (time, location, ingredients, and
+                  portions) when a log is incomplete.
+                </li>
+                <li>
+                  Return a structured log: timestamp, meal name, ingredients,
+                  estimated macros, and glycemic impact score.
+                </li>
+                <li>
+                  Flag high-sugar or high-GI items and suggest one substitution
+                  that keeps the meal similar.
+                </li>
+                <li>
+                  Keep feedback concise and focus on trends over single meals.
+                </li>
+                <li>
+                  Use consistent emoji coding for breakfast, lunch, dinner, and
+                  snacks.
+                </li>
+              </ul>
+            </div>
           </section>
 
           <section className="space-y-3">
@@ -163,9 +194,7 @@ export default function NutritionCoachPage() {
                 <p className="text-xl md:text-2xl font-semibold text-(--fg)">
                   Exploratory phase
                 </p>
-                <p className="text-lg md:text-xl text-(--muted)">
-                  ~30–35%
-                </p>
+                <p className="text-lg md:text-xl text-(--muted)">~30–35%</p>
                 <p className="text-lg md:text-xl text-(--muted)">
                   Early July: I experimented with what to track (meals, snacks,
                   alcohol, workouts) and how to track it (emojis, macros,
@@ -176,9 +205,7 @@ export default function NutritionCoachPage() {
                 <p className="text-xl md:text-2xl font-semibold text-(--fg)">
                   Pure logging
                 </p>
-                <p className="text-lg md:text-xl text-(--muted)">
-                  ~40–45%
-                </p>
+                <p className="text-lg md:text-xl text-(--muted)">~40–45%</p>
                 <p className="text-lg md:text-xl text-(--muted)">
                   Once the rhythm set in, the bulk of the conversations became
                   short food journal entries like “Log Cobb salad – 7:15pm.”
@@ -188,9 +215,7 @@ export default function NutritionCoachPage() {
                 <p className="text-xl md:text-2xl font-semibold text-(--fg)">
                   System refinement &amp; prototyping
                 </p>
-                <p className="text-lg md:text-xl text-(--muted)">
-                  ~20–25%
-                </p>
+                <p className="text-lg md:text-xl text-(--muted)">~20–25%</p>
                 <p className="text-lg md:text-xl text-(--muted)">
                   Mid- to late July onward, I started prototyping UI in React
                   that could interface with ChatGPT, adding emoji coding,
@@ -201,7 +226,9 @@ export default function NutritionCoachPage() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-xl md:text-2xl font-semibold">What&apos;s Next</h2>
+            <h2 className="text-xl md:text-2xl font-semibold">
+              What&apos;s Next
+            </h2>
             <p className="text-lg md:text-xl text-(--muted)">
               ChatGPT worked surprisingly well as the primary interface for this
               project, but I started to hit some limitations.
@@ -235,16 +262,18 @@ export default function NutritionCoachPage() {
 
           <section className="space-y-3">
             <h2 className="text-xl md:text-2xl font-semibold">
-              Functional prototyping: Figma + React + Play
+              Functional prototyping: Figma &rarr; OpenAI API + Play
             </h2>
             <p className="text-lg md:text-xl text-(--muted)">
               I started prototyping a standalone app from three different
               angles:
             </p>
             <ul className="list-disc list-inside space-y-2 text-lg md:text-xl text-(--muted)">
-              <li>React: Experimenting with the OpenAI API.</li>
               <li>Figma: Quickly mocking up user flows and light UI.</li>
-              <li>Play: Exploring Play&apos;s iOS prototyping and API tooling.</li>
+              <li>OpenAI API: Experimenting with the OpenAI API.</li>
+              <li>
+                Play: Exploring Play&apos;s iOS prototyping and API tooling.
+              </li>
             </ul>
             <p className="text-lg md:text-xl text-(--muted)">
               These approaches overlap slightly, but they helped inform my POV
