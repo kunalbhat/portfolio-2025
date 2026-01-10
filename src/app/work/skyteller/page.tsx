@@ -337,11 +337,11 @@ export default function SkytellerPage() {
               By summer 2023, the crypto downturn and fundraising headwinds
               left us without a sustainable path forward. We made the hard,
               responsible call to shut down Galactic and sunset the product
-              only weeks after launch. It wasn’t the most delightful project
-              I’ve worked on, but it taught me a ton—about technical
-              foundations, risk, and how to ship in an emerging ecosystem.
-              Even with the timing working against us, it was meaningful to
-              help build something truly cutting-edge.
+              only weeks after launch. The work itself was deeply rewarding:
+              cutting-edge, technically demanding, and full of new paradigms.
+              From a UX perspective, the challenge was earning trust and
+              making unfamiliar flows feel safe and familiar—an experience I
+              learned a lot from, even if the timing worked against us.
             </p>
           </section>
         </WorkDetailLayout>
