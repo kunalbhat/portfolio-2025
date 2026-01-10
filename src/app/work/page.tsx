@@ -273,7 +273,10 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </Link>
-          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+          <Link
+            href="/work/skyteller"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card relative">
               <Image
                 src="/images/skyteller-light.png"
@@ -283,9 +286,6 @@ export default function WorkPage() {
                 className="h-full w-full object-cover card-media"
                 priority
               />
-              <div className="coming-soon-overlay">
-                <span className="coming-soon-pill">Coming Soon</span>
-              </div>
             </figure>
             <figcaption>
               <h4>Skyteller</h4>
@@ -294,7 +294,7 @@ export default function WorkPage() {
                 turned crypto into cash in your bank account in one click.
               </span>
             </figcaption>
-          </div>
+          </Link>
           <Link
             href="/work/braintree-control-panel"
             className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
