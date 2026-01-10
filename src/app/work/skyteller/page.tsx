@@ -15,8 +15,8 @@ export default function SkytellerPage() {
         >
           <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-10 md:my-12 rounded-3xl bg-(--bg-overlay) shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
             <Image
-              src="/images/skyteller-light.png"
-              alt="Skyteller product hero"
+              src="/images/skyteller-core-screens.jpg"
+              alt="Skyteller core screens"
               width={1600}
               height={1000}
               className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
@@ -64,7 +64,9 @@ export default function SkytellerPage() {
               Exchanges can fail, wallets can be misused, and every hop adds
               risk. For people earning income in crypto, the consequences are
               real. We wanted to make off-ramping simple, secure, and
-              trustworthy.
+              trustworthy. The product shipped as a responsive web app so
+              merchants could complete the full flow on both desktop and
+              mobile.
             </p>
           </section>
 
@@ -154,16 +156,6 @@ export default function SkytellerPage() {
               from a connected wallet, a third-party wallet, or a personalized
               “Pay me” URL, then swapped and routed to fiat.
             </p>
-            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
-              <Image
-                src="/images/skyteller-core-screens.png"
-                alt="Skyteller core product screens"
-                width={1600}
-                height={1000}
-                className="w-full h-auto rounded-2xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
-                priority
-              />
-            </figure>
           </section>
 
           <section className="space-y-4">
@@ -177,9 +169,9 @@ export default function SkytellerPage() {
               the connected bank account. A transaction timeline kept users
               informed at each step.
             </p>
-            <figure className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] mx-auto my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
               <Image
-                src="/images/skyteller-core-flows.png"
+                src="/images/skyteller-core-flow.jpg"
                 alt="Skyteller core funds flow diagram"
                 width={1400}
                 height={900}
@@ -197,26 +189,24 @@ export default function SkytellerPage() {
               designed onboarding around KYC verification, clear risk
               assessments, and explicit consent for wallet and bank connections.
             </p>
-            <div className="grid gap-6 md:grid-cols-2">
-              <figure className="rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
-                <Image
-                  src="/images/skyteller-onboarding-1.png"
-                  alt="Skyteller onboarding screens"
-                  width={1200}
-                  height={900}
-                  className="w-full h-auto rounded-2xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
-                />
-              </figure>
-              <figure className="rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
-                <Image
-                  src="/images/skyteller-onboarding-2.png"
-                  alt="Skyteller onboarding verification flow"
-                  width={1200}
-                  height={900}
-                  className="w-full h-auto rounded-2xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
-                />
-              </figure>
-            </div>
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#F2F3F6] p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+              <Image
+                src="/images/skyteller-onboarding.jpg"
+                alt="Skyteller onboarding screens"
+                width={1600}
+                height={1000}
+                className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+              />
+            </figure>
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#E7E9EE] p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+              <Image
+                src="/images/skyteller-onboarding-alt.jpg"
+                alt="Skyteller onboarding verification flow"
+                width={1600}
+                height={1000}
+                className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+              />
+            </figure>
           </section>
 
           <section className="space-y-4">
@@ -264,11 +254,15 @@ export default function SkytellerPage() {
           </section>
 
           <section className="space-y-4">
-            <h3 className="text-xl md:text-2xl font-semibold">What’s next</h3>
+            <h3 className="text-xl md:text-2xl font-semibold">Conclusion</h3>
             <p>
-              The router architecture set the stage for additional financial
-              tools like bill pay, P2P transfers, and card programs, while
-              keeping the core off-ramp experience simple and reliable.
+              By summer 2023, the crypto downturn and fundraising headwinds
+              left us without a sustainable path forward. We made the hard,
+              responsible call to shut down Galactic and sunset the product
+              only weeks after launch. I’m proud of the craft, the care, and
+              the ambition we poured into it—and it remains the most joyful
+              product experience I’ve had, even if it never got the time it
+              deserved.
             </p>
           </section>
         </WorkDetailLayout>
