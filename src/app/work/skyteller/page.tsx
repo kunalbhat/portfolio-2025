@@ -22,6 +22,9 @@ export default function SkytellerPage() {
               className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
               priority
             />
+            <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
+              Core screens from the Skyteller responsive web app.
+            </figcaption>
           </figure>
 
           <section className="space-y-6">
@@ -190,6 +193,10 @@ export default function SkytellerPage() {
                 height={900}
                 className="w-full h-auto rounded-xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
               />
+              <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
+                Funds move from wallet to router, swap to USDC, and settle to a
+                linked bank account.
+              </figcaption>
             </figure>
           </section>
 
@@ -202,7 +209,7 @@ export default function SkytellerPage() {
               designed onboarding around KYC verification, clear risk
               assessments, and explicit consent for wallet and bank connections.
             </p>
-            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#F2F3F6] p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#F2F3F6] p-6 md:p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
               <Image
                 src="/images/skyteller-onboarding.jpg"
                 alt="Skyteller onboarding screens"
@@ -210,8 +217,11 @@ export default function SkytellerPage() {
                 height={1000}
                 className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
               />
+              <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
+                Guided onboarding to connect wallet and verify identity.
+              </figcaption>
             </figure>
-            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#E7E9EE] p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#E7E9EE] p-6 md:p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
               <Image
                 src="/images/skyteller-onboarding-alt.jpg"
                 alt="Skyteller onboarding verification flow"
@@ -219,6 +229,9 @@ export default function SkytellerPage() {
                 height={1000}
                 className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
               />
+              <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
+                KYC verification and consent checkpoints for safe activation.
+              </figcaption>
             </figure>
           </section>
 
