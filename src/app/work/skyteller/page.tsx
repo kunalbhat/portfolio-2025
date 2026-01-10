@@ -333,6 +333,18 @@ export default function SkytellerPage() {
 
           <section className="space-y-4">
             <h3 className="text-xl md:text-2xl font-semibold">Conclusion</h3>
+            <figure className="my-6 md:my-8">
+              <Image
+                src="/images/galactic.jpg"
+                alt="The Galactic team"
+                width={1600}
+                height={1000}
+                className="w-full h-auto rounded-3xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+              />
+              <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
+                The Galactic crew behind Skyteller.
+              </figcaption>
+            </figure>
             <p>
               By summer 2023, the crypto downturn and fundraising headwinds
               left us without a sustainable path forward. We made the hard,
