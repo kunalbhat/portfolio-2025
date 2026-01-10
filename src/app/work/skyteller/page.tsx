@@ -38,7 +38,7 @@ export default function SkytellerPage() {
                   Role
                 </p>
                 <p className="text-lg md:text-xl font-semibold">
-                  Engineer + Product
+                  Engineering + Product Design
                 </p>
               </div>
               <div className="rounded-2xl border border-(--border) bg-(--bg-overlay) p-4 md:p-6 space-y-2">
@@ -68,6 +68,12 @@ export default function SkytellerPage() {
               merchants could complete the full flow on both desktop and
               mobile.
             </p>
+            <p>
+              This was a personal pivot for me: after PM-ing at PayPal, I
+              stepped into a primarily engineering role. I focused on our React
+              stack and web3 integrations while also designing the core user
+              flows and leading the UX/UI direction.
+            </p>
           </section>
 
           <section className="space-y-4">
@@ -81,6 +87,13 @@ export default function SkytellerPage() {
               world-class off-ramp. We pivoted to the off-ramp first, treating
               it as the core primitive that would later unlock cards, bill pay,
               and other financial tools.
+            </p>
+            <p>
+              The card path also put too much of our roadmap in the hands of
+              regulatory mandates tied to issuing through Lithic, which limited
+              our control over timing and experience. The off-ramp gave us a
+              clearer path to delivering value while we built the right
+              compliance foundation.
             </p>
           </section>
 
@@ -220,6 +233,7 @@ export default function SkytellerPage() {
                 Plaid for bank connectivity, Persona for KYC, and Bridge for
                 off-ramp settlement.
               </li>
+              <li>Lithic for debit card issuing exploration.</li>
               <li>
                 A homegrown chain watcher for real-time risk assessment.
               </li>
@@ -259,10 +273,11 @@ export default function SkytellerPage() {
               By summer 2023, the crypto downturn and fundraising headwinds
               left us without a sustainable path forward. We made the hard,
               responsible call to shut down Galactic and sunset the product
-              only weeks after launch. I’m proud of the craft, the care, and
-              the ambition we poured into it—and it remains the most joyful
-              product experience I’ve had, even if it never got the time it
-              deserved.
+              only weeks after launch. It wasn’t the most delightful project
+              I’ve worked on, but it taught me a ton—about technical
+              foundations, risk, and how to ship in an emerging ecosystem.
+              Even with the timing working against us, it was meaningful to
+              help build something truly cutting-edge.
             </p>
           </section>
         </WorkDetailLayout>
