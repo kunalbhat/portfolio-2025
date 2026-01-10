@@ -161,6 +161,26 @@ export default function BraintreeControlPanelPage() {
               clarified the differences between daily operators, finance teams,
               and technical admins.
             </p>
+            <figure className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] mx-auto my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
+              <Image
+                src="/images/braintree-sketching-1.webp"
+                alt="Segmentation sketching for merchant personas and workflows"
+                width={1400}
+                height={900}
+                className="w-full h-auto rounded-xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
+                priority
+              />
+            </figure>
+            <figure className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] mx-auto my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
+              <Image
+                src="/images/braintree-sketching-2.webp"
+                alt="Jobs-to-be-done mapping for merchant roles"
+                width={1400}
+                height={900}
+                className="w-full h-auto rounded-xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
+                priority
+              />
+            </figure>
           </section>
 
           <section className="space-y-4">
@@ -194,6 +214,7 @@ export default function BraintreeControlPanelPage() {
                 height={900}
                 className="w-full h-auto rounded-xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
                 priority
+                unoptimized
               />
             </figure>
           </section>
@@ -204,8 +225,8 @@ export default function BraintreeControlPanelPage() {
             </h3>
             <p>
               Disputes are one of the most time-sensitive workflows in the
-              control panel. We focused on making them easier to find, easier
-              to triage, and faster to resolve, while also helping merchants
+              control panel. We focused on making them easier to find, easier to
+              triage, and faster to resolve, while also helping merchants
               improve win rates and reduce dispute volume over time.
             </p>
             <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-(--bg-overlay) shadow-[0_12px_32px_rgba(15,23,42,0.14)]">
@@ -240,8 +261,7 @@ export default function BraintreeControlPanelPage() {
                 respond with confidence.
               </li>
               <li>
-                Added fast, flexible filtering that updates results
-                immediately.
+                Added fast, flexible filtering that updates results immediately.
               </li>
             </ul>
             <figure className="w-[calc(100%+2rem)] md:w-[calc(100%+3rem)] mx-auto my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
