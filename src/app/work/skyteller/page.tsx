@@ -70,6 +70,20 @@ export default function SkytellerPage() {
 
           <section className="space-y-4">
             <h3 className="text-xl md:text-2xl font-semibold">
+              Pivot: card program to off-ramp
+            </h3>
+            <p>
+              We initially explored a debit card program, but it became clear
+              that the foundational work needed for a card—identity, risk, and
+              reliable funds movement—was the same work required to build a
+              world-class off-ramp. We pivoted to the off-ramp first, treating
+              it as the core primitive that would later unlock cards, bill pay,
+              and other financial tools.
+            </p>
+          </section>
+
+          <section className="space-y-4">
+            <h3 className="text-xl md:text-2xl font-semibold">
               Problem statement
             </h3>
             <p>
@@ -96,6 +110,40 @@ export default function SkytellerPage() {
                 and cards.
               </li>
             </ul>
+          </section>
+
+          <section className="space-y-4">
+            <h3 className="text-xl md:text-2xl font-semibold">Impact</h3>
+            <p className="text-lg md:text-xl text-(--muted)">
+              The product created a clear foundation for broader financial
+              services while delivering a concrete, end-to-end off-ramp flow.
+            </p>
+            <div className="grid gap-8 md:grid-cols-3 py-4 md:py-6">
+              <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#F2F3F6]">
+                <p className="text-3xl md:text-4xl font-semibold tracking-tight text-(--fg)">
+                  3
+                </p>
+                <p className="text-lg md:text-xl text-(--muted)">
+                  Transfer paths supported
+                </p>
+              </div>
+              <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#E7E9EE]">
+                <p className="text-3xl md:text-4xl font-semibold tracking-tight text-(--fg)">
+                  6
+                </p>
+                <p className="text-lg md:text-xl text-(--muted)">
+                  Onboarding steps to establish trust
+                </p>
+              </div>
+              <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#EFF1F4]">
+                <p className="text-3xl md:text-4xl font-semibold tracking-tight text-(--fg)">
+                  8
+                </p>
+                <p className="text-lg md:text-xl text-(--muted)">
+                  Transaction status notifications
+                </p>
+              </div>
+            </div>
           </section>
 
           <section className="space-y-4">
@@ -186,6 +234,21 @@ export default function SkytellerPage() {
                 A homegrown chain watcher for real-time risk assessment.
               </li>
             </ul>
+          </section>
+
+          <section className="space-y-4">
+            <h3 className="text-xl md:text-2xl font-semibold">
+              Technical challenges
+            </h3>
+            <p>
+              Much of the web3 stack was early and unstable. Wallet adapters,
+              authentication flows like Sign-In With Ethereum, and chain
+              providers lacked consistent documentation and had edge cases that
+              surfaced only in production-like testing. We built additional
+              abstraction layers, added defensive UI states, and wrote fallback
+              flows to handle wallet disconnects, signature failures, and
+              session persistence across devices.
+            </p>
           </section>
 
           <section className="space-y-4">
