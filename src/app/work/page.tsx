@@ -295,7 +295,10 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </div>
-          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+          <Link
+            href="/work/braintree-control-panel"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card relative">
               <Image
                 src="/images/braintree-dashboard.gif"
@@ -306,19 +309,15 @@ export default function WorkPage() {
                 priority
                 unoptimized
               />
-              <div className="coming-soon-overlay">
-                <span className="coming-soon-pill">Coming Soon</span>
-              </div>
             </figure>
             <figcaption>
               <h4>Braintree Control Panel</h4>
               <span>
-                As a PM, I led the redesign of Braintree&apos;s merchant
-                dashboard used by companies like Uber and Airbnb to manage their
-                payments.
+                Designing a more consistent and intuitive experience for
+                setting up and managing payments at scale.
               </span>
             </figcaption>
-          </div>
+          </Link>
         </section>
 
         <section className="mt-12">
