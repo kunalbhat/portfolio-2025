@@ -13,13 +13,13 @@ export default function SkytellerPage() {
           title="Skyteller"
           summary="A crypto off-ramp that let people move funds from self-custodial wallets to bank accounts with a single, secure flow."
         >
-          <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-10 md:my-12 rounded-3xl bg-(--bg-overlay) shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+          <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-10 md:my-12">
             <Image
               src="/images/skyteller-core-screens.jpg"
               alt="Skyteller core screens"
               width={1600}
               height={1000}
-              className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+              className="w-full h-auto rounded-3xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
               priority
             />
             <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
@@ -62,14 +62,15 @@ export default function SkytellerPage() {
           <section className="space-y-4">
             <h3 className="text-xl md:text-2xl font-semibold">Context</h3>
             <p>
-              Buying crypto has become easy, but getting it back into spendable
-              fiat has historically been a multi-step, fee-heavy process.
-              Exchanges can fail, wallets can be misused, and every hop adds
-              risk. For people earning income in crypto, the consequences are
-              real. We wanted to make off-ramping simple, secure, and
-              trustworthy. The product shipped as a responsive web app so
-              merchants could complete the full flow on both desktop and
-              mobile.
+              In 2023, buying crypto was getting easier, but turning it into
+              “real” money still came with huge hurdles—both technical and
+              experiential. Off-ramping required multiple tools, fees stacked
+              quickly, and the UX was brittle. Exchanges could fail, wallets
+              could be misused, and every hop added risk. For people earning
+              income in crypto, the consequences were real. We wanted to make
+              off-ramping simple, secure, and trustworthy. The product shipped
+              as a responsive web app so merchants could complete the full flow
+              on both desktop and mobile.
             </p>
             <p>
               This was a personal pivot for me: after PM-ing at PayPal, I
@@ -132,33 +133,65 @@ export default function SkytellerPage() {
 
           <section className="space-y-4">
             <h3 className="text-xl md:text-2xl font-semibold">Impact</h3>
-            <p className="text-lg md:text-xl text-(--muted)">
-              The product created a clear foundation for broader financial
-              services while delivering a concrete, end-to-end off-ramp flow.
+            <p className="text-(--muted)">
+              This product was less about traditional metrics and more about
+              making something brand new—and truly hard to build—feel possible
+              for everyday users. The impact was in proving the concept,
+              reducing intimidation, and showing that off-ramping could be
+              approachable without sacrificing trust.
             </p>
-            <div className="grid gap-8 md:grid-cols-3 py-4 md:py-6">
+            <p className="text-(--muted)">
+              These integrations represent the bets we made to stitch together
+              a credible, end-to-end experience across wallets, identity, and
+              money movement.
+            </p>
+            <div className="grid gap-6 md:grid-cols-3 py-4 md:py-6">
               <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#F2F3F6]">
-                <p className="text-3xl md:text-4xl font-semibold tracking-tight text-(--fg)">
-                  3
+                <p className="text-xl md:text-2xl font-semibold tracking-tight text-(--fg)">
+                  RainbowKit
                 </p>
                 <p className="text-lg md:text-xl text-(--muted)">
-                  Transfer paths supported
+                  Wallet connection UI
                 </p>
               </div>
               <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#E7E9EE]">
-                <p className="text-3xl md:text-4xl font-semibold tracking-tight text-(--fg)">
-                  6
+                <p className="text-xl md:text-2xl font-semibold tracking-tight text-(--fg)">
+                  wagmi
                 </p>
                 <p className="text-lg md:text-xl text-(--muted)">
-                  Onboarding steps to establish trust
+                  Web3 hooks + providers
                 </p>
               </div>
               <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#EFF1F4]">
-                <p className="text-3xl md:text-4xl font-semibold tracking-tight text-(--fg)">
-                  8
+                <p className="text-xl md:text-2xl font-semibold tracking-tight text-(--fg)">
+                  Plaid
                 </p>
                 <p className="text-lg md:text-xl text-(--muted)">
-                  Transaction status notifications
+                  Bank account linking
+                </p>
+              </div>
+              <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#F2F3F6]">
+                <p className="text-xl md:text-2xl font-semibold tracking-tight text-(--fg)">
+                  Persona
+                </p>
+                <p className="text-lg md:text-xl text-(--muted)">
+                  KYC verification
+                </p>
+              </div>
+              <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#E7E9EE]">
+                <p className="text-xl md:text-2xl font-semibold tracking-tight text-(--fg)">
+                  Lithic
+                </p>
+                <p className="text-lg md:text-xl text-(--muted)">
+                  Card issuing rails
+                </p>
+              </div>
+              <div className="space-y-2 text-center rounded-2xl px-5 py-6 bg-[#EFF1F4]">
+                <p className="text-xl md:text-2xl font-semibold tracking-tight text-(--fg)">
+                  Bridge
+                </p>
+                <p className="text-lg md:text-xl text-(--muted)">
+                  Off-ramp settlement
                 </p>
               </div>
             </div>
@@ -176,6 +209,24 @@ export default function SkytellerPage() {
 
           <section className="space-y-4">
             <h3 className="text-xl md:text-2xl font-semibold">
+              Early interface
+            </h3>
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10">
+              <Image
+                src="/images/skyteller-early-interface.jpg"
+                alt="Early Skyteller web interface before the redesign"
+                width={1600}
+                height={1000}
+                className="w-full h-auto rounded-3xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+              />
+              <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
+                Early web interface explorations before the redesign pass.
+              </figcaption>
+            </figure>
+          </section>
+
+          <section className="space-y-4">
+            <h3 className="text-xl md:text-2xl font-semibold">
               How the flow worked
             </h3>
             <p>
@@ -185,13 +236,13 @@ export default function SkytellerPage() {
               the connected bank account. A transaction timeline kept users
               informed at each step.
             </p>
-            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-2xl bg-(--bg-overlay) shadow-[0_16px_40px_rgba(15,23,42,0.16)]">
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10">
               <Image
                 src="/images/skyteller-core-flow.jpg"
                 alt="Skyteller core funds flow diagram"
                 width={1400}
                 height={900}
-                className="w-full h-auto rounded-xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
+                className="w-full h-auto rounded-3xl shadow-[0_12px_30px_rgba(15,23,42,0.16)]"
               />
               <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
                 Funds move from wallet to router, swap to USDC, and settle to a
@@ -209,25 +260,25 @@ export default function SkytellerPage() {
               designed onboarding around KYC verification, clear risk
               assessments, and explicit consent for wallet and bank connections.
             </p>
-            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#F2F3F6] p-6 md:p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10">
               <Image
                 src="/images/skyteller-onboarding.jpg"
                 alt="Skyteller onboarding screens"
                 width={1600}
                 height={1000}
-                className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+                className="w-full h-auto rounded-3xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
               />
               <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
                 Guided onboarding to connect wallet and verify identity.
               </figcaption>
             </figure>
-            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10 rounded-3xl bg-[#E7E9EE] p-6 md:p-16 shadow-[0_10px_28px_rgba(15,23,42,0.12)]">
+            <figure className="w-[calc(100vw-4rem)] relative left-1/2 right-1/2 -ml-[calc(50vw-2rem)] -mr-[calc(50vw-2rem)] my-8 md:my-10">
               <Image
                 src="/images/skyteller-onboarding-alt.jpg"
                 alt="Skyteller onboarding verification flow"
                 width={1600}
                 height={1000}
-                className="w-full h-auto rounded-2xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
+                className="w-full h-auto rounded-3xl shadow-[0_14px_36px_rgba(15,23,42,0.16)]"
               />
               <figcaption className="mt-4 text-base md:text-lg text-(--muted)">
                 KYC verification and consent checkpoints for safe activation.
