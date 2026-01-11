@@ -244,12 +244,12 @@ export default function WorkPage() {
                 priority
               />
             </figure>
-            <figcaption>
-              <h4>AI Nutrition Coach</h4>
-              <span>
-                ChatGPT nutrition coach that meaningfully lowered my blood
-                sugar levels.
-              </span>
+              <figcaption>
+                <h4>AI Nutrition Coach</h4>
+                <span>
+                  ChatGPT nutrition coach that meaningfully lowered my blood
+                  sugar levels.
+                </span>
             </figcaption>
           </Link>
           <Link
@@ -290,8 +290,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>Skyteller</h4>
               <span>
-                As an engineer, I helped build Skyteller, a Defi off-ramp that
-                turned crypto into cash in your bank account in one click.
+                I helped build Skyteller, a Defi off-ramp that turned crypto
+                into cash in your bank account in one click.
               </span>
             </figcaption>
           </Link>
@@ -313,8 +313,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>Braintree Control Panel</h4>
               <span>
-                Designing a more consistent and intuitive experience for
-                setting up and managing payments at scale.
+                I led the redesign of Braintree’s control panel to simplify
+                how merchants set up and run payments at scale.
               </span>
             </figcaption>
           </Link>
