@@ -13,7 +13,7 @@ import { track } from "@vercel/analytics";
 export default function WorkPage() {
   const UNLOCK_PASSWORD = useMemo(
     () => process.env.NEXT_PUBLIC_WORK_PASSWORD || "",
-    []
+    [],
   );
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState("");
@@ -24,12 +24,12 @@ export default function WorkPage() {
   const auraRcsVideoWebm = themedAsset(
     "/videos/aura-rcs",
     invertedTheme,
-    "webm"
+    "webm",
   );
   const trmnlImage = themedAsset(
     "/images/trmnl-spotify-dashboard-mobile",
     invertedTheme,
-    "png"
+    "png",
   );
 
   const handleUnlockAttempt = (input: string) => {
@@ -124,32 +124,90 @@ export default function WorkPage() {
 
         <section className="portfolio-grid">
           <a
-            href="https://www.theverge.com/news/840142/aura-text-to-frame-digital-picture-frame-share-photos"
+            href="https://www.gridarcana.com"
             target="_blank"
             rel="noreferrer"
             className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
           >
             <figure className="portfolio-card relative">
               <video
-                key={auraRcsVideoMp4}
                 autoPlay
                 muted
                 loop
                 playsInline
                 className="h-full w-full object-cover card-media"
               >
-                <source src={auraRcsVideoWebm} type="video/webm" />
-                <source src={auraRcsVideoMp4} type="video/mp4" />
+                <source
+                  src="/videos/grid-arcana-cover.webm"
+                  type="video/webm"
+                />
+                <source src="/videos/grid-arcana-cover.mp4" type="video/mp4" />
               </video>
             </figure>
             <figcaption>
-              <h4>Aura Text-to-Frame</h4>
+              <h4>Grid Arcana</h4>
               <span>
-                Helping families share moments to their Aura frames even more
-                seamlessly with rich messaging.
+                I built and launched my first game-adjacent app &ndash;{" "}
+                <b>Grid Arcana</b> invites you to reflect on a daily omen and
+                arrange symbols on a grid to shape its meaning.
               </span>
             </figcaption>
           </a>
+          {isUnlocked ? (
+            <Link
+              href="/work/aura-text-to-frame"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card relative">
+                <video
+                  key={auraRcsVideoMp4}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover card-media"
+                >
+                  <source src={auraRcsVideoWebm} type="video/webm" />
+                  <source src={auraRcsVideoMp4} type="video/mp4" />
+                </video>
+              </figure>
+              <figcaption>
+                <h4>Aura Text-to-Frame</h4>
+                <span>
+                  Helping families share moments to their Aura frames even more
+                  seamlessly with rich messaging.
+                </span>
+              </figcaption>
+            </Link>
+          ) : (
+            <a
+              href="https://www.theverge.com/news/840142/aura-text-to-frame-digital-picture-frame-share-photos"
+              target="_blank"
+              rel="noreferrer"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card relative">
+                <video
+                  key={auraRcsVideoMp4}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover card-media"
+                >
+                  <source src={auraRcsVideoWebm} type="video/webm" />
+                  <source src={auraRcsVideoMp4} type="video/mp4" />
+                </video>
+              </figure>
+              <figcaption>
+                <h4>Aura Text-to-Frame</h4>
+                <span>
+                  Helping families share moments to their Aura frames even more
+                  seamlessly with rich messaging.
+                </span>
+              </figcaption>
+            </a>
+          )}
           <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
             <figure className="portfolio-card relative">
               <video
@@ -159,7 +217,10 @@ export default function WorkPage() {
                 playsInline
                 className="h-full w-full object-cover card-media"
               >
-                <source src="/videos/aura-captions-cover.mp4" type="video/mp4" />
+                <source
+                  src="/videos/aura-captions-cover.mp4"
+                  type="video/mp4"
+                />
               </video>
               <div className="coming-soon-overlay">
                 <span className="coming-soon-pill">Coming Soon</span>
@@ -244,12 +305,12 @@ export default function WorkPage() {
                 priority
               />
             </figure>
-              <figcaption>
-                <h4>AI Nutrition Coach</h4>
-                <span>
-                  ChatGPT nutrition coach that meaningfully lowered my blood
-                  sugar levels.
-                </span>
+            <figcaption>
+              <h4>AI Nutrition Coach</h4>
+              <span>
+                ChatGPT nutrition coach that meaningfully lowered my blood sugar
+                levels.
+              </span>
             </figcaption>
           </Link>
           <Link
@@ -313,8 +374,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>Braintree Control Panel</h4>
               <span>
-                I led the redesign of Braintree’s control panel to simplify
-                how merchants set up and run payments at scale.
+                I led the redesign of Braintree’s control panel to simplify how
+                merchants set up and run payments at scale.
               </span>
             </figcaption>
           </Link>
