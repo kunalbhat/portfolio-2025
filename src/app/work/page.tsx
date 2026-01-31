@@ -124,6 +124,37 @@ export default function WorkPage() {
 
         <section className="portfolio-grid">
           <a
+            href="https://paracute.com"
+            target="_blank"
+            rel="noreferrer"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
+            <figure className="portfolio-card relative">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover card-media"
+              >
+                <source src="/videos/paracute-teaser.webm" type="video/webm" />
+                <source src="/videos/paracute-teaser.mp4" type="video/mp4" />
+              </video>
+              <div className="coming-soon-overlay">
+                <span className="coming-soon-pill">Coming 2026</span>
+              </div>
+            </figure>
+            <figcaption>
+              <h4>Paracute</h4>
+              <span>
+                Paracute is a 2D arcade descent game where falling is the
+                mechanic. Players parachute through a multi-stage mountain,
+                adapting to changing terrains and hazards as each level pushes
+                precision and control further.
+              </span>
+            </figcaption>
+          </a>
+          <a
             href="https://www.gridarcana.com"
             target="_blank"
             rel="noreferrer"
@@ -208,7 +239,12 @@ export default function WorkPage() {
               </figcaption>
             </a>
           )}
-          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity cursor-default">
+          <a
+            href="https://help.auraframes.com/hc/en-us/articles/29957049062679-On-Frame-Captions"
+            target="_blank"
+            rel="noreferrer"
+            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+          >
             <figure className="portfolio-card relative">
               <video
                 autoPlay
@@ -222,9 +258,6 @@ export default function WorkPage() {
                   type="video/mp4"
                 />
               </video>
-              <div className="coming-soon-overlay">
-                <span className="coming-soon-pill">Coming Soon</span>
-              </div>
             </figure>
             <figcaption>
               <h4>Aura Captions</h4>
@@ -234,7 +267,7 @@ export default function WorkPage() {
                 cherished memories.
               </span>
             </figcaption>
-          </div>
+          </a>
           {isUnlocked ? (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -308,8 +341,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>AI Nutrition Coach</h4>
               <span>
-                ChatGPT nutrition coach that meaningfully lowered my blood sugar
-                levels.
+                I built a ChatGPT-powered workflow to optimize my diet and
+                lower my A1C, delivering measurable outcomes.
               </span>
             </figcaption>
           </Link>
