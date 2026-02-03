@@ -123,13 +123,14 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <a
-            href="https://paracute.com"
-            target="_blank"
-            rel="noreferrer"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card relative">
+          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity">
+            <a
+              href="https://paracute-game.vercel.app"
+              target="_blank"
+              rel="noreferrer"
+              className="block rounded-3xl"
+            >
+              <figure className="portfolio-card relative">
               <video
                 autoPlay
                 muted
@@ -140,20 +141,26 @@ export default function WorkPage() {
                 <source src="/videos/paracute-teaser.webm" type="video/webm" />
                 <source src="/videos/paracute-teaser.mp4" type="video/mp4" />
               </video>
-              <div className="coming-soon-overlay">
-                <span className="coming-soon-pill">Coming 2026</span>
-              </div>
-            </figure>
+              </figure>
+            </a>
             <figcaption>
               <h4>Paracute</h4>
               <span>
-                Paracute is a 2D arcade descent game where falling is the
-                mechanic. Players parachute through a multi-stage mountain,
-                adapting to changing terrains and hazards as each level pushes
-                precision and control further.
+                I&apos;m building Paracute &ndash; a 2D game where falling is
+                the mechanic. Navigate through a multi-stage mountain, adapting
+                to changing terrains and hazards as each level pushes precision
+                and control further. Check out the{" "}
+                <a
+                  href="https://paracute-game.vercel.app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  prototype-in-progress
+                </a>
+                !
               </span>
             </figcaption>
-          </a>
+          </div>
           <a
             href="https://www.gridarcana.com"
             target="_blank"
@@ -341,8 +348,8 @@ export default function WorkPage() {
             <figcaption>
               <h4>AI Nutrition Coach</h4>
               <span>
-                I built a ChatGPT-powered workflow to optimize my diet and
-                lower my A1C, delivering measurable outcomes.
+                I built a ChatGPT-powered workflow to optimize my diet and lower
+                my A1C, delivering measurable outcomes.
               </span>
             </figcaption>
           </Link>
