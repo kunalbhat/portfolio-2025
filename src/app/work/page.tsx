@@ -123,74 +123,6 @@ export default function WorkPage() {
         ) : null}
 
         <section className="portfolio-grid">
-          <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity">
-            <a
-              href="https://paracute-game.vercel.app"
-              target="_blank"
-              rel="noreferrer"
-              className="block rounded-3xl"
-            >
-              <figure className="portfolio-card relative">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover card-media"
-              >
-                <source src="/videos/paracute-teaser.webm" type="video/webm" />
-                <source src="/videos/paracute-teaser.mp4" type="video/mp4" />
-              </video>
-              </figure>
-            </a>
-            <figcaption>
-              <h4>Paracute</h4>
-              <span>
-                I&apos;m building Paracute &ndash; a 2D game where falling is
-                the mechanic. Navigate through a multi-stage mountain, adapting
-                to changing terrains and hazards as each level pushes precision
-                and control further. Check out the{" "}
-                <a
-                  href="https://paracute-game.vercel.app"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  prototype-in-progress
-                </a>
-                !
-              </span>
-            </figcaption>
-          </div>
-          <a
-            href="https://www.gridarcana.com"
-            target="_blank"
-            rel="noreferrer"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card relative">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover card-media"
-              >
-                <source
-                  src="/videos/grid-arcana-cover.webm"
-                  type="video/webm"
-                />
-                <source src="/videos/grid-arcana-cover.mp4" type="video/mp4" />
-              </video>
-            </figure>
-            <figcaption>
-              <h4>Grid Arcana</h4>
-              <span>
-                I built and launched my first game-adjacent app &ndash;{" "}
-                <b>Grid Arcana</b> invites you to reflect on a daily omen and
-                arrange symbols on a grid to shape its meaning.
-              </span>
-            </figcaption>
-          </a>
           {isUnlocked ? (
             <Link
               href="/work/aura-text-to-frame"
@@ -332,49 +264,6 @@ export default function WorkPage() {
             </div>
           )}
           <Link
-            href="/work/nutrition-coach"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card relative">
-              <Image
-                src="/images/a1c-tracker-mobile-light.jpg"
-                alt="A1C tracker mobile UI"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover card-media"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>AI Nutrition Coach</h4>
-              <span>
-                I built a ChatGPT-powered workflow to optimize my diet and lower
-                my A1C, delivering measurable outcomes.
-              </span>
-            </figcaption>
-          </Link>
-          <Link
-            href="/work/trmnl"
-            className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
-          >
-            <figure className="portfolio-card relative">
-              <Image
-                src={trmnlImage}
-                alt="Spotify dashboard for TRMNL"
-                width={800}
-                height={800}
-                className="h-full w-full object-cover card-media"
-                priority
-              />
-            </figure>
-            <figcaption>
-              <h4>TRMNL Spotify Plugin</h4>
-              <span>
-                A Spotify recently played plugin for the TRMNL e-ink display.
-              </span>
-            </figcaption>
-          </Link>
-          <Link
             href="/work/skyteller"
             className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
           >
@@ -419,6 +308,148 @@ export default function WorkPage() {
               </span>
             </figcaption>
           </Link>
+        </section>
+
+        <section className="mt-12">
+          <header className="mb-6 md:mb-10">
+            <h3 className="text-3xl font-bold">Personal Projects</h3>
+            <p className="text-lg">
+              Self-initiated builds where I experiment with ideas and workflows.
+            </p>
+          </header>
+          <div className="portfolio-grid">
+            <Link
+              href="/work/nutrition-coach"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card relative">
+                <Image
+                  src="/images/a1c-tracker-mobile-light.jpg"
+                  alt="A1C tracker mobile UI"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover card-media"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>AI Nutrition Coach</h4>
+                <span>
+                  I built a ChatGPT-powered workflow to optimize my diet and
+                  lower my A1C, delivering measurable outcomes.
+                </span>
+              </figcaption>
+            </Link>
+            <Link
+              href="/work/trmnl"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card relative">
+                <Image
+                  src={trmnlImage}
+                  alt="Spotify dashboard for TRMNL"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover card-media"
+                  priority
+                />
+              </figure>
+              <figcaption>
+                <h4>TRMNL Spotify Plugin</h4>
+                <span>
+                  A Spotify recently played plugin for the TRMNL e-ink display.
+                </span>
+              </figcaption>
+            </Link>
+          </div>
+        </section>
+
+        <section className="mt-12">
+          <header className="mb-6 md:mb-10">
+            <h3 className="text-3xl font-bold">Games</h3>
+            <p className="text-lg">
+              Playful experiments and game-adjacent worlds I&apos;m building.
+            </p>
+          </header>
+          <div className="portfolio-grid">
+            <div className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity">
+              <a
+                href="https://paracute-game.vercel.app"
+                target="_blank"
+                rel="noreferrer"
+                className="block rounded-3xl"
+              >
+                <figure className="portfolio-card relative">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="h-full w-full object-cover card-media"
+                  >
+                    <source
+                      src="/videos/paracute-teaser.webm"
+                      type="video/webm"
+                    />
+                    <source
+                      src="/videos/paracute-teaser.mp4"
+                      type="video/mp4"
+                    />
+                  </video>
+                </figure>
+              </a>
+              <figcaption>
+                <h4>Paracute</h4>
+                <span>
+                  I&apos;m building Paracute &ndash; a 2D game where falling is
+                  the mechanic. Navigate through a multi-stage mountain,
+                  adapting to changing terrains and hazards as each level pushes
+                  precision and control further. Check out the{" "}
+                  <a
+                    href="https://paracute-game.vercel.app"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    prototype-in-progress
+                  </a>
+                  !
+                </span>
+              </figcaption>
+            </div>
+            <a
+              href="https://www.gridarcana.com"
+              target="_blank"
+              rel="noreferrer"
+              className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+            >
+              <figure className="portfolio-card relative">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover card-media"
+                >
+                  <source
+                    src="/videos/grid-arcana-cover.webm"
+                    type="video/webm"
+                  />
+                  <source
+                    src="/videos/grid-arcana-cover.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              </figure>
+              <figcaption>
+                <h4>Grid Arcana</h4>
+                <span>
+                  I built and launched my first game-adjacent app &ndash;{" "}
+                  <b>Grid Arcana</b> invites you to reflect on a daily omen and
+                  arrange symbols on a grid to shape its meaning.
+                </span>
+              </figcaption>
+            </a>
+          </div>
         </section>
 
         <section className="mt-12">
