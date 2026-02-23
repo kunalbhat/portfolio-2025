@@ -12,7 +12,7 @@ export default function AboutPage() {
         <header className="mt-6 md:mt-12 mb-12 md:mb-24">
           <AnimatedHeadline
             className="font-semibold"
-            text="Foremost a designer, I'm a technically inclined builder who thrives across the entire product lifecycle—from early insights to delivery.
+            text="Foremost a designer, I'm a technically inclined builder who thrives across the entire product lifecycle—from early insights to delivery and measurement.
 "
           />
         </header>
@@ -26,8 +26,8 @@ export default function AboutPage() {
               </span>
               <span>
                 I&apos;m most at home in 0-1 product definition, prototyping,
-                user conversations, and shipping work shaped by clear data and
-                measurable outcomes.
+                user research, and shipping work informed by clear data and
+                validated through measurable impact.
               </span>
             </h2>
           </article>
