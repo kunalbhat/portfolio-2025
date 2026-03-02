@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@keyframes ai-thinking {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
 @layer base {
   /* Default theme (dark) */
   :root {
@@ -235,6 +246,14 @@
 
   .card-hover:hover {
     transform: scale(1.025);
+  }
+
+  .ai-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--fg);
+    animation: ai-thinking 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   @media (prefers-reduced-motion: no-preference) {
