@@ -17,7 +17,7 @@ export default function WorkPage() {
   );
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [shaking, setShaking] = useState(false);
   const theme = useTheme("light");
   const invertedTheme = theme === "light" ? "dark" : "light";
   const auraRcsVideoMp4 = themedAsset("/videos/aura-rcs", invertedTheme, "mp4");
@@ -39,11 +39,13 @@ export default function WorkPage() {
     }
     const success = input.trim() === UNLOCK_PASSWORD;
     setIsUnlocked(success);
-    setError(!success);
     if (success) {
       setPassword("");
       track("work_unlock_success");
     } else {
+      setPassword("");
+      setShaking(true);
+      setTimeout(() => setShaking(false), 400);
       track("work_unlock_failure");
     }
     return success;
@@ -68,7 +70,7 @@ export default function WorkPage() {
             {!isUnlocked ? (
               <form
                 onSubmit={handleSubmit}
-                className="work-password-form flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur w-full md:w-auto"
+                className={`work-password-form flex items-center gap-2 rounded-full px-3 py-2 text-sm bg-(--input-bg) backdrop-blur w-full md:w-auto${shaking ? " shake" : ""}`}
               >
                 <label htmlFor="work-password" className="sr-only">
                   Password
@@ -116,11 +118,6 @@ export default function WorkPage() {
           </div>
         </header>
 
-        {error && !isUnlocked ? (
-          <p className="text-sm text-red-500 mt-1 mb-4">
-            Wrong password. Try again.
-          </p>
-        ) : null}
 
         <section className="portfolio-grid">
           {isUnlocked ? (
@@ -241,6 +238,65 @@ export default function WorkPage() {
                     Explored rider sentiment on personalization and in-car
                     preferences - resulting in the new My Car tab in the Waymo
                     app.
+                  </span>
+                </figcaption>
+              </a>
+            </motion.div>
+          ) : (
+            <div className="group card-hover">
+              <figure className="portfolio-card bg-(--bg-overlay) grid place-items-center px-6 text-center">
+                <div className="flex flex-col items-center gap-3 text-(--muted) max-w-[18ch]">
+                  <Image
+                    src="/images/icon-lock.svg"
+                    alt="Locked"
+                    width={32}
+                    height={32}
+                    className="h-8 w-8"
+                  />
+                  <p className="font-semibold text-(--fg) mb-0">Confidential</p>
+                </div>
+              </figure>
+              <figcaption>
+                <h4>Confidential</h4>
+                <span className="text-(--muted)">
+                  Enter the password to view.
+                </span>
+              </figcaption>
+            </div>
+          )}
+          {isUnlocked ? (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.25, 0.8, 0.35, 1] }}
+            >
+              <a
+                href="https://www.clearme.com/clear-mobile/sdf"
+                target="_blank"
+                rel="noreferrer"
+                className="group card-hover block rounded-3xl hover:opacity-95 transition-opacity"
+              >
+                <figure className="portfolio-card relative">
+                  <Image
+                    src="/images/clear-before.png"
+                    alt="CLEAR before"
+                    fill
+                    className="object-cover"
+                  />
+                  <Image
+                    src="/images/clear-after.png"
+                    alt="CLEAR after"
+                    fill
+                    className="object-cover clear-dissolve-after"
+                  />
+                  <span className="clear-label clear-label-before">Before</span>
+                  <span className="clear-label clear-label-after">After</span>
+                </figure>
+                <figcaption>
+                  <h4>CLEAR</h4>
+                  <span>
+                    Redesigned the white-label security lane reservation
+                    experience for CLEAR.
                   </span>
                 </figcaption>
               </a>

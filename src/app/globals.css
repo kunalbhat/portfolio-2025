@@ -237,6 +237,69 @@
     transform: scale(1.025);
   }
 
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-6px); }
+    30% { transform: translateX(6px); }
+    45% { transform: translateX(-5px); }
+    60% { transform: translateX(5px); }
+    75% { transform: translateX(-3px); }
+    90% { transform: translateX(3px); }
+  }
+
+  .shake {
+    animation: shake 0.4s ease-in-out;
+  }
+
+  @keyframes clear-dissolve {
+    0%, 35% { opacity: 0; }
+    50%, 70% { opacity: 1; }
+    85%, 100% { opacity: 0; }
+  }
+
+  @keyframes clear-label-before {
+    0%, 30% { opacity: 1; }
+    45%, 75% { opacity: 0; }
+    88%, 100% { opacity: 1; }
+  }
+
+  @keyframes clear-label-after {
+    0%, 35% { opacity: 0; }
+    50%, 70% { opacity: 1; }
+    85%, 100% { opacity: 0; }
+  }
+
+  .clear-dissolve-after {
+    animation: clear-dissolve 10s ease-in-out infinite;
+  }
+
+  .clear-label {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.35);
+    color: white;
+    backdrop-filter: blur(6px);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .clear-label-before {
+    animation: clear-label-before 10s ease-in-out infinite;
+  }
+
+  .clear-label-after {
+    animation: clear-label-after 10s ease-in-out infinite;
+    opacity: 0;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     :root,
     body {
