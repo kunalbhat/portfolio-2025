@@ -34,7 +34,8 @@ export default function WorkPage() {
 
   const handleUnlockAttempt = (input: string) => {
     if (!UNLOCK_PASSWORD) {
-      setError(true);
+      setShaking(true);
+      setTimeout(() => setShaking(false), 400);
       return false;
     }
     const success = input.trim() === UNLOCK_PASSWORD;
