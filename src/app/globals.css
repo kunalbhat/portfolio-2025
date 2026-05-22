@@ -12,23 +12,22 @@
 }
 
 @layer base {
-  /* Default theme (dark) */
+  /* Default theme (light) */
   :root {
-    color-scheme: dark;
-
-    /* Core palette */
-    --bg: #020617; /* slate-950 */
-    --fg: rgb(116, 140, 235, 1);
-    --muted: #9fb3c8; /* cool muted blue-gray */
-    --border: #1f2937; /* slate-800 */
-    --accent: rgba(83, 148, 251, 1);
-    --accent-soft: rgba(46, 69, 150, 1);
-    --on-accent: #0b1326;
-    --active-nav-bg: color-mix(in srgb, var(--bg) 55%, white 45%);
-    --active-nav-fg: #f8fafc;
+    color-scheme: light;
+    --bg: #f9fafb;
+    --fg: #03061a;
+    --headline: #03061a;
+    --muted: #475569;
+    --border: #e5e7eb;
+    --accent: #d9f99d;
+    --accent-soft: rgba(16, 185, 129, 1);
+    --on-accent: #03061a;
+    --active-nav-bg: color-mix(in srgb, var(--bg) 85%, white 15%);
+    --active-nav-fg: #03061a;
     --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
-    --input-bg: #162338;
-    --header-gradient-start: var(--bg-overlay);
+    --input-bg: #e5edf7;
+    --header-gradient-start: color-mix(in srgb, var(--bg) 94%, transparent);
     --header-gradient-end: transparent;
   }
 
@@ -53,6 +52,7 @@
     color-scheme: dark;
     --bg: #020617;
     --fg: rgb(116, 140, 235, 1);
+    --headline: #ffffff;
     --muted: #9fb3c8;
     --border: #1f2937;
     --accent: rgba(83, 148, 251, 1);
@@ -70,6 +70,7 @@
     color-scheme: light;
     --bg: #f9fafb;
     --fg: #03061a;
+    --headline: #03061a;
     --muted: #475569;
     --border: #e5e7eb;
     --accent: #d9f99d;
