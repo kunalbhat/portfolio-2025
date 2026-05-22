@@ -190,10 +190,14 @@ export default function WorkPage() {
                 muted
                 loop
                 playsInline
-                className="h-full w-full object-cover card-media"
+                className="h-full w-full object-cover object-[20%_center] card-media"
               >
                 <source
-                  src="/videos/aura-captions-cover.mp4"
+                  src="/videos/aura-captions.webm"
+                  type="video/webm"
+                />
+                <source
+                  src="/videos/aura-captions.mp4"
                   type="video/mp4"
                 />
               </video>
