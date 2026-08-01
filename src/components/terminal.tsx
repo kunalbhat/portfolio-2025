@@ -19,6 +19,8 @@ const HELP = [
   "supported commands:",
   "  whoami   — print the current user",
   "  theme    — toggle light / dark",
+  "  vpn      — tunnel to another location",
+  "  settings — view current settings",
   "  clear    — clear the screen",
   "  exit     — power down",
   "  help     — this list",
@@ -42,6 +44,19 @@ const SHUTDOWN_LINES = [
   "[ ok ] unmounting /dev/self",
   "powering off.",
 ];
+
+// VPN exit nodes. Picking one re-routes the status-bar weather (and spoofs the
+// host) to that city. "home" is the real location.
+const HOME = "home";
+const LOCATIONS: Record<string, { label: string; lat: number; lon: number }> = {
+  home: { label: "chicago (home)", lat: 41.8781, lon: -87.6298 },
+  reykjavik: { label: "reykjavík", lat: 64.1466, lon: -21.9426 },
+  london: { label: "london", lat: 51.5074, lon: -0.1278 },
+  tokyo: { label: "tokyo", lat: 35.6762, lon: 139.6503 },
+  singapore: { label: "singapore", lat: 1.3521, lon: 103.8198 },
+  dubai: { label: "dubai", lat: 25.2048, lon: 55.2708 },
+  sydney: { label: "sydney", lat: -33.8688, lon: 151.2093 },
+};
 
 type Theme = "dark" | "light";
 
@@ -92,11 +107,11 @@ const BURST: Record<Theme, { bg: string; colors: string[] }> = {
   },
 };
 
-function Prompt({ palette }: { palette: Palette }) {
+function Prompt({ palette, host }: { palette: Palette; host: string }) {
   return (
     <>
       <span className={palette.user}>
-        {USER}@{HOST}
+        {USER}@{host}
       </span>
       <span className={palette.path}>:~</span>
       <span className={palette.dollar}>$ </span>
@@ -116,8 +131,10 @@ export default function Terminal() {
   const [exploding, setExploding] = useState(false);
   const [shutting, setShutting] = useState(false);
   const [theme, setTheme] = useState<Theme>("dark");
+  const [location, setLocation] = useState(HOME);
 
   const palette = PALETTES[theme];
+  const activeHost = location === HOME ? HOST : location;
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -133,14 +150,15 @@ export default function Terminal() {
     return () => clearInterval(id);
   }, []);
 
-  // Current Chicago temperature for the status bar (Open-Meteo, no API key).
-  // Degrades silently to nothing if the request is blocked or offline.
+  // Temperature for the active location's status bar (Open-Meteo, no API key).
+  // Re-fetches whenever the VPN exit node changes. Degrades silently offline.
   useEffect(() => {
     let cancelled = false;
+    const loc = LOCATIONS[location] ?? LOCATIONS[HOME];
     const fetchTemp = async () => {
       try {
         const res = await fetch(
-          "https://api.open-meteo.com/v1/forecast?latitude=41.8781&longitude=-87.6298&current=temperature_2m&temperature_unit=fahrenheit",
+          `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m&temperature_unit=fahrenheit`,
         );
         if (!res.ok) return;
         const data = await res.json();
@@ -156,7 +174,7 @@ export default function Terminal() {
       cancelled = true;
       clearInterval(id);
     };
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -282,6 +300,48 @@ export default function Terminal() {
         out = [`theme → ${next}`];
         break;
       }
+      case "vpn": {
+        if (!arg) {
+          out = [
+            "exit nodes:",
+            ...Object.entries(LOCATIONS).map(
+              ([key, v]) =>
+                `  ${key === location ? "▸" : " "} ${key.padEnd(10)} ${v.label}`,
+            ),
+            "",
+            "usage: vpn <node> · vpn off",
+          ];
+          break;
+        }
+        if (arg === "off" || arg === "disconnect" || arg === HOME) {
+          setLocation(HOME);
+          setTemp(null);
+          out = ["tunnel closed. routing locally — chicago."];
+          break;
+        }
+        if (LOCATIONS[arg]) {
+          setLocation(arg);
+          setTemp(null);
+          out = [
+            "establishing tunnel…",
+            `connected · exit node: ${LOCATIONS[arg].label}`,
+          ];
+          break;
+        }
+        out = [`vpn: unknown node "${arg}". try: vpn`];
+        break;
+      }
+      case "settings": {
+        const loc = LOCATIONS[location] ?? LOCATIONS[HOME];
+        out = [
+          "settings",
+          `  theme       ${theme}`,
+          `  location    ${loc.label}${location === HOME ? "" : " · vpn"}`,
+          "",
+          "change: theme [light|dark] · vpn <node>",
+        ];
+        break;
+      }
       case "help":
         out = HELP;
         break;
@@ -357,7 +417,7 @@ export default function Terminal() {
         {lines.map((line, i) =>
           line.kind === "input" ? (
             <div key={i} className="whitespace-pre-wrap break-words">
-              <Prompt palette={palette} />
+              <Prompt palette={palette} host={activeHost} />
               {line.text}
             </div>
           ) : (
@@ -372,7 +432,7 @@ export default function Terminal() {
 
         {!booting && !shutting ? (
         <div className="whitespace-pre-wrap break-words">
-          <Prompt palette={palette} />
+          <Prompt palette={palette} host={activeHost} />
           {input}
           <span className={`terminal-cursor ${palette.cursor}`}>▋</span>
         </div>
@@ -402,10 +462,10 @@ export default function Terminal() {
         className={`flex h-7 select-none items-center justify-between px-2 text-[13px] md:h-6 md:text-xs ${palette.bar}`}
       >
         <span>
-          [{HOST}] 0:zsh<span className="font-bold">*</span>
+          [{activeHost}] 0:zsh<span className="font-bold">*</span>
         </span>
         <span>
-          {USER}@{HOST} · {temp ? `${temp} · ` : ""}
+          {USER}@{activeHost} · {temp ? `${temp} · ` : ""}
           {clock}
         </span>
       </div>
