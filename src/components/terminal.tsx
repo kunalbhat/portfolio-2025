@@ -105,10 +105,17 @@ export default function Terminal() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [lines]);
 
-  // While powered down, any key or tap reboots to a fresh terminal.
+  // While powered down, any key or tap reboots to a fresh terminal. Arm after
+  // a short delay so the keypress that ran `exit` doesn't instantly reboot —
+  // otherwise the black screen never actually shows.
   useEffect(() => {
     if (powered) return;
+    let armed = false;
+    const arm = window.setTimeout(() => {
+      armed = true;
+    }, 400);
     const reboot = () => {
+      if (!armed) return;
       setLines(INITIAL_LINES);
       setInput("");
       setHistory([]);
@@ -118,6 +125,7 @@ export default function Terminal() {
     window.addEventListener("keydown", reboot);
     window.addEventListener("pointerdown", reboot);
     return () => {
+      window.clearTimeout(arm);
       window.removeEventListener("keydown", reboot);
       window.removeEventListener("pointerdown", reboot);
     };
