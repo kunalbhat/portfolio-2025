@@ -33,7 +33,7 @@ const BOOT_LINES = [
   "ready.",
 ];
 
-const HINT = "// a blinking prompt in the dark. try: whoami";
+const HINT = "// a blinking prompt in the dark. try: help";
 
 type Theme = "dark" | "light";
 
