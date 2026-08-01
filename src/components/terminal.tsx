@@ -520,8 +520,14 @@ export default function Terminal() {
                 `  ${place.id === key ? "▸" : " "} ${key.padEnd(10)} ${v.label}`,
             ),
             "",
-            "usage: vpn <node> · vpn <any city> · vpn off",
+            "usage: vpn <node> · vpn <any city> · vpn radar · vpn off",
           ];
+          break;
+        }
+        if (query === "radar") {
+          const url = "https://www.windy.com/";
+          window.open(url, "_blank", "noopener,noreferrer");
+          out = ["opening global precipitation radar…", url];
           break;
         }
         if (query === "off" || query === "disconnect" || query === HOME) {
