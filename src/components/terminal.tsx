@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import PixelBurst from "@/components/pixel-burst";
 
-type Line = { kind: "input" | "output"; text: string };
+type LineFx = "fade" | "dark-only";
+type Line = { kind: "input" | "output"; text: string; fx?: LineFx };
 
 const USER = "kunalbhat";
 const HOST = "localhost";
@@ -21,6 +22,7 @@ const HELP = [
   "  theme    — color / accessibility themes",
   "  vpn      — tunnel to another location",
   "  settings — view current settings",
+  "  library  — stored clues",
   "  date     — show date · time (date -u = utc)",
   "  clear    — clear the screen",
   "  exit     — power down",
@@ -37,6 +39,28 @@ const BOOT_LINES = [
 ];
 
 const HINT = "// a blinking prompt in the dark. try: help";
+
+// The library: clues stored as text notes. Each line may carry an effect that
+// reacts to terminal state — the puzzle mechanic. Append notes over time.
+type NoteLine = { text: string; fx?: LineFx };
+type Note = { id: string; title: string; body: NoteLine[] };
+
+const NOTES: Note[] = [
+  {
+    id: "001",
+    title: "a note, half-remembered",
+    body: [
+      { text: "you're not the first to reach this prompt.", fx: "fade" },
+      { text: "i hid the rest where the light can't hold it —", fx: "fade" },
+      { text: "sit in the dark and read again.", fx: "fade" },
+      { text: "" },
+      {
+        text: "not every city keeps honest time. find the one that lies.",
+        fx: "dark-only",
+      },
+    ],
+  },
+];
 
 const SHUTDOWN_LINES = [
   "shutdown signal received…",
@@ -453,6 +477,33 @@ export default function Terminal() {
         out = [`vpn: unknown node "${arg}". try: vpn`];
         break;
       }
+      case "library": {
+        if (!arg) {
+          out = [
+            "library — clues collected:",
+            ...NOTES.map((n) => `  ${n.id}  ${n.title}`),
+            "",
+            "usage: library <id>",
+          ];
+          break;
+        }
+        const note = NOTES.find((n) => n.id === arg);
+        if (!note) {
+          out = [`library: no entry "${arg}".`];
+          break;
+        }
+        setLines((l) => [
+          ...l,
+          promptEcho,
+          { kind: "output", text: `— ${note.title} —` },
+          ...note.body.map((nl) => ({
+            kind: "output" as const,
+            text: nl.text,
+            fx: nl.fx,
+          })),
+        ]);
+        return;
+      }
       case "settings": {
         const loc = LOCATIONS[location] ?? LOCATIONS[HOME];
         out = [
@@ -554,7 +605,7 @@ export default function Terminal() {
           ) : (
             <div
               key={i}
-              className={`whitespace-pre-wrap break-words ${palette.out}`}
+              className={`whitespace-pre-wrap break-words ${palette.out} ${line.fx === "fade" ? "note-fade" : line.fx === "dark-only" && theme !== "dark" ? "note-locked" : ""}`}
             >
               {line.text || " "}
             </div>

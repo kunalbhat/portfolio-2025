@@ -23,6 +23,15 @@
   }
 }
 
+@keyframes note-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.05;
+  }
+}
+
 @layer base {
   /* Default theme (light) */
   :root {
@@ -261,6 +270,16 @@
 
   .terminal-cursor {
     animation: terminal-blink 1.05s steps(1) infinite;
+  }
+
+  /* Library note effects — a line that gradually fades away, and one that is
+     legible only in the dark theme (near-invisible ghost otherwise). */
+  .note-fade {
+    animation: note-fade 6s ease-in forwards;
+  }
+
+  .note-locked {
+    opacity: 0.05;
   }
 
   .ai-dot {
