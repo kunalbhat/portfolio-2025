@@ -20,7 +20,7 @@ const HELP = [
   "supported commands:",
   "  whoami   — print the current user",
   "  theme    — color / accessibility themes",
-  "  vpn      — tunnel to another location",
+  "  vpn      — tunnel to a city (preset or any)",
   "  settings — view current settings",
   "  library  — stored clues",
   "  date     — show date · time (date -u = utc)",
@@ -101,6 +101,36 @@ const LOCATIONS: Record<
     tz: "Australia/Sydney",
   },
 };
+
+// A resolved exit node — either a preset or a user-entered city.
+type Place = { id: string; label: string; lat: number; lon: number; tz: string };
+
+const homePlace = (): Place => ({ id: HOME, ...LOCATIONS[HOME] });
+
+// Resolve a free-form city name → coordinates + timezone via Open-Meteo's
+// geocoding API (no key). Returns null if nothing matches.
+async function geocode(query: string): Promise<Place | null> {
+  try {
+    const res = await fetch(
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1`,
+    );
+    if (!res.ok) return null;
+    const r = (await res.json())?.results?.[0];
+    if (!r || typeof r.latitude !== "number" || typeof r.longitude !== "number")
+      return null;
+    return {
+      id: String(r.name ?? query)
+        .toLowerCase()
+        .replace(/\s+/g, "-"),
+      label: [r.name, r.country_code].filter(Boolean).join(", ").toLowerCase(),
+      lat: r.latitude,
+      lon: r.longitude,
+      tz: r.timezone ?? "UTC",
+    };
+  } catch {
+    return null;
+  }
+}
 
 // Time formatting, always in a given IANA timezone so tunneling changes the
 // clock. Intl handles DST, so no manual offsets.
@@ -277,11 +307,11 @@ export default function Terminal() {
   const [exploding, setExploding] = useState(false);
   const [shutting, setShutting] = useState(false);
   const [theme, setTheme] = useState<Theme>("dark");
-  const [location, setLocation] = useState(HOME);
+  const [place, setPlace] = useState<Place>(homePlace);
 
   const palette = PALETTES[theme];
-  const activeHost = location === HOME ? HOST : location;
-  const activeTz = (LOCATIONS[location] ?? LOCATIONS[HOME]).tz;
+  const activeHost = place.id === HOME ? HOST : place.id;
+  const activeTz = place.tz;
   const clock = now ? formatClock(now, activeTz) : "--:--";
   const tzLabel = now ? formatTz(now, activeTz) : "";
 
@@ -299,11 +329,10 @@ export default function Terminal() {
   // Re-fetches whenever the VPN exit node changes. Degrades silently offline.
   useEffect(() => {
     let cancelled = false;
-    const loc = LOCATIONS[location] ?? LOCATIONS[HOME];
     const fetchTemp = async () => {
       try {
         const res = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`,
+          `https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`,
         );
         if (!res.ok) return;
         const data = await res.json();
@@ -322,7 +351,7 @@ export default function Terminal() {
       cancelled = true;
       clearInterval(id);
     };
-  }, [location]);
+  }, [place]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -432,6 +461,7 @@ export default function Terminal() {
     }
 
     const [name, arg] = cmd.split(/\s+/);
+    const rest = cmd.slice(name.length).trim();
     let out: string[];
     switch (name) {
       case "whoami":
@@ -459,37 +489,60 @@ export default function Terminal() {
         break;
       }
       case "vpn": {
-        if (!arg) {
+        const query = rest.toLowerCase();
+        if (!query) {
           out = [
             "exit nodes:",
             ...Object.entries(LOCATIONS).map(
               ([key, v]) =>
-                `  ${key === location ? "▸" : " "} ${key.padEnd(10)} ${v.label}`,
+                `  ${place.id === key ? "▸" : " "} ${key.padEnd(10)} ${v.label}`,
             ),
             "",
-            "usage: vpn <node> · vpn off",
+            "usage: vpn <node> · vpn <any city> · vpn off",
           ];
           break;
         }
-        if (arg === "off" || arg === "disconnect" || arg === HOME) {
-          setLocation(HOME);
+        if (query === "off" || query === "disconnect" || query === HOME) {
+          setPlace(homePlace());
           setTemp(null);
           setCondition(null);
           out = ["tunnel closed. routing locally — chicago."];
           break;
         }
-        if (LOCATIONS[arg]) {
-          setLocation(arg);
+        if (LOCATIONS[query]) {
+          setPlace({ id: query, ...LOCATIONS[query] });
           setTemp(null);
           setCondition(null);
           out = [
             "establishing tunnel…",
-            `connected · exit node: ${LOCATIONS[arg].label}`,
+            `connected · exit node: ${LOCATIONS[query].label}`,
           ];
           break;
         }
-        out = [`vpn: unknown node "${arg}". try: vpn`];
-        break;
+        // Free-form city — resolve it asynchronously.
+        setLines((l) => [
+          ...l,
+          promptEcho,
+          { kind: "output", text: `resolving "${rest}"…` },
+        ]);
+        geocode(rest).then((resolved) => {
+          if (!resolved) {
+            setLines((l) => [
+              ...l,
+              { kind: "output", text: `vpn: could not resolve "${rest}".` },
+            ]);
+            return;
+          }
+          setPlace(resolved);
+          setTemp(null);
+          setCondition(null);
+          setLines((l) => [
+            ...l,
+            { kind: "output", text: "establishing tunnel…" },
+            { kind: "output", text: `connected · exit node: ${resolved.label}` },
+          ]);
+        });
+        return;
       }
       case "library": {
         if (!arg) {
@@ -519,13 +572,12 @@ export default function Terminal() {
         return;
       }
       case "settings": {
-        const loc = LOCATIONS[location] ?? LOCATIONS[HOME];
         out = [
           "settings",
           `  theme       ${theme}`,
-          `  location    ${loc.label}${location === HOME ? "" : " · vpn"}`,
+          `  location    ${place.label}${place.id === HOME ? "" : " · vpn"}`,
           "",
-          "change: theme [light|dark] · vpn <node>",
+          "change: theme <name> · vpn <city>",
         ];
         break;
       }
@@ -658,7 +710,7 @@ export default function Terminal() {
         className={`flex h-7 select-none items-center justify-between px-2 text-[13px] md:h-6 md:text-xs ${palette.bar}`}
       >
         <span>
-          [{location !== HOME ? "⇄ " : ""}
+          [{place.id !== HOME ? "⇄ " : ""}
           {activeHost}] 0:zsh<span className="font-bold">*</span>
         </span>
         <span>
