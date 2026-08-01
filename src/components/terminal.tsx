@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import PixelBurst from "@/components/pixel-burst";
 
 type Line = { kind: "input" | "output"; text: string };
 
@@ -63,6 +64,19 @@ const PALETTES: Record<Theme, Palette> = {
   },
 };
 
+// Raw colors for the power-down pixel explosion. [0] is the accent (green)
+// used for the status-bar band; the rest tint the scattered text pixels.
+const BURST: Record<Theme, { bg: string; colors: string[] }> = {
+  dark: {
+    bg: "#000000",
+    colors: ["#10b981", "#e5e5e5", "#a3a3a3", "#34d399", "#525252"],
+  },
+  light: {
+    bg: "#f5f5f5",
+    colors: ["#059669", "#404040", "#737373", "#a3a3a3", "#10b981"],
+  },
+};
+
 function Prompt({ palette }: { palette: Palette }) {
   return (
     <>
@@ -82,6 +96,7 @@ export default function Terminal() {
   const [histIdx, setHistIdx] = useState(-1);
   const [clock, setClock] = useState("--:--");
   const [powered, setPowered] = useState(true);
+  const [exploding, setExploding] = useState(false);
   const [theme, setTheme] = useState<Theme>("dark");
 
   const palette = PALETTES[theme];
@@ -163,7 +178,7 @@ export default function Terminal() {
         setLines([]);
         return;
       case "exit":
-        setPowered(false);
+        setExploding(true);
         return;
       default:
         out = [`zsh: command not found: ${name}`];
@@ -200,6 +215,20 @@ export default function Terminal() {
         setInput(history[ni]);
       }
     }
+  }
+
+  if (exploding) {
+    const burst = BURST[theme];
+    return (
+      <PixelBurst
+        colors={burst.colors}
+        bg={burst.bg}
+        onDone={() => {
+          setExploding(false);
+          setPowered(false);
+        }}
+      />
+    );
   }
 
   if (!powered) {
