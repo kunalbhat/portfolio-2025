@@ -21,6 +21,7 @@ const HELP = [
   "  theme    — color / accessibility themes",
   "  vpn      — tunnel to another location",
   "  settings — view current settings",
+  "  date     — show date · time (date -u = utc)",
   "  clear    — clear the screen",
   "  exit     — power down",
   "  help     — this list",
@@ -48,15 +49,74 @@ const SHUTDOWN_LINES = [
 // VPN exit nodes. Picking one re-routes the status-bar weather (and spoofs the
 // host) to that city. "home" is the real location.
 const HOME = "home";
-const LOCATIONS: Record<string, { label: string; lat: number; lon: number }> = {
-  home: { label: "chicago (home)", lat: 41.8781, lon: -87.6298 },
-  reykjavik: { label: "reykjavík", lat: 64.1466, lon: -21.9426 },
-  london: { label: "london", lat: 51.5074, lon: -0.1278 },
-  tokyo: { label: "tokyo", lat: 35.6762, lon: 139.6503 },
-  singapore: { label: "singapore", lat: 1.3521, lon: 103.8198 },
-  dubai: { label: "dubai", lat: 25.2048, lon: 55.2708 },
-  sydney: { label: "sydney", lat: -33.8688, lon: 151.2093 },
+const LOCATIONS: Record<
+  string,
+  { label: string; lat: number; lon: number; tz: string }
+> = {
+  home: {
+    label: "chicago (home)",
+    lat: 41.8781,
+    lon: -87.6298,
+    tz: "America/Chicago",
+  },
+  reykjavik: {
+    label: "reykjavík",
+    lat: 64.1466,
+    lon: -21.9426,
+    tz: "Atlantic/Reykjavik",
+  },
+  london: { label: "london", lat: 51.5074, lon: -0.1278, tz: "Europe/London" },
+  tokyo: { label: "tokyo", lat: 35.6762, lon: 139.6503, tz: "Asia/Tokyo" },
+  singapore: {
+    label: "singapore",
+    lat: 1.3521,
+    lon: 103.8198,
+    tz: "Asia/Singapore",
+  },
+  dubai: { label: "dubai", lat: 25.2048, lon: 55.2708, tz: "Asia/Dubai" },
+  sydney: {
+    label: "sydney",
+    lat: -33.8688,
+    lon: 151.2093,
+    tz: "Australia/Sydney",
+  },
 };
+
+// Time formatting, always in a given IANA timezone so tunneling changes the
+// clock. Intl handles DST, so no manual offsets.
+function formatClock(d: Date, tz: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: tz,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(d);
+}
+
+function formatTz(d: Date, tz: string) {
+  const part = new Intl.DateTimeFormat("en-US", {
+    timeZone: tz,
+    timeZoneName: "short",
+  })
+    .formatToParts(d)
+    .find((p) => p.type === "timeZoneName");
+  return part?.value ?? "";
+}
+
+function formatFull(d: Date, tz: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: tz,
+    weekday: "short",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZoneName: "short",
+    year: "numeric",
+  }).format(d);
+}
 
 type Palette = {
   bg: string;
@@ -178,7 +238,7 @@ export default function Terminal() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
-  const [clock, setClock] = useState("--:--");
+  const [now, setNow] = useState<Date | null>(null);
   const [temp, setTemp] = useState<string | null>(null);
   const [powered, setPowered] = useState(true);
   const [exploding, setExploding] = useState(false);
@@ -188,16 +248,15 @@ export default function Terminal() {
 
   const palette = PALETTES[theme];
   const activeHost = location === HOME ? HOST : location;
+  const activeTz = (LOCATIONS[location] ?? LOCATIONS[HOME]).tz;
+  const clock = now ? formatClock(now, activeTz) : "--:--";
+  const tzLabel = now ? formatTz(now, activeTz) : "";
 
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const tick = () => {
-      const d = new Date();
-      const pad = (n: number) => String(n).padStart(2, "0");
-      setClock(`${pad(d.getHours())}:${pad(d.getMinutes())}`);
-    };
+    const tick = () => setNow(new Date());
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
@@ -405,6 +464,15 @@ export default function Terminal() {
         ];
         break;
       }
+      case "date": {
+        const d = new Date();
+        if (arg === "-u" || arg === "--utc") {
+          out = [formatFull(d, "UTC")];
+        } else {
+          out = [formatFull(d, activeTz)];
+        }
+        break;
+      }
       case "help":
         out = HELP;
         break;
@@ -531,6 +599,7 @@ export default function Terminal() {
         <span>
           {USER}@{activeHost} · {temp ? `${temp} · ` : ""}
           {clock}
+          {tzLabel ? ` ${tzLabel}` : ""}
         </span>
       </div>
     </div>
