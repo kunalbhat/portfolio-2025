@@ -7,7 +7,7 @@ import Image from "next/image";
 
 /* Load Google Sans Flex from Google Fonts via <link> */
 export const metadata: Metadata = {
-  title: "kunal@localhost",
+  title: "kunalbhat@localhost",
   description: "A terminal.",
 };
 

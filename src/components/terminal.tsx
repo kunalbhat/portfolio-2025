@@ -5,7 +5,7 @@ import PixelBurst from "@/components/pixel-burst";
 
 type Line = { kind: "input" | "output"; text: string };
 
-const USER = "kunal";
+const USER = "kunalbhat";
 const HOST = "localhost";
 
 /**
@@ -18,7 +18,7 @@ const WHOAMI = [`${USER} — chicago-based product designer.`];
 const HELP = [
   "supported commands:",
   "  whoami   — print the current user",
-  "  theme    — toggle light / dark",
+  "  theme    — color / accessibility themes",
   "  vpn      — tunnel to another location",
   "  settings — view current settings",
   "  clear    — clear the screen",
@@ -27,7 +27,7 @@ const HELP = [
 ];
 
 const BOOT_LINES = [
-  "kunal-os 0.1 — booting…",
+  "kunalbhat-os 0.1 — booting…",
   "[ ok ] mounting /dev/self",
   "[ ok ] starting display :: 1 window",
   "[ ok ] loading input handlers",
@@ -58,8 +58,6 @@ const LOCATIONS: Record<string, { label: string; lat: number; lon: number }> = {
   sydney: { label: "sydney", lat: -33.8688, lon: 151.2093 },
 };
 
-type Theme = "dark" | "light";
-
 type Palette = {
   bg: string;
   fg: string;
@@ -71,7 +69,10 @@ type Palette = {
   bar: string;
 };
 
-const PALETTES: Record<Theme, Palette> = {
+// Five themes: two defaults plus accessibility options. The color-blind-safe
+// palettes use Okabe-Ito colors so the prompt/status accents stay
+// distinguishable under the named color-vision deficiency.
+const PALETTES = {
   dark: {
     bg: "bg-black",
     fg: "text-neutral-200",
@@ -92,6 +93,46 @@ const PALETTES: Record<Theme, Palette> = {
     cursor: "text-neutral-800",
     bar: "bg-emerald-600 text-white",
   },
+  contrast: {
+    bg: "bg-black",
+    fg: "text-white",
+    out: "text-neutral-300",
+    user: "text-[#ffff00]",
+    path: "text-white",
+    dollar: "text-[#ffff00]",
+    cursor: "text-white",
+    bar: "bg-white text-black",
+  },
+  redgreen: {
+    bg: "bg-black",
+    fg: "text-neutral-100",
+    out: "text-neutral-400",
+    user: "text-[#56b4e9]",
+    path: "text-[#e69f00]",
+    dollar: "text-neutral-500",
+    cursor: "text-neutral-100",
+    bar: "bg-[#0072b2] text-white",
+  },
+  blueyellow: {
+    bg: "bg-black",
+    fg: "text-neutral-100",
+    out: "text-neutral-400",
+    user: "text-[#d55e00]",
+    path: "text-[#cc79a7]",
+    dollar: "text-neutral-500",
+    cursor: "text-neutral-100",
+    bar: "bg-[#009e73] text-black",
+  },
+} satisfies Record<string, Palette>;
+
+type Theme = keyof typeof PALETTES;
+
+const THEME_DESC: Record<Theme, string> = {
+  dark: "default dark",
+  light: "default light",
+  contrast: "high contrast",
+  redgreen: "deuteranopia-safe (red / green)",
+  blueyellow: "tritanopia-safe (blue / yellow)",
 };
 
 // Raw colors for the power-down pixel explosion. [0] is the accent (green)
@@ -104,6 +145,18 @@ const BURST: Record<Theme, { bg: string; colors: string[] }> = {
   light: {
     bg: "#f5f5f5",
     colors: ["#059669", "#404040", "#737373", "#a3a3a3", "#10b981"],
+  },
+  contrast: {
+    bg: "#000000",
+    colors: ["#ffffff", "#ffff00", "#e5e5e5", "#a3a3a3", "#ffffff"],
+  },
+  redgreen: {
+    bg: "#000000",
+    colors: ["#0072b2", "#56b4e9", "#e69f00", "#e5e5e5", "#a3a3a3"],
+  },
+  blueyellow: {
+    bg: "#000000",
+    colors: ["#009e73", "#d55e00", "#cc79a7", "#e5e5e5", "#a3a3a3"],
   },
 };
 
@@ -290,14 +343,24 @@ export default function Terminal() {
         out = WHOAMI;
         break;
       case "theme": {
-        const next: Theme =
-          arg === "light" || arg === "dark"
-            ? arg
-            : theme === "dark"
-              ? "light"
-              : "dark";
-        setTheme(next);
-        out = [`theme → ${next}`];
+        if (!arg) {
+          out = [
+            "themes:",
+            ...(Object.keys(PALETTES) as Theme[]).map(
+              (t) =>
+                `  ${t === theme ? "▸" : " "} ${t.padEnd(11)} ${THEME_DESC[t]}`,
+            ),
+            "",
+            "usage: theme <name>",
+          ];
+          break;
+        }
+        if (arg in PALETTES) {
+          setTheme(arg as Theme);
+          out = [`theme → ${arg}`];
+          break;
+        }
+        out = [`theme: unknown theme "${arg}". try: theme`];
         break;
       }
       case "vpn": {
@@ -462,7 +525,8 @@ export default function Terminal() {
         className={`flex h-7 select-none items-center justify-between px-2 text-[13px] md:h-6 md:text-xs ${palette.bar}`}
       >
         <span>
-          [{activeHost}] 0:zsh<span className="font-bold">*</span>
+          [{location !== HOME ? "⇄ " : ""}
+          {activeHost}] 0:zsh<span className="font-bold">*</span>
         </span>
         <span>
           {USER}@{activeHost} · {temp ? `${temp} · ` : ""}

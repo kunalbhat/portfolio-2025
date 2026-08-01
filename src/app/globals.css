@@ -162,18 +162,13 @@
 
   h2 a,
   p a {
-    @apply bg-(--accent) text-(--fg) hover:opacity-70 transition-opacity;
+    @apply underline underline-offset-2 hover:opacity-70 transition-opacity;
   }
 
-  [data-theme="dark"] h2 a,
-  [data-theme="dark"] p a {
-    background: var(--accent);
-    color: var(--bg);
-  }
-
-  [data-theme="light"] ::selection {
-    background: var(--accent);
-    color: var(--fg);
+  /* Selection tints with the current text color so it matches any theme
+     instead of the old light-green accent. */
+  ::selection {
+    background: color-mix(in srgb, currentColor 30%, transparent);
   }
 
   .tooltip-trigger {
