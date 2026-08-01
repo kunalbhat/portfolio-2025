@@ -35,6 +35,14 @@ const BOOT_LINES = [
 
 const HINT = "// a blinking prompt in the dark. try: help";
 
+const SHUTDOWN_LINES = [
+  "shutdown signal received…",
+  "[ ok ] stopping shell (zsh)",
+  "[ ok ] flushing display buffer",
+  "[ ok ] unmounting /dev/self",
+  "powering off.",
+];
+
 type Theme = "dark" | "light";
 
 type Palette = {
@@ -103,8 +111,10 @@ export default function Terminal() {
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
   const [clock, setClock] = useState("--:--");
+  const [temp, setTemp] = useState<string | null>(null);
   const [powered, setPowered] = useState(true);
   const [exploding, setExploding] = useState(false);
+  const [shutting, setShutting] = useState(false);
   const [theme, setTheme] = useState<Theme>("dark");
 
   const palette = PALETTES[theme];
@@ -121,6 +131,31 @@ export default function Terminal() {
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
+  }, []);
+
+  // Current Chicago temperature for the status bar (Open-Meteo, no API key).
+  // Degrades silently to nothing if the request is blocked or offline.
+  useEffect(() => {
+    let cancelled = false;
+    const fetchTemp = async () => {
+      try {
+        const res = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=41.8781&longitude=-87.6298&current=temperature_2m&temperature_unit=fahrenheit",
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        const t = data?.current?.temperature_2m;
+        if (!cancelled && typeof t === "number") setTemp(`${Math.round(t)}°F`);
+      } catch {
+        // offline or blocked — leave the temperature unset
+      }
+    };
+    fetchTemp();
+    const id = setInterval(fetchTemp, 10 * 60 * 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
   }, []);
 
   useEffect(() => {
@@ -158,6 +193,42 @@ export default function Terminal() {
     });
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [booting]);
+
+  // Shutdown sequence: type out the power-off log, pause, then detonate.
+  useEffect(() => {
+    if (!shutting) return;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const timers: number[] = [];
+    const detonate = () => {
+      setShutting(false);
+      setExploding(true);
+    };
+    if (reduced) {
+      timers.push(
+        window.setTimeout(() => {
+          setLines((prev) => [
+            ...prev,
+            ...SHUTDOWN_LINES.map((text) => ({ kind: "output" as const, text })),
+          ]);
+        }, 0),
+      );
+      timers.push(window.setTimeout(detonate, 250));
+      return () => timers.forEach((t) => window.clearTimeout(t));
+    }
+    let delay = 180;
+    SHUTDOWN_LINES.forEach((text) => {
+      timers.push(
+        window.setTimeout(() => {
+          setLines((prev) => [...prev, { kind: "output", text }]);
+        }, delay),
+      );
+      delay += 180;
+    });
+    timers.push(window.setTimeout(detonate, delay + 450));
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [shutting]);
 
   // While powered down, any key or tap reboots to a fresh terminal. Arm after
   // a short delay so the keypress that ran `exit` doesn't instantly reboot —
@@ -218,7 +289,8 @@ export default function Terminal() {
         setLines([]);
         return;
       case "exit":
-        setExploding(true);
+        setLines((l) => [...l, promptEcho]);
+        setShutting(true);
         return;
       default:
         out = [`zsh: command not found: ${name}`];
@@ -232,7 +304,7 @@ export default function Terminal() {
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (booting) return;
+    if (booting || shutting) return;
     if (e.key === "Enter") {
       run(input);
       if (input.trim()) setHistory((h) => [input, ...h]);
@@ -298,7 +370,7 @@ export default function Terminal() {
           ),
         )}
 
-        {!booting ? (
+        {!booting && !shutting ? (
         <div className="whitespace-pre-wrap break-words">
           <Prompt palette={palette} />
           {input}
@@ -333,7 +405,8 @@ export default function Terminal() {
           [{HOST}] 0:zsh<span className="font-bold">*</span>
         </span>
         <span>
-          {USER}@{HOST} · {clock}
+          {USER}@{HOST} · {temp ? `${temp} · ` : ""}
+          {clock}
         </span>
       </div>
     </div>
