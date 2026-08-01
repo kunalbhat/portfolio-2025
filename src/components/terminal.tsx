@@ -24,9 +24,16 @@ const HELP = [
   "  help     — this list",
 ];
 
-const INITIAL_LINES: Line[] = [
-  { kind: "output", text: "// a blinking prompt in the dark. try: whoami" },
+const BOOT_LINES = [
+  "kunal-os 0.1 — booting…",
+  "[ ok ] mounting /dev/self",
+  "[ ok ] starting display :: 1 window",
+  "[ ok ] loading input handlers",
+  "[ ok ] warming shell (zsh)",
+  "ready.",
 ];
+
+const HINT = "// a blinking prompt in the dark. try: whoami";
 
 type Theme = "dark" | "light";
 
@@ -90,7 +97,8 @@ function Prompt({ palette }: { palette: Palette }) {
 }
 
 export default function Terminal() {
-  const [lines, setLines] = useState<Line[]>(INITIAL_LINES);
+  const [lines, setLines] = useState<Line[]>([]);
+  const [booting, setBooting] = useState(true);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState(-1);
@@ -120,6 +128,37 @@ export default function Terminal() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [lines]);
 
+  // Boot sequence: reveal the POST-style log lines one at a time, then settle
+  // on the hint. Replays on every reboot. Input is inert until it finishes.
+  useEffect(() => {
+    if (!booting) return;
+    const seq = [...BOOT_LINES, "", HINT];
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const timers: number[] = [];
+    if (reduced) {
+      timers.push(
+        window.setTimeout(() => {
+          setLines(seq.map((text) => ({ kind: "output", text })));
+          setBooting(false);
+        }, 0),
+      );
+      return () => timers.forEach((t) => window.clearTimeout(t));
+    }
+    let delay = 120;
+    seq.forEach((text, idx) => {
+      timers.push(
+        window.setTimeout(() => {
+          setLines((prev) => [...prev, { kind: "output", text }]);
+          if (idx === seq.length - 1) setBooting(false);
+        }, delay),
+      );
+      delay += text.startsWith("[") ? 120 : 220;
+    });
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [booting]);
+
   // While powered down, any key or tap reboots to a fresh terminal. Arm after
   // a short delay so the keypress that ran `exit` doesn't instantly reboot —
   // otherwise the black screen never actually shows.
@@ -131,11 +170,12 @@ export default function Terminal() {
     }, 400);
     const reboot = () => {
       if (!armed) return;
-      setLines(INITIAL_LINES);
+      setLines([]);
       setInput("");
       setHistory([]);
       setHistIdx(-1);
       setPowered(true);
+      setBooting(true);
     };
     window.addEventListener("keydown", reboot);
     window.addEventListener("pointerdown", reboot);
@@ -192,6 +232,7 @@ export default function Terminal() {
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (booting) return;
     if (e.key === "Enter") {
       run(input);
       if (input.trim()) setHistory((h) => [input, ...h]);
@@ -257,11 +298,17 @@ export default function Terminal() {
           ),
         )}
 
+        {!booting ? (
         <div className="whitespace-pre-wrap break-words">
           <Prompt palette={palette} />
           {input}
           <span className={`terminal-cursor ${palette.cursor}`}>▋</span>
         </div>
+        ) : (
+          <div className="whitespace-pre-wrap break-words">
+            <span className={`terminal-cursor ${palette.cursor}`}>▋</span>
+          </div>
+        )}
 
         <input
           ref={inputRef}
