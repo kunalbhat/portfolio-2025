@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import PixelBurst from "@/components/pixel-burst";
 
-type LineFx = "fade" | "dark-only";
+type LineFx = "fade" | "dark-only" | "light-only";
 type Line = { kind: "input" | "output"; text: string; fx?: LineFx };
 
 const USER = "kunalbhat";
@@ -50,13 +50,9 @@ const NOTES: Note[] = [
     id: "001",
     title: "a note, half-remembered",
     body: [
-      { text: "you're not the first to reach this prompt.", fx: "fade" },
-      { text: "i hid the rest where the light can't hold it —", fx: "fade" },
-      { text: "sit in the dark and read again.", fx: "fade" },
-      { text: "" },
       {
-        text: "not every city keeps honest time. find the one that lies.",
-        fx: "dark-only",
+        text: "what you can read here bends to the state you're in — theme, locale, the hour. change yourself and the library changes with you. this line only holds in the light.",
+        fx: "light-only",
       },
     ],
   },
@@ -125,6 +121,18 @@ function formatTz(d: Date, tz: string) {
     .formatToParts(d)
     .find((p) => p.type === "timeZoneName");
   return part?.value ?? "";
+}
+
+// WMO weather interpretation code → a single condition glyph.
+function weatherGlyph(code: number): string {
+  if (code === 0) return "☀";
+  if (code <= 3) return "⛅";
+  if (code === 45 || code === 48) return "🌫";
+  if (code >= 51 && code <= 67) return "🌧";
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return "❄";
+  if (code >= 80 && code <= 82) return "🌦";
+  if (code >= 95) return "⛈";
+  return "";
 }
 
 function formatFull(d: Date, tz: string) {
@@ -264,6 +272,7 @@ export default function Terminal() {
   const [histIdx, setHistIdx] = useState(-1);
   const [now, setNow] = useState<Date | null>(null);
   const [temp, setTemp] = useState<string | null>(null);
+  const [condition, setCondition] = useState<string | null>(null);
   const [powered, setPowered] = useState(true);
   const [exploding, setExploding] = useState(false);
   const [shutting, setShutting] = useState(false);
@@ -294,12 +303,15 @@ export default function Terminal() {
     const fetchTemp = async () => {
       try {
         const res = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m&temperature_unit=fahrenheit`,
+          `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`,
         );
         if (!res.ok) return;
         const data = await res.json();
         const t = data?.current?.temperature_2m;
-        if (!cancelled && typeof t === "number") setTemp(`${Math.round(t)}°F`);
+        const code = data?.current?.weather_code;
+        if (cancelled) return;
+        if (typeof t === "number") setTemp(`${Math.round(t)}°F`);
+        if (typeof code === "number") setCondition(weatherGlyph(code) || null);
       } catch {
         // offline or blocked — leave the temperature unset
       }
@@ -462,12 +474,14 @@ export default function Terminal() {
         if (arg === "off" || arg === "disconnect" || arg === HOME) {
           setLocation(HOME);
           setTemp(null);
+          setCondition(null);
           out = ["tunnel closed. routing locally — chicago."];
           break;
         }
         if (LOCATIONS[arg]) {
           setLocation(arg);
           setTemp(null);
+          setCondition(null);
           out = [
             "establishing tunnel…",
             `connected · exit node: ${LOCATIONS[arg].label}`,
@@ -605,7 +619,7 @@ export default function Terminal() {
           ) : (
             <div
               key={i}
-              className={`whitespace-pre-wrap break-words ${palette.out} ${line.fx === "fade" ? "note-fade" : line.fx === "dark-only" && theme !== "dark" ? "note-locked" : ""}`}
+              className={`whitespace-pre-wrap break-words ${palette.out} ${line.fx === "fade" ? "note-fade" : line.fx === "dark-only" && theme !== "dark" ? "note-locked" : line.fx === "light-only" && theme !== "light" ? "note-locked" : ""}`}
             >
               {line.text || " "}
             </div>
@@ -648,7 +662,8 @@ export default function Terminal() {
           {activeHost}] 0:zsh<span className="font-bold">*</span>
         </span>
         <span>
-          {USER}@{activeHost} · {temp ? `${temp} · ` : ""}
+          {USER}@{activeHost} · {condition ? `${condition} ` : ""}
+          {temp ? `${temp} · ` : ""}
           {clock}
           {tzLabel ? ` ${tzLabel}` : ""}
         </span>
