@@ -7,9 +7,8 @@ import Image from "next/image";
 
 /* Load Google Sans Flex from Google Fonts via <link> */
 export const metadata: Metadata = {
-  title: "Kunal Bhat — Product Designer",
-  description:
-    "Multidisciplinary product designer with experience in design, product management, and engineering.",
+  title: "kunal@localhost",
+  description: "A terminal.",
 };
 
 const albert = Albert_Sans({

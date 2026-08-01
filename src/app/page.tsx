@@ -1,7 +1,6 @@
+import Terminal from "@/components/terminal";
+// import PixelOoze from "@/components/pixel-ooze"; // parked — the slime returns later
+
 export default function HomePage() {
-  return (
-    <main className="px-6 md:px-16 pt-16 pb-32">
-      <h1>Kunal Bhat</h1>
-    </main>
-  );
+  return <Terminal />;
 }

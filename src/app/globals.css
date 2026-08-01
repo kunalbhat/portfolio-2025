@@ -1,13 +1,25 @@
 @import "tailwindcss";
 
 @keyframes ai-thinking {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.15;
   }
   50% {
     transform: scale(1.25);
     opacity: 1;
+  }
+}
+
+@keyframes terminal-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -128,7 +140,7 @@
   }
 
   h1 {
-    @apply text-5xl md:text-7xl lg:text-8xl font-bold md:tracking-tight;
+    @apply text-[0.9375rem] md:text-2xl lg:text-3xl font-bold md:tracking-tight;
   }
 
   h2 {
@@ -143,8 +155,9 @@
     @apply text-2xl mb-2 font-semibold;
   }
 
-  p {
-    @apply text-2xl font-normal leading-relaxed;
+  p,
+  li {
+    @apply text-[0.9375rem] md:text-2xl lg:text-3xl font-bold md:tracking-tight;
   }
 
   h2 a,
@@ -187,7 +200,9 @@
     line-height: 1.6;
     letter-spacing: 0.01em;
     white-space: normal;
-    transition: opacity 160ms ease, transform 160ms ease;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
     z-index: 10;
   }
 
@@ -206,11 +221,11 @@
   }
 
   .portfolio-grid {
-    @apply grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 md:gap-y-16 mb-8 md:mb-16;
+    @apply grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-x-12 md:gap-y-16 mb-8 md:mb-16;
   }
 
   .portfolio-card {
-    @apply aspect-square rounded-3xl drop-shadow-xl overflow-hidden;
+    @apply aspect-square rounded-xl overflow-hidden;
   }
 
   .feature-figure {
@@ -249,6 +264,10 @@
     transform: scale(1.025);
   }
 
+  .terminal-cursor {
+    animation: terminal-blink 1.05s steps(1) infinite;
+  }
+
   .ai-dot {
     width: 12px;
     height: 12px;
@@ -260,7 +279,8 @@
   @media (prefers-reduced-motion: no-preference) {
     :root,
     body {
-      transition: background-color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1),
+      transition:
+        background-color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1),
         color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1);
     }
 
