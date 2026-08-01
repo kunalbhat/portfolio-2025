@@ -42,8 +42,24 @@ const HINT = "// a blinking prompt in the dark. try: help";
 
 // The library: clues stored as text notes. Each line may carry an effect that
 // reacts to terminal state — the puzzle mechanic. Append notes over time.
+// Weather glyphs that count as "raining".
+const RAIN_GLYPHS = new Set(["🌧", "🌦", "⛈"]);
+
+// State a note can react to when deciding whether it's visible at all.
+type NoteCtx = {
+  theme: Theme;
+  place: Place;
+  weather: string | null;
+  now: Date | null;
+};
 type NoteLine = { text: string; fx?: LineFx };
-type Note = { id: string; title: string; body: NoteLine[] };
+type Note = {
+  id: string;
+  title: string;
+  body: NoteLine[];
+  // If present, the note is hidden from the library until this returns true.
+  reveal?: (ctx: NoteCtx) => boolean;
+};
 
 const NOTES: Note[] = [
   {
@@ -55,6 +71,12 @@ const NOTES: Note[] = [
         fx: "light-only",
       },
     ],
+  },
+  {
+    id: "002",
+    title: "a page left in the rain",
+    body: [{ text: "…" }],
+    reveal: (ctx) => ctx.weather != null && RAIN_GLYPHS.has(ctx.weather),
   },
 ];
 
@@ -545,16 +567,20 @@ export default function Terminal() {
         return;
       }
       case "library": {
+        const noteCtx: NoteCtx = { theme, place, weather: condition, now };
+        const visible = NOTES.filter((n) => !n.reveal || n.reveal(noteCtx));
         if (!arg) {
           out = [
             "library — clues collected:",
-            ...NOTES.map((n) => `  ${n.id}  ${n.title}`),
+            ...(visible.length
+              ? visible.map((n) => `  ${n.id}  ${n.title}`)
+              : ["  (empty)"]),
             "",
             "usage: library <id>",
           ];
           break;
         }
-        const note = NOTES.find((n) => n.id === arg);
+        const note = visible.find((n) => n.id === arg);
         if (!note) {
           out = [`library: no entry "${arg}".`];
           break;
