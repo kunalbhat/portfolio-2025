@@ -12,7 +12,7 @@ const HOST = "localhost";
  * accepts typed entries, and dispatches them through a small command
  * registry. Built to grow — add cases to `run()` to support new commands.
  */
-const WHOAMI = [USER];
+const WHOAMI = [`${USER} — chicago-based product designer.`];
 
 const HELP = [
   "supported commands:",
@@ -208,7 +208,7 @@ export default function Terminal() {
 
   return (
     <div
-      className={`fixed inset-0 flex flex-col font-mono text-[13px] leading-relaxed md:text-sm ${palette.bg} ${palette.fg}`}
+      className={`fixed inset-0 flex flex-col font-mono text-[15px] leading-relaxed md:text-base ${palette.bg} ${palette.fg}`}
       onClick={() => inputRef.current?.focus()}
     >
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 py-3">
@@ -251,7 +251,7 @@ export default function Terminal() {
 
       {/* tmux status bar */}
       <div
-        className={`flex h-6 select-none items-center justify-between px-2 text-xs ${palette.bar}`}
+        className={`flex h-7 select-none items-center justify-between px-2 text-[13px] md:h-6 md:text-xs ${palette.bar}`}
       >
         <span>
           [{HOST}] 0:zsh<span className="font-bold">*</span>
