@@ -1,62 +1,10 @@
 @import "tailwindcss";
 
 @layer base {
-  /* Default theme (dark) */
   :root {
-    color-scheme: dark;
+    color-scheme: light;
 
     /* Core palette */
-    --bg: #020617; /* slate-950 */
-    --fg: rgb(116, 140, 235, 1);
-    --muted: #9fb3c8; /* cool muted blue-gray */
-    --border: #1f2937; /* slate-800 */
-    --accent: rgba(83, 148, 251, 1);
-    --accent-soft: rgba(46, 69, 150, 1);
-    --on-accent: #0b1326;
-    --active-nav-bg: color-mix(in srgb, var(--bg) 55%, white 45%);
-    --active-nav-fg: #f8fafc;
-    --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
-    --input-bg: #162338;
-    --header-gradient-start: var(--bg-overlay);
-    --header-gradient-end: transparent;
-  }
-
-  /* Icon treatments */
-  .lock-icon {
-    filter: invert(1);
-  }
-
-  [data-theme="light"] .lock-icon {
-    filter: none;
-  }
-
-  .invert-on-dark {
-    filter: invert(1);
-  }
-
-  [data-theme="light"] .invert-on-dark {
-    filter: none;
-  }
-
-  [data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #020617;
-    --fg: rgb(116, 140, 235, 1);
-    --muted: #9fb3c8;
-    --border: #1f2937;
-    --accent: rgba(83, 148, 251, 1);
-    --accent-soft: rgba(46, 69, 150, 1);
-    --on-accent: #0b1326;
-    --active-nav-bg: color-mix(in srgb, var(--bg) 55%, white 45%);
-    --active-nav-fg: #f8fafc;
-    --bg-overlay: color-mix(in srgb, var(--bg) 85%, transparent);
-    --input-bg: #162338;
-    --header-gradient-start: var(--bg-overlay);
-    --header-gradient-end: transparent;
-  }
-
-  [data-theme="light"] {
-    color-scheme: light;
     --bg: #f9fafb;
     --fg: #03061a;
     --muted: #475569;
@@ -75,7 +23,7 @@
   html,
   body {
     height: 100%;
-    font-family: var(--font-albert), system-ui, sans-serif;
+    font-family: var(--font-jost), system-ui, sans-serif;
   }
 
   body {
@@ -85,50 +33,31 @@
   }
 
   .site-header {
-    @apply my-8;
+    @apply my-4;
   }
 
   .site-footer {
-    @apply px-6 md:px-16 mt-8 md:mt-16 pb-10 md:pb-12 text-base text-(--muted) font-normal;
+    @apply flex flex-wrap items-center justify-center gap-2 px-3 md:px-8 mt-8 md:mt-16 pb-10 md:pb-12 text-base text-center text-(--muted) font-normal;
   }
 
   .page-container {
-    @apply px-6 md:px-16 pt-20 md:pt-28 mx-auto transition-colors duration-650 ease-[cubic-bezier(0.25,0.8,0.35,1)];
-  }
-
-  .tag-list {
-    @apply flex flex-wrap gap-2 mt-3 mb-4 -ml-1;
-  }
-
-  .tag-pill {
-    @apply text-sm px-3 py-1 rounded-full border border-(--border) bg-(--bg-overlay) text-(--fg);
-  }
-
-  /* Standardize list alignment in work detail pages */
-  .work-detail-content ul,
-  .work-detail-content ol {
-    @apply list-disc list-inside space-y-1.5 leading-relaxed text-xl;
-  }
-
-  /* Reduce the visual stroke on the Work password input in light mode */
-  [data-theme="light"] .work-password-form {
-    border-color: transparent;
+    @apply px-3 md:px-8 pt-16 md:pt-20 mx-auto;
   }
 
   h1 {
-    @apply text-5xl md:text-7xl lg:text-8xl font-bold md:tracking-tight;
+    @apply text-5xl md:text-7xl lg:text-8xl font-normal leading-tight md:tracking-tight;
   }
 
   h2 {
-    @apply text-2xl md:text-4xl leading-relaxed;
+    @apply text-2xl md:text-4xl font-normal leading-tight;
   }
 
   h3 {
-    @apply text-3xl md:text-4xl font-bold mb-1.5;
+    @apply text-3xl md:text-4xl font-normal leading-tight mb-1.5;
   }
 
   h4 {
-    @apply text-2xl mb-2 font-semibold;
+    @apply text-2xl mb-2 font-normal;
   }
 
   p {
@@ -140,51 +69,6 @@
     @apply bg-(--accent) text-(--fg) hover:opacity-70 transition-opacity;
   }
 
-  [data-theme="dark"] h2 a,
-  [data-theme="dark"] p a {
-    background: var(--accent);
-    color: var(--bg);
-  }
-
-  [data-theme="light"] ::selection {
-    background: var(--accent);
-    color: var(--fg);
-  }
-
-  .tooltip-trigger {
-    @apply relative inline-block cursor-help text-(--fg);
-  }
-
-  .tooltip-trigger::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.97) rotate(-6deg);
-    min-width: 27ch;
-    max-width: 48ch;
-    padding: 14px 16px;
-    background: #fff;
-    color: var(--fg);
-    border: none;
-    border-radius: 14px;
-    box-shadow: 0 18px 50px color-mix(in srgb, var(--bg) 45%, black 55%);
-    opacity: 0;
-    pointer-events: none;
-    font-size: 1.025rem;
-    line-height: 1.6;
-    letter-spacing: 0.01em;
-    white-space: normal;
-    transition: opacity 160ms ease, transform 160ms ease;
-    z-index: 10;
-  }
-
-  .tooltip-trigger:hover::after,
-  .tooltip-trigger:focus-visible::after {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(-12deg);
-  }
-
   em {
     @apply not-italic underline underline-offset-4 decoration-wavy decoration-2;
   }
@@ -194,127 +78,10 @@
   }
 
   .portfolio-grid {
-    @apply grid grid-cols-1 gap-y-10 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-12 md:gap-y-16 mb-8 md:mb-16;
+    @apply grid grid-cols-1 gap-y-5 sm:grid-cols-2 gap-x-4 md:gap-x-6 gap-y-7 md:gap-y-10 mb-8 md:mb-16;
   }
 
   .portfolio-card {
-    @apply aspect-square rounded-3xl drop-shadow-xl overflow-hidden;
-  }
-
-  .feature-figure {
-    @apply rounded-3xl overflow-hidden relative aspect-video border border-(--border) bg-(--bg) drop-shadow-xl;
-  }
-
-  .portfolio-grid-compact {
-    @apply grid grid-cols-1 gap-y-8 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10 md:gap-x-10 md:gap-y-12 lg:grid-cols-4 w-full mb-8 md:mb-12;
-  }
-
-  .portfolio-card-compact {
-    @apply aspect-[4/5] w-full rounded-2xl drop-shadow-lg overflow-hidden mx-auto;
-  }
-
-  .coming-soon-overlay {
-    @apply absolute inset-0 grid place-items-center bg-[rgba(0,0,0,0.08)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none;
-  }
-
-  .coming-soon-pill {
-    @apply px-4 py-2 bg-white text-black text-sm font-semibold rounded-full shadow-lg border border-(--border);
-  }
-
-  .compact-card-title {
-    @apply text-xl font-semibold mb-2;
-  }
-
-  .card-media {
-    @apply transition-transform duration-300 ease-[cubic-bezier(0.25,0.8,0.35,1)];
-  }
-
-  .card-hover {
-    @apply transition-transform duration-300 ease-[cubic-bezier(0.25,0.8,0.35,1)];
-  }
-
-  .card-hover:hover {
-    transform: scale(1.025);
-  }
-
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    15% { transform: translateX(-6px); }
-    30% { transform: translateX(6px); }
-    45% { transform: translateX(-5px); }
-    60% { transform: translateX(5px); }
-    75% { transform: translateX(-3px); }
-    90% { transform: translateX(3px); }
-  }
-
-  .shake {
-    animation: shake 0.4s ease-in-out;
-  }
-
-  @keyframes clear-dissolve {
-    0%, 35% { opacity: 0; }
-    50%, 70% { opacity: 1; }
-    85%, 100% { opacity: 0; }
-  }
-
-  @keyframes clear-label-before {
-    0%, 30% { opacity: 1; }
-    45%, 75% { opacity: 0; }
-    88%, 100% { opacity: 1; }
-  }
-
-  @keyframes clear-label-after {
-    0%, 35% { opacity: 0; }
-    50%, 70% { opacity: 1; }
-    85%, 100% { opacity: 0; }
-  }
-
-  .clear-dissolve-after {
-    animation: clear-dissolve 10s ease-in-out infinite;
-  }
-
-  .clear-label {
-    position: absolute;
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 9999px;
-    background: rgba(0, 0, 0, 0.35);
-    color: white;
-    backdrop-filter: blur(6px);
-    white-space: nowrap;
-    pointer-events: none;
-  }
-
-  .clear-label-before {
-    animation: clear-label-before 10s ease-in-out infinite;
-  }
-
-  .clear-label-after {
-    animation: clear-label-after 10s ease-in-out infinite;
-    opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    :root,
-    body {
-      transition: background-color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1),
-        color 0.65s cubic-bezier(0.25, 0.8, 0.35, 1);
-    }
-
-    body * {
-      transition-property: background-color, color, border-color, fill, stroke;
-      transition-duration: 0.65s;
-      transition-timing-function: cubic-bezier(0.25, 0.8, 0.35, 1);
-    }
-
-    .site-header {
-      transition: background 0.65s cubic-bezier(0.25, 0.8, 0.35, 1);
-    }
+    @apply aspect-4/3 overflow-hidden;
   }
 }

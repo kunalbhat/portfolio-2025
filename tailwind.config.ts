@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      sans: ["var(--font-albert)", "sans-serif"],
+      sans: ["var(--font-jost)", "sans-serif"],
     },
     extend: {}, // keep this for other future extensions
   },
