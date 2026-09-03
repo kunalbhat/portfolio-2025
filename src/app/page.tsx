@@ -145,7 +145,7 @@ export default function HomePage() {
             {HEADLINE_WORDS.map((word, index) => (
               <span key={`${word}-${index}`} className="inline-block">
                 {word}
-                {index < HEADLINE_WORDS.length - 1 ? " " : ""}
+                {index < HEADLINE_WORDS.length - 1 ? " " : ""}
               </span>
             ))}
           </h1>
