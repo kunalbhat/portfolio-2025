@@ -1,12 +1,9 @@
 (function () {
-  // Some browsers don't reliably honor the declarative `autoplay` attribute;
-  // an explicit play() call is a standard, more reliable fallback.
-  document.querySelectorAll(".portfolio-card video").forEach((video) => {
-    video.play().catch(() => {});
-  });
-
   const header = document.getElementById("site-header");
-  const logoLink = document.getElementById("logo-link");
+  const scrollPills = [
+    document.getElementById("logo-link"),
+    document.getElementById("linkedin-link"),
+  ].filter(Boolean);
 
   let isVisible = true;
   let lastScroll = 0;
@@ -14,7 +11,9 @@
 
   function onScroll() {
     const current = window.scrollY || 0;
-    logoLink.classList.toggle("is-scrolled", current > 12);
+    scrollPills.forEach(function (el) {
+      el.toggleAttribute("data-scrolled", current > 12);
+    });
 
     const delta = current - lastScroll;
 
@@ -22,7 +21,7 @@
     if (current < 20) {
       if (!isVisible) {
         isVisible = true;
-        header.classList.remove("site-header--hidden");
+        header.removeAttribute("data-hidden");
       }
       lastHidePosition = current;
       lastScroll = current;
@@ -37,7 +36,7 @@
     // Hide when scrolling down
     if (delta > 0 && isVisible) {
       isVisible = false;
-      header.classList.add("site-header--hidden");
+      header.setAttribute("data-hidden", "");
       lastHidePosition = current;
     }
 
@@ -46,7 +45,7 @@
       const upDistance = lastHidePosition - current;
       if (upDistance >= 120) {
         isVisible = true;
-        header.classList.remove("site-header--hidden");
+        header.removeAttribute("data-hidden");
       }
     }
 
