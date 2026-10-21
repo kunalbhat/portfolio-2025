@@ -1,9 +1,6 @@
 (function () {
   const header = document.getElementById("site-header");
-  const scrollPills = [
-    document.getElementById("logo-link"),
-    document.getElementById("linkedin-link"),
-  ].filter(Boolean);
+  const logoLink = document.getElementById("logo-link");
 
   let isVisible = true;
   let lastScroll = 0;
@@ -11,9 +8,7 @@
 
   function onScroll() {
     const current = window.scrollY || 0;
-    scrollPills.forEach(function (el) {
-      el.toggleAttribute("data-scrolled", current > 12);
-    });
+    logoLink.toggleAttribute("data-scrolled", current > 12);
 
     const delta = current - lastScroll;
 
@@ -53,4 +48,7 @@
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  const year = document.getElementById("copyright-year");
+  if (year) year.textContent = new Date().getFullYear();
 })();
