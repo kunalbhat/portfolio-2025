@@ -12,69 +12,69 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Serif+Text&family=Geist:wght@400;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <script>
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme) document.documentElement.dataset.theme = theme;
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <nav id="site-header">
-      <div>
-        <a href="./index.html" id="logo-link">
-          <span>
-            <img
-              src="./images/avatar.svg"
-              alt=""
-              width="60"
-              height="48"
-            />
-          </span>
-          <span>Kunal Bhat</span>
-        </a>
-      </div>
+      <a href="./index.html" id="logo-link">
+        <svg class="logo" viewBox="-1 -1 10 10" aria-hidden="true">
+          <rect class="logo-bg" x="-1" y="-1" width="10" height="10" />
+          <g class="logo-face">
+            <rect x="2" y="2" width="1" height="2" />
+            <rect x="5" y="2" width="1" height="2" />
+            <rect x="1" y="4" width="1" height="1" />
+            <rect x="6" y="4" width="1" height="1" />
+            <rect x="2" y="5" width="4" height="1" />
+          </g>
+        </svg>
+        <span class="wordmark">Kunal Bhat</span>
+      </a>
+      <button type="button" id="theme-toggle">Light</button>
     </nav>
 
-    <div id="page-container">
-      <main>
-        <header>
-          <h1>
-            Greetings, I'm a Chicago-based visual designer and curious
-            builder.
-          </h1>
-        </header>
-
-        <p>
-          Designing and building go hand in hand for me — I've spent nearly
-          two decades moving between design, product, and engineering, and
-          I'm happiest in the early, 0→1 stretch of making something new.
+    <main>
+      <header>
+        <h1>
+          Greetings, I'm a Chicago-based visual designer and curious builder.
+        </h1>
+        <p class="dek">
+          Multidisciplinary product designer with experience in design,
+          product management, and engineering.
         </p>
-        <p>
+      </header>
+
+      <p class="lede">
+        Designing and building go hand in hand for me — I've spent nearly two
+        decades moving between design, product, and engineering, and I'm
+        happiest in the early, 0→1 stretch of making something new.
+      </p>
+
+      <h2>Elsewhere</h2>
+      <ul class="rows">
+        <li>
           <a
             href="https://www.linkedin.com/in/kunal-s-bhat/"
             target="_blank"
             rel="noopener noreferrer"
-            ><span>LinkedIn</span>
-            <svg
-              viewBox="0 0 16 16"
-              width="16"
-              height="16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M3 8h10M9 4l4 4-4 4" />
-            </svg>
-          </a>
-        </p>
-      </main>
+            >LinkedIn</a
+          >
+          <span class="meta">↗</span>
+        </li>
+      </ul>
+    </main>
 
-      <footer>
-        <span>&copy; <span id="copyright-year">2026</span> Kunal Bhat</span>
-      </footer>
-    </div>
+    <footer>
+      <span>&copy; <span id="copyright-year" class="num">2026</span> Kunal Bhat</span>
+    </footer>
 
     <script src="./script.js"></script>
     <script>

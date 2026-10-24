@@ -11,3 +11,6 @@
 
 # vercel
 .vercel
+
+# next.js build output
+/.next
