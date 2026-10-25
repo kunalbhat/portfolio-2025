@@ -1,18 +1,18 @@
-# Portfolio — Kunal Bhat
+# Kunal Bhat
 
-Personal portfolio for Kunal Bhat, a multidisciplinary product designer with two decades of experience across design, product management, and engineering.
+A small personal website. My name is built as a sculpture of twenty-seven blocks, and you can take it apart a piece at a time.
 
 ## Tech Stack
-Plain static HTML, CSS, and vanilla JavaScript — no framework, no build step, no dependencies.
+Plain static HTML, CSS, and vanilla JavaScript — no framework, no build step. Physics comes from [Matter.js](https://brm.io/matter-js/), vendored in `vendor/`.
+
+- `sculpture.js` — the name sculpture: the letters, their blocks, and how they come apart
+- `script.js` — the light/dark theme toggle
 
 ## Local Development
-Open `index.html` directly in a browser, or serve the directory with any static file server, e.g.:
+Serve the directory with any static file server, e.g.:
 ```bash
-npx serve .
+python3 -m http.server 4173
 ```
 
 ## Deploy
 Push to `main` — Vercel serves this as a static site with zero build configuration.
-
-## About Kunal
-Kunal designs and ships product experiences at the intersection of design, product management, and engineering. He has 20 years of experience and is currently building experiences for millions of families at Aura.

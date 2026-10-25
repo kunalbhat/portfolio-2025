@@ -2,17 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kunal Bhat — Product Designer</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Kunal Bhat</title>
     <meta
       name="description"
-      content="Multidisciplinary product designer with experience in design, product management, and engineering."
+      content="Kunal Bhat's name, built from twenty-seven blocks. You can take it apart."
     />
-    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3E%3Cpath d='M0 4V0a4 4 0 0 1 4 4z' fill='%23365bc5'/%3E%3C/svg%3E"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Serif+Text&family=Geist:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
@@ -24,59 +30,15 @@
     </script>
   </head>
   <body>
-    <nav id="site-header">
-      <a href="./index.html" id="logo-link">
-        <svg class="logo" viewBox="-1 -1 10 10" aria-hidden="true">
-          <rect class="logo-bg" x="-1" y="-1" width="10" height="10" />
-          <g class="logo-face">
-            <rect x="2" y="2" width="1" height="2" />
-            <rect x="5" y="2" width="1" height="2" />
-            <rect x="1" y="4" width="1" height="1" />
-            <rect x="6" y="4" width="1" height="1" />
-            <rect x="2" y="5" width="4" height="1" />
-          </g>
-        </svg>
-        <span class="wordmark">Kunal Bhat</span>
-      </a>
-      <button type="button" id="theme-toggle">Light</button>
-    </nav>
+    <canvas id="sculpture" aria-hidden="true"></canvas>
 
-    <main>
-      <header>
-        <h1>
-          Greetings, I'm a Chicago-based visual designer and curious builder.
-        </h1>
-        <p class="dek">
-          Multidisciplinary product designer with experience in design,
-          product management, and engineering.
-        </p>
-      </header>
+    <a href="./" class="name">Kunal Bhat</a>
+    <button type="button" id="rebuild" class="rebuild">Put it back</button>
 
-      <p class="lede">
-        Designing and building go hand in hand for me — I've spent nearly two
-        decades moving between design, product, and engineering, and I'm
-        happiest in the early, 0→1 stretch of making something new.
-      </p>
+    <div class="floor" aria-hidden="true"></div>
 
-      <h2>Elsewhere</h2>
-      <ul class="rows">
-        <li>
-          <a
-            href="https://www.linkedin.com/in/kunal-s-bhat/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >LinkedIn</a
-          >
-          <span class="meta">↗</span>
-        </li>
-      </ul>
-    </main>
-
-    <footer>
-      <span>&copy; <span id="copyright-year" class="num">2026</span> Kunal Bhat</span>
-    </footer>
-
-    <script src="./script.js"></script>
+    <script src="./vendor/matter.min.js"></script>
+    <script src="./sculpture.js"></script>
     <script>
       window.va =
         window.va ||
