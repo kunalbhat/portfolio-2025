@@ -92,14 +92,21 @@ a:hover {
 
 /* The name sits over the sculpture in the top left corner */
 
-.name {
+.masthead {
   position: absolute;
   top: 28px;
   left: max(var(--gutter), env(safe-area-inset-left));
   font: 500 22.5px/1.5 var(--sans);
   letter-spacing: -0.01em;
-  text-decoration: none;
   -webkit-font-smoothing: antialiased;
+}
+
+.name {
+  text-decoration: none;
+}
+
+.role {
+  margin: 0;
 }
 
 /* Shown once something has been knocked loose */
@@ -148,7 +155,7 @@ a:hover {
     --gutter: 16px;
   }
 
-  .name,
+  .masthead,
   .rebuild {
     top: 20px;
   }

@@ -4,6 +4,7 @@
   const canvas = document.getElementById("sculpture");
   const ctx = canvas.getContext("2d");
   const rebuildButton = document.getElementById("rebuild");
+  const masthead = document.querySelector(".masthead");
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -373,7 +374,10 @@
         (height - below - above) / span.y,
       );
     const wide = fit(ARRANGEMENTS.wide.span, 0);
-    const tall = fit(ARRANGEMENTS.tall.span, narrow ? 56 : 72);
+    const tall = fit(
+      ARRANGEMENTS.tall.span,
+      masthead.getBoundingClientRect().bottom + (narrow ? 12 : 20),
+    );
     const cover = (u, span) => u * u * span.x * span.y;
     const useTall =
       cover(tall, ARRANGEMENTS.tall.span) > cover(wide, ARRANGEMENTS.wide.span);
