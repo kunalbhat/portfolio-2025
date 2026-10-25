@@ -800,10 +800,6 @@
     );
   }
 
-  new MutationObserver(readColors).observe(root, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", readColors);
