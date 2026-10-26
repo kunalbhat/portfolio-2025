@@ -6,6 +6,7 @@
   const rebuildButton = document.getElementById("rebuild");
   const masthead = document.querySelector(".masthead");
   const controls = document.querySelector(".controls");
+  const chain = document.getElementById("theme-pull");
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -367,16 +368,22 @@
   // The sculpture runs as large as it can, in whichever arrangement covers
   // more of the window. Wide stands just above the bottom of the window
   // and reaches the very top, unless its top corners would run under the
-  // name or the buttons, and then it starts below them. Compact is set
+  // name, the button or the light-pull chain, and then it starts below
+  // them. Compact is set
   // with the name as one piece: the name, then the sculpture on its shelf
   // just beneath it, the two together a little above the middle.
   function layout() {
     const narrow = width < 640;
     const below = narrow ? 8 : 12;
-    // The name and buttons go back to their usual place to be measured
+    // The name and button go back to their usual place to be measured
     root.style.removeProperty("--top");
     const name = masthead.getBoundingClientRect();
-    const tools = controls.getBoundingClientRect();
+    const button = controls.getBoundingClientRect();
+    const pull = chain.getBoundingClientRect();
+    const tools = {
+      left: Math.min(button.left, pull.left),
+      bottom: Math.max(button.bottom, pull.bottom),
+    };
 
     const wideSpan = ARRANGEMENTS.wide.span;
     const fit = (above) =>

@@ -27,7 +27,7 @@
 }
 
 /* The same paper in a dim studio: a charcoal wall, warm-grey sheets.
-   Follows the system unless the visitor pressed the button. */
+   Follows the system unless the visitor pulled the chain. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #252427;
@@ -127,23 +127,21 @@ a:hover {
   margin: 0;
 }
 
-/* Two round paper buttons at the top right, level with the name: one that
-   restores the sculpture and one that switches the light. Each is a disc
-   of paper standing just off the wall, with a mark pressed into it;
-   hovered it rises a hair, pressed it sinks into the wall. Each button is
-   48px square around its disc. */
+/* A round paper button at the top right, level with the name and just
+   inside the light-pull chain, restores the sculpture. It is a disc of
+   paper standing just off the wall, with a mark pressed into it; hovered
+   it rises a hair, pressed it sinks into the wall. The button is 48px
+   square around its disc. */
 
 .controls {
   position: absolute;
   /* Centred on the first line of the name */
   top: calc(var(--top) + var(--line) / 2 - 24px);
-  right: max(calc(var(--gutter) - 8px), env(safe-area-inset-right));
+  right: max(calc(var(--gutter) + 32px), calc(env(safe-area-inset-right) + 48px));
   display: flex;
-  gap: 4px;
 }
 
-.restore,
-.theme {
+.restore {
   position: relative;
   display: grid;
   place-items: center;
@@ -157,13 +155,11 @@ a:hover {
   -webkit-tap-highlight-color: transparent;
 }
 
-.restore:focus-visible,
-.theme:focus-visible {
+.restore:focus-visible {
   outline: none;
 }
 
-.restore:focus-visible .tile,
-.theme:focus-visible .tile {
+.restore:focus-visible .tile {
   outline: 2px solid var(--ink);
   outline-offset: 4px;
 }
@@ -204,7 +200,6 @@ a:hover {
 }
 
 @media (hover: hover) {
-  .theme:hover .tile,
   .restore.is-disturbed:hover .tile {
     --rise: 1.35;
   }
@@ -212,7 +207,6 @@ a:hover {
 
 /* Pressed, it goes down into the wall: no shadow below, the wall's edge
    shading it from above */
-.theme:active .tile,
 .restore.is-disturbed:active .tile {
   --rise: 0;
   box-shadow:
@@ -230,30 +224,6 @@ a:hover {
 
 .press-light {
   fill: var(--catch);
-}
-
-/* The light: an open circle by day, half filled by night */
-
-.theme-ring {
-  fill: none;
-  stroke-width: 1.3;
-}
-
-.press-cut .theme-ring {
-  stroke: var(--groove);
-}
-
-.press-light .theme-ring {
-  stroke: var(--catch);
-}
-
-.theme-night {
-  opacity: 0;
-  transition: opacity 200ms 80ms;
-}
-
-.theme[aria-pressed="true"] .theme-night {
-  opacity: 1;
 }
 
 /* The restore tile lies flush with the wall while the sculpture stands,
@@ -317,10 +287,92 @@ a:hover {
 
 @media (prefers-reduced-motion: reduce) {
   .tile,
-  .restore-loose,
-  .theme-night {
+  .restore-loose {
     transition: none;
   }
+}
+
+/* A light-pull chain hanging from the top edge switches the theme: a
+   small ceiling fitting, a chain of beads on a fine link, and a turned
+   weight at the end. theme.js draws the chain at its current length and
+   leans the whole thing after the pointer (--sway). The button is 44px
+   across and reaches 10px below the weight, so it is easy to catch. */
+
+.pull {
+  --sway: 0deg;
+  position: fixed;
+  top: 0;
+  right: max(calc(var(--gutter) - 16px), env(safe-area-inset-right));
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: rotate(var(--sway));
+  transform-origin: 50% 0;
+  transition: color var(--relight);
+}
+
+.pull svg {
+  display: block;
+  overflow: visible;
+}
+
+.pull:focus-visible {
+  outline: none;
+}
+
+/* Flat ink, with light and shade mixed from it so the beads and weight
+   read as round in either theme */
+.pull-solid {
+  fill: currentColor;
+}
+
+.pull-body {
+  stop-color: currentColor;
+}
+
+.pull-shine {
+  stop-color: color-mix(in srgb, currentColor 62%, white);
+}
+
+.pull-shade {
+  stop-color: color-mix(in srgb, currentColor 80%, black);
+}
+
+.pull-link {
+  fill: color-mix(in srgb, currentColor 70%, transparent);
+}
+
+.pull-shine-line {
+  fill: color-mix(in srgb, currentColor 55%, white);
+  opacity: 0.55;
+}
+
+.pull-groove {
+  fill: color-mix(in srgb, currentColor 70%, black);
+  opacity: 0.6;
+}
+
+.pull-focus {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.pull:focus-visible .pull-focus {
+  opacity: 1;
+}
+
+.is-pulling,
+.is-pulling * {
+  cursor: grabbing !important;
 }
 
 /* The edge of the shelf the sculpture stands on, set by sculpture.js */
