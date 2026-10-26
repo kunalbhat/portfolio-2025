@@ -5,6 +5,7 @@
   const ctx = canvas.getContext("2d");
   const rebuildButton = document.getElementById("rebuild");
   const masthead = document.querySelector(".masthead");
+  const controls = document.querySelector(".controls");
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -364,7 +365,9 @@
 
   // The sculpture stands just above the bottom of the window and runs up
   // as far as it can, in whichever arrangement covers more of it. Wide
-  // reaches the very top; tall leaves room for the name above it.
+  // reaches the very top unless its top corners would run under the name
+  // or the controls, and then it starts below them; tall always leaves
+  // room for them above it.
   function layout() {
     const narrow = width < 640;
     const below = narrow ? 8 : 12;
@@ -373,11 +376,18 @@
         (width - (narrow ? 16 : 64)) / span.x,
         (height - below - above) / span.y,
       );
-    const wide = fit(ARRANGEMENTS.wide.span, 0);
-    const tall = fit(
-      ARRANGEMENTS.tall.span,
-      masthead.getBoundingClientRect().bottom + (narrow ? 12 : 20),
-    );
+    const name = masthead.getBoundingClientRect();
+    const tools = controls.getBoundingClientRect();
+    const clear = Math.max(name.bottom, tools.bottom) + (narrow ? 12 : 20);
+    const reach = fit(ARRANGEMENTS.wide.span, 0);
+    // The K's stem and the N's long stem stand at the top corners
+    const left = width / 2 - 6 * reach;
+    const right = width / 2 + 6.5 * reach;
+    const wide =
+      name.right + 12 > left || tools.left - 12 < right
+        ? fit(ARRANGEMENTS.wide.span, clear)
+        : reach;
+    const tall = fit(ARRANGEMENTS.tall.span, clear);
     const cover = (u, span) => u * u * span.x * span.y;
     const useTall =
       cover(tall, ARRANGEMENTS.tall.span) > cover(wide, ARRANGEMENTS.wide.span);
@@ -417,7 +427,7 @@
     Composite.clear(engine.world, false);
     untouched = true;
     rebuild = null;
-    rebuildButton.classList.remove("is-shown");
+    disturbed(false);
     layout();
 
     const letterNames = [...new Set(arrangement.letters)];
@@ -677,7 +687,7 @@
     const piece = pieceAt(point);
     if (!piece) return;
     untouched = false;
-    rebuildButton.classList.add("is-shown");
+    disturbed(true);
     pullOut(piece, point);
   });
 
@@ -704,7 +714,7 @@
 
   function putBack() {
     if (rebuild) return;
-    rebuildButton.classList.remove("is-shown");
+    disturbed(false);
     if (reducedMotion.matches) return build();
 
     pieces.forEach(function (piece) {
@@ -735,7 +745,16 @@
     };
   }
 
-  rebuildButton.addEventListener("click", putBack);
+  // The restore tile rises from the wall once something has been knocked
+  // loose, and sinks flush again as the sculpture goes back together
+  function disturbed(on) {
+    rebuildButton.classList.toggle("is-disturbed", on);
+    rebuildButton.setAttribute("aria-disabled", String(!on));
+  }
+
+  rebuildButton.addEventListener("click", function () {
+    if (rebuildButton.getAttribute("aria-disabled") !== "true") putBack();
+  });
 
   function carry(now) {
     let travelling = false;
@@ -928,12 +947,11 @@
       dx: Math.cos(angle) * reach,
       dy: Math.sin(angle) * reach,
       rise: 0.003 * day + 0.014 * dusk,
-      highlight: 0.75 * day + 0.2 * dusk,
+      highlight: 0.45 * day + 0.12 * dusk,
       highlightColor: lamp(1),
       lip: lamp(0.5 * day + 0.12 * dusk),
-      contact: shade(0.32 + 0.22 * dusk),
+      contact: shade(0.27 + 0.2 * dusk),
       ambient: shade(0.1 + 0.16 * dusk),
-      occlusion: shade(0.07 + 0.1 * dusk),
       pit: shade(0.4 + 0.2 * dusk),
       pool: lamp(0.06 * day + 0.07 * dusk),
       falloff: shade(0.05 + 0.26 * dusk),
@@ -1031,15 +1049,25 @@
   const paint = (tone, dl) =>
     `hsl(${tone.h} ${tone.s * 100}% ${Math.max(0, Math.min(1, tone.l + dl)) * 100}%)`;
 
+  // How far a piece stands out from the wall, from nearly flush (0) to
+  // well off it (1). Edges are defined by depth: a piece barely lifted
+  // leaves a seam you can hardly see, a higher one a firmer shadow and a
+  // brighter edge.
+  function standing(piece) {
+    return Math.min(1, Math.max(0, (elevation(piece) - 0.6) / 1.8));
+  }
+
   // The shadow a piece throws on whatever is below it, as the shadow of a
-  // fill that the piece's face then covers. A raised sheet throws a tight,
-  // dark shadow away from the lamp where it leaves the surface, a short
-  // ambient one that lengthens with its height, and a faint occlusion close
-  // all round. A fold rests its edges on the sheet, so it throws only the
-  // tight shadow; its depth is in its shaded face.
+  // fill that the piece's face then covers. A raised sheet throws a tight
+  // shadow away from the lamp where it leaves the surface and a short
+  // ambient one that lengthens with its height, both firmer the further it
+  // stands out. A fold rests its edges on the sheet, so it throws only the
+  // tight shadow, at full strength; its depth is in its shaded face.
   function castShadow(piece, poly) {
     const h = elevation(piece);
-    const cast = function (color, blur, distance) {
+    const s = standing(piece);
+    const cast = function (color, strength, blur, distance) {
+      ctx.globalAlpha = strength;
       ctx.shadowColor = color;
       ctx.shadowBlur = blur * lit.u;
       ctx.shadowOffsetX = distance * lit.dx * lit.u;
@@ -1051,14 +1079,14 @@
     trace(poly);
     ctx.fillStyle = "#000";
     if (piece.crease && !piece.lift) {
-      cast(lit.contact, 0.018, 0.014);
+      cast(lit.contact, 1, 0.024, 0.014);
     } else {
-      cast(lit.ambient, 0.04 + 0.025 * h, 0.035 * h);
-      cast(lit.contact, 0.012 + 0.006 * h, 0.016 * h);
-      cast(lit.occlusion, 0.02, 0);
+      cast(lit.ambient, 0.5 + 0.5 * s, 0.05 + 0.03 * h, 0.035 * h);
+      cast(lit.contact, 0.3 + 0.7 * s, 0.016 + 0.008 * h, 0.016 * h);
     }
     ctx.restore();
   }
+
 
   // Filled with a hairline of the same colour round it, which closes the
   // gaps antialiasing would otherwise leave where pieces meet
@@ -1085,10 +1113,11 @@
       if (facing > 0.15) buckets[Math.min(3, Math.floor(facing * 4))].push(edge);
     });
     ctx.strokeStyle = lit.highlightColor;
-    ctx.lineWidth = 1.6;
+    ctx.lineWidth = 1;
     buckets.forEach(function (edges, k) {
       if (!edges.length) return;
-      ctx.globalAlpha = lit.highlight * (k + 1) / 4;
+      ctx.globalAlpha =
+        (lit.highlight * (0.35 + 0.65 * standing(piece)) * (k + 1)) / 4;
       ctx.beginPath();
       edges.forEach(function ({ a, b }) {
         ctx.moveTo(a.x, a.y);
@@ -1210,6 +1239,18 @@
 
   let lit = null;
 
+  // The page's controls are paper under the same lamp, so they are told
+  // where it is, in the same units their shadows are drawn in
+  let lampShared = "";
+  function shareLamp() {
+    const x = lit.dx.toFixed(2);
+    const y = lit.dy.toFixed(2);
+    if (x + y === lampShared) return;
+    lampShared = x + y;
+    root.style.setProperty("--lamp-x", x);
+    root.style.setProperty("--lamp-y", y);
+  }
+
   // The light is costly to draw, so once everything has come to rest, with
   // nothing curling and no colour turning, the picture is left as it is
   // until something changes
@@ -1239,6 +1280,7 @@
     aim.x += (aimTo.x - aim.x) * 0.08;
     aim.y += (aimTo.y - aim.y) * 0.08;
     lit = light();
+    shareLamp();
     pieces.forEach(animate);
     pieces.filter(displaced).forEach(drawCut);
     // Lowest first, a level at a time: within a level every shadow goes

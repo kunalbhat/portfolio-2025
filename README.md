@@ -6,7 +6,7 @@ A small personal website. My name is cut and folded from paper, lit by one lamp,
 Plain static HTML, CSS, and vanilla JavaScript — no framework, no build step. Physics comes from [Matter.js](https://brm.io/matter-js/), vendored in `vendor/`.
 
 - `sculpture.js` — the name sculpture: the letters, their pieces, how they are lit, and how they come apart
-- `theme.js` — the pull chain in the top right corner that switches light and dark
+- `theme.js` — the round paper button in the top right corner that changes light and dark
 
 ## Local Development
 Serve the directory with any static file server, e.g.:

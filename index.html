@@ -36,86 +36,53 @@
       <a href="./" class="name">Kunal Bhat</a>
       <p class="role">Designer</p>
     </header>
-    <button type="button" id="rebuild" class="rebuild">Put it back</button>
-    <button type="button" id="theme-pull" class="pull">
-      <svg width="44" height="106" viewBox="0 0 44 106" aria-hidden="true">
-        <defs>
-          <radialGradient id="pull-bead" cx="0.36" cy="0.32" r="0.7">
-            <stop offset="0" class="pull-shine" />
-            <stop offset="0.55" class="pull-body" />
-            <stop offset="1" class="pull-shade" />
-          </radialGradient>
-          <linearGradient id="pull-turned" x1="0" x2="1">
-            <stop offset="0" class="pull-shine" />
-            <stop offset="0.3" class="pull-body" />
-            <stop offset="0.78" class="pull-body" />
-            <stop offset="1" class="pull-shade" />
-          </linearGradient>
-          <pattern
-            id="pull-beads"
-            width="44"
-            height="6.5"
-            patternUnits="userSpaceOnUse"
-          >
-            <rect class="pull-link" x="21.5" y="0" width="1" height="6.5" />
-            <circle cx="22" cy="3.25" r="2.3" fill="url(#pull-bead)" />
-          </pattern>
-        </defs>
-        <rect
-          class="pull-chain"
-          x="19"
-          y="8"
-          width="6"
-          height="60"
-          fill="url(#pull-beads)"
-        />
-        <g class="pull-socket">
-          <rect class="pull-solid" x="12" y="-3" width="20" height="7" rx="2.5" />
-          <rect
-            class="pull-solid"
-            x="18.5"
-            y="3"
-            width="7"
-            height="5"
-            rx="1.2"
-          />
-          <rect class="pull-shine-line" x="19.5" y="4" width="1.2" height="3" />
-        </g>
-        <g class="pull-weight" transform="translate(22 72)">
-          <g class="pull-handle">
-            <rect
-              class="pull-solid"
-              x="-2"
-              y="-4.5"
-              width="4"
-              height="5"
-              rx="1"
-            />
-            <path
-              fill="url(#pull-turned)"
-              d="M -2.4 0 C -5 0.5 -6 3.6 -6 8.5 L -6 19 Q -6 24 -1.6 24 L 1.6 24 Q 6 24 6 19 L 6 8.5 C 6 3.6 5 0.5 2.4 0 Z"
-            />
-            <rect class="pull-groove" x="-6" y="11" width="12" height="1" />
-            <rect
-              class="pull-shine-line"
-              x="-4.4"
-              y="13.5"
-              width="1.3"
-              height="7.5"
-              rx="0.65"
-            />
-            <rect
-              class="pull-focus"
-              x="-9"
-              y="-7.5"
-              width="18"
-              height="34.5"
-              rx="5"
-            />
-          </g>
-        </g>
-      </svg>
-    </button>
+    <div class="controls">
+      <button
+        type="button"
+        id="rebuild"
+        class="restore"
+        aria-label="Restore composition"
+        aria-disabled="true"
+      >
+        <span class="tile">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <g class="press-light">
+              <rect x="2.5" y="2.5" width="5" height="5" />
+              <rect x="9" y="2.5" width="5" height="5" />
+              <rect x="2.5" y="9" width="5" height="5" />
+              <rect class="restore-loose" x="9" y="9" width="5" height="5" />
+            </g>
+            <g class="press-cut">
+              <rect x="2" y="2" width="5" height="5" />
+              <rect x="8.5" y="2" width="5" height="5" />
+              <rect x="2" y="8.5" width="5" height="5" />
+              <rect class="restore-loose" x="8.5" y="8.5" width="5" height="5" />
+            </g>
+          </svg>
+        </span>
+        <span class="restore-tip" aria-hidden="true">Restore composition</span>
+      </button>
+      <button
+        type="button"
+        id="theme"
+        class="theme"
+        aria-label="Toggle color theme"
+        aria-pressed="false"
+      >
+        <span class="tile tile-round">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <g class="press-light">
+              <circle class="theme-ring" cx="8.5" cy="8.5" r="4" />
+              <path class="theme-night" d="M8.5 4.5 A4 4 0 0 1 8.5 12.5 Z" />
+            </g>
+            <g class="press-cut">
+              <circle class="theme-ring" cx="8" cy="8" r="4" />
+              <path class="theme-night" d="M8 4 A4 4 0 0 1 8 12 Z" />
+            </g>
+          </svg>
+        </span>
+      </button>
+    </div>
 
     <div class="floor" aria-hidden="true"></div>
 
