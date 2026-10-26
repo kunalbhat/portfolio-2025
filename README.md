@@ -1,11 +1,11 @@
 # Kunal Bhat
 
-A small personal website. My name is built as a sculpture of blocks, and you can take it apart a piece at a time.
+A small personal website. My name is cut and folded from paper, lit by one lamp, and you can take it apart a piece at a time.
 
 ## Tech Stack
 Plain static HTML, CSS, and vanilla JavaScript — no framework, no build step. Physics comes from [Matter.js](https://brm.io/matter-js/), vendored in `vendor/`.
 
-- `sculpture.js` — the name sculpture: the letters, their blocks, and how they come apart
+- `sculpture.js` — the name sculpture: the letters, their pieces, how they are lit, and how they come apart
 - `theme.js` — the pull chain in the top right corner that switches light and dark
 
 ## Local Development

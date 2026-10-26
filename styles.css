@@ -1,49 +1,43 @@
 :root {
   color-scheme: light dark;
-  --paper: #f3f0ea;
+  /* The wall, the sheets lifted from it, the recess behind a cut, and the
+     reverse of the paper. sculpture.js lights them. */
+  --paper: #e9e8e4;
+  --sheet: #eeede9;
+  --recess: #d6d3cc;
+  --reverse: #cdd1d6;
   --ink: #34394b;
   --muted: #7b7f8c;
   --rule: #34394b;
-  --block-cobalt: #365bc5;
-  --block-lavender: #a89bd3;
-  --block-coral: #ea8a67;
-  --block-slate: #34394b;
-  --block-bone: #e0d9cc;
-  --block-fog: #c9ccd8;
   --sans: "Instrument Sans", system-ui, sans-serif;
   --gutter: 32px;
   /* The room relights over this; the sculpture follows a beat later */
   --relight: 280ms cubic-bezier(0.3, 0, 0.2, 1);
 }
 
-/* Follows the system unless the visitor pulled the chain */
+/* The same paper in a dim studio: a charcoal wall, warm-grey sheets.
+   Follows the system unless the visitor pulled the chain. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #1b1d25;
-    --ink: #e9e5dd;
-    --muted: #8d90a0;
-    --rule: #e9e5dd;
-    --block-cobalt: #5577dc;
-    --block-lavender: #a89bd3;
-    --block-coral: #ea8a67;
-    --block-slate: #e9e5dd;
-    --block-bone: #474b5b;
-    --block-fog: #5d6580;
+    --paper: #252427;
+    --sheet: #343230;
+    --recess: #1b1a1c;
+    --reverse: #3d424a;
+    --ink: #ebe6de;
+    --muted: #9a948b;
+    --rule: #ebe6de;
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #1b1d25;
-  --ink: #e9e5dd;
-  --muted: #8d90a0;
-  --rule: #e9e5dd;
-  --block-cobalt: #5577dc;
-  --block-lavender: #a89bd3;
-  --block-coral: #ea8a67;
-  --block-slate: #e9e5dd;
-  --block-bone: #474b5b;
-  --block-fog: #5d6580;
+  --paper: #252427;
+  --sheet: #343230;
+  --recess: #1b1a1c;
+  --reverse: #3d424a;
+  --ink: #ebe6de;
+  --muted: #9a948b;
+  --rule: #ebe6de;
 }
 
 :root[data-theme="light"] {
@@ -70,7 +64,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--block-cobalt);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 
@@ -82,7 +76,7 @@ a {
 }
 
 a:hover {
-  color: var(--block-coral);
+  color: var(--muted);
 }
 
 /* The sculpture fills the window */
@@ -141,18 +135,18 @@ a:hover {
 }
 
 .rebuild:hover {
-  color: var(--block-coral);
+  color: var(--muted);
 }
 
-/* The floor the sculpture stands on, set by sculpture.js */
+/* The edge of the shelf the sculpture stands on, set by sculpture.js */
 
 .floor {
   position: absolute;
   top: var(--ground, 75%);
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--rule);
+  height: 1px;
+  background: color-mix(in srgb, var(--rule) 22%, transparent);
   transition: background-color var(--relight);
 }
 
@@ -225,7 +219,7 @@ a:hover {
 
 .pull-focus {
   fill: none;
-  stroke: var(--block-cobalt);
+  stroke: var(--ink);
   stroke-width: 2;
   opacity: 0;
 }

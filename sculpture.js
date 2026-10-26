@@ -120,69 +120,18 @@
     tall: { key: "tall", pieces: TALL, span: { x: 9, y: 20 } },
   };
 
-  // Three colourways for review, one tone per piece in the order above. Each
-  // has one dominant colour, one supporting, a sparing accent and neutrals,
-  // laid across the whole sculpture rather than letter by letter. Choose
-  // one with ?colorway=name in the address, or press 1, 2 or 3.
-  //
-  //   c cobalt  l lavender  o coral  s slate  b bone  f fog
-  const TONES = {
-    c: "cobalt",
-    l: "lavender",
-    o: "coral",
-    s: "slate",
-    b: "bone",
-    f: "fog",
-  };
-  // Each arrangement has its own, as the neighbours differ.
-  const COLORWAYS = {
-    cobalt: {
-      //     H      A        T    A      L    B      K      U      N
-      wide: "s c b  s s b l  s c  s b l  c c  s l b  c l o  l c b  c s c",
-      tall: "s c b  s s b l  s c  s b l  l l  s l b  c l o  l c b  s s c  c",
-    },
-    lavender: {
-      wide: "l l o  b b f l  s c  l b l  c s  l l f  c l l  c b b  s o l",
-      tall: "s l b  s s b c  s l  s b c  c c  s c b  l c o  c l b  s s l  l",
-    },
-    coral: {
-      wide: "o s b  o o f o  s o  b o o  s f  o b c  s o o  b s o  b o s",
-      tall: "f o b  f f b s  f o  f b s  s s  f s b  o s c  s o b  f f o  o",
-    },
+  // Which letter each piece belongs to, in the order above. The second A
+  // is written a.
+  const LETTERS = {
+    wide: "H H H  A A A A  T T  a a a  L L  B B B  K K K  U U U  N N N",
+    tall: "H H H  A A A A  T T  a a a  L L  B B B  K K K  U U U  N N N  a",
   };
 
-  // Touching pieces of one colour are told apart by a faint shade on one of
-  // them, so the joints still show where colours run together
-  function touches(a, b) {
-    const across = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
-    const along = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
-    return (
-      (Math.abs(across) < 1e-9 && along > 1e-9) ||
-      (Math.abs(along) < 1e-9 && across > 1e-9)
-    );
-  }
-
-  function colorway(name, key) {
-    const list = ARRANGEMENTS[key].pieces;
-    const tones = COLORWAYS[name][key]
-      .trim()
-      .split(/\s+/)
-      .map((t) => TONES[t]);
-    const shaded = [];
-    list.forEach(function (p, i) {
-      shaded[i] = list.some(
-        (q, j) =>
-          j < i && tones[j] === tones[i] && !shaded[j] && touches(p, q),
-      );
-    });
-    return { tones, shaded };
-  }
-
-  const COLORWAY_NAMES = Object.keys(COLORWAYS);
-  let colorwayName =
-    COLORWAY_NAMES.find(
-      (name) => name === new URLSearchParams(location.search).get("colorway"),
-    ) || COLORWAY_NAMES[0];
+  // Everything is paper, in a few close tones read from the stylesheet:
+  // the wall, the sheets lifted from it, the recess under the wall where a
+  // sheet has been taken out, and the reverse of a sheet, seen only where
+  // a corner curls
+  const TONES = ["paper", "sheet", "recess", "reverse"];
 
   // Heavy, dead blocks: no bounce, lots of grip, a little air drag. Static
   // friction much above sliding friction lets a contact store sideways
@@ -226,7 +175,6 @@
   let colors = {};
   let thud = 0;
   let arrangement = ARRANGEMENTS.wide;
-  let palette = null;
   let hovered = null;
 
   function arc(r, d) {
@@ -334,12 +282,26 @@
     };
   }
 
+  // The diagonal strokes are folded: a quarter along the radius that halves
+  // it, a wedge from its square corner to the middle of its long side, so
+  // each is a ridge with one face turned to the light and one away
+  function creaseOf(p) {
+    if (p.cut !== "quarter" && p.cut !== "wedge") return null;
+    const sx = p.corner[1] === "l" ? 1 : -1;
+    const sy = p.corner[0] === "b" ? 1 : -1;
+    const from = { x: p.x + (sx > 0 ? 0 : p.w), y: p.y + (sy > 0 ? 0 : p.h) };
+    if (p.cut === "wedge") return [from, { x: p.x + p.w / 2, y: p.y + p.h / 2 }];
+    const reach = p.w / Math.SQRT2;
+    return [from, { x: from.x + sx * reach, y: from.y + sy * reach }];
+  }
+
   // Outline for drawing, plus convex slices for the physics, in grid units
   function shapeOf(p) {
     const prof = profile(p);
     const fine = edgesOf(p, prof, 48);
     const outline = dedupe(fine.top.concat(fine.bottom.slice().reverse()));
-    if (prof.convex) return { outline, slices: [outline] };
+    const crease = creaseOf(p);
+    if (prof.convex) return { outline, slices: [outline], crease };
 
     // The physics gets a coarser cut into as few slices as stay convex.
     // Matter resolves every part's contacts on its own, and a body made of
@@ -355,11 +317,49 @@
       if (slice.length >= 3) slices.push(slice);
       start = i;
     }
-    return { outline, slices };
+    return { outline, slices, crease };
+  }
+
+  // Each letter is cut from the sheet and lifted to its own height, so its
+  // pieces read as one continuous piece of paper and neighbouring letters
+  // are told apart by the shadow one casts on the other. Heights are dealt
+  // out so no two letters that touch share one. Folded pieces stand a
+  // little proud of their letter.
+  const HEIGHTS = [1, 1.9, 1.45, 2.4];
+  const FOLD_HEIGHT = 0.4;
+
+  function boxesTouch(a, b) {
+    const across = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+    const along = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+    return across > -1e-9 && along > -1e-9 && (across > 1e-9 || along > 1e-9);
+  }
+
+  function heightsOf(list, letters) {
+    const names = [...new Set(letters)];
+    const near = {};
+    names.forEach((n) => (near[n] = new Set()));
+    list.forEach(function (a, i) {
+      list.forEach(function (b, j) {
+        if (letters[i] !== letters[j] && boxesTouch(a, b)) {
+          near[letters[i]].add(letters[j]);
+        }
+      });
+    });
+    const height = {};
+    names
+      .slice()
+      .sort((a, b) => near[b].size - near[a].size)
+      .forEach(function (n) {
+        const taken = [...near[n]].map((m) => height[m]);
+        height[n] = HEIGHTS.find((h) => !taken.includes(h)) || HEIGHTS[0];
+      });
+    return height;
   }
 
   Object.values(ARRANGEMENTS).forEach(function (arrangement) {
     arrangement.shapes = arrangement.pieces.map(shapeOf);
+    arrangement.letters = LETTERS[arrangement.key].trim().split(/\s+/);
+    arrangement.heights = heightsOf(arrangement.pieces, arrangement.letters);
   });
 
   // The sculpture stands just above the bottom of the window and runs up
@@ -413,26 +413,35 @@
   }
 
   function build() {
+    drawn = false;
     Composite.clear(engine.world, false);
     untouched = true;
     rebuild = null;
     rebuildButton.classList.remove("is-shown");
     layout();
-    palette = colorway(colorwayName, arrangement.key);
 
+    const letterNames = [...new Set(arrangement.letters)];
     pieces = arrangement.shapes.map(function (shape, i) {
       const body = makeBody(shape);
       // Pinned after creation so Matter remembers the real mass for later
       Body.setStatic(body, true);
+      const letter = arrangement.letters[i];
+      const outline = shape.outline.map(toWorld);
       return {
         index: i,
         body,
-        outline: shape.outline.map(toWorld),
+        outline,
+        crease: shape.crease && shape.crease.map(toWorld),
+        corner: shape.crease ? null : peelCorner(outline),
+        height:
+          arrangement.heights[letter] + (shape.crease ? FOLD_HEIGHT : 0),
+        // Each letter's paper is a hair lighter or darker than the next
+        tint: ((letterNames.indexOf(letter) * 3) % 5) - 2,
         origin: { x: body.position.x, y: body.position.y },
         held: true,
         front: false,
         lift: 0,
-        rattle: 0,
+        raise: 0,
       };
     });
 
@@ -453,6 +462,46 @@
       Body.setStatic(wall, true);
     });
     Composite.add(engine.world, walls.concat(pieces.map((p) => p.body)));
+    pieces.forEach((piece) => (piece.edges = exposedEdges(piece)));
+  }
+
+  // The edges of a piece that stand clear: not against a piece standing as
+  // high or higher, where the paper meets paper rather than air. Only these
+  // catch the lamp, so a letter's pieces meet without a seam.
+  function exposedEdges(piece) {
+    const { outline } = piece;
+    const step = unit * 0.06;
+    const edges = [];
+    outline.forEach(function (start, i) {
+      const end = outline[(i + 1) % outline.length];
+      const len = Math.hypot(end.x - start.x, end.y - start.y);
+      if (len < 1e-6) return;
+      // Long sides are judged a short length at a time, as only part of
+      // one may be against another piece
+      const parts = Math.ceil(len / (unit * 0.2));
+      for (let k = 0; k < parts; k++) {
+        const at = (t) => ({
+          x: start.x + (end.x - start.x) * t,
+          y: start.y + (end.y - start.y) * t,
+        });
+        const a = at(k / parts);
+        const b = at((k + 1) / parts);
+        const mid = at((k + 0.5) / parts);
+        let n = { x: (b.y - a.y) / (len / parts), y: -(b.x - a.x) / (len / parts) };
+        if (contains(outline, mid.x + n.x * step, mid.y + n.y * step)) {
+          n = { x: -n.x, y: -n.y };
+        }
+        const out = { x: mid.x + n.x * step, y: mid.y + n.y * step };
+        const covered = pieces.some(
+          (other) =>
+            other !== piece &&
+            other.height >= piece.height - 1e-6 &&
+            contains(other.outline, out.x, out.y),
+        );
+        if (!covered) edges.push({ a, b, n });
+      }
+    });
+    return edges;
   }
 
   // Where a piece is right now, in screen space
@@ -774,8 +823,8 @@
     return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
   }
 
-  // Tones are drawn as hue, saturation and lightness so a hovered piece can
-  // be turned a little way round the colour wheel
+  // Tones are drawn as hue, saturation and lightness so the light can
+  // brighten or deepen them
   function hslOf([r, g, b]) {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
@@ -801,10 +850,11 @@
   let turn = null;
 
   function readColors() {
+    drawn = false;
     const style = getComputedStyle(root);
     const target = {};
-    Object.values(TONES).forEach(function (tone) {
-      target[tone] = rgbOf(style.getPropertyValue("--block-" + tone).trim());
+    TONES.forEach(function (tone) {
+      target[tone] = rgbOf(style.getPropertyValue("--" + tone).trim());
     });
     if (!shown || reducedMotion.matches) {
       shown = target;
@@ -839,42 +889,345 @@
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", readColors);
 
-  function drawPiece(piece) {
-    const { body, origin, outline, index } = piece;
-    // Brought forward, a piece reads a touch larger, as if nearer
+  // One lamp lights the whole sheet from up and to the left. Every sheet
+  // stands some height off the wall and catches a little more of the lamp
+  // the higher it stands; its shadow falls away from the lamp, a little
+  // longer the higher it is, and its clear edges facing the lamp catch a
+  // fine line of light. Folds turn one face toward the lamp and one away.
+  // Cuts sink below the wall, shadowed on the lamp's side and catching it
+  // on the far wall. The pointer nudges the lamp a little, which moves the
+  // light and never the paper. The dark theme is the same paper in a dim
+  // studio: a softer, warmer lamp, a charcoal wall, and the sheets standing
+  // out from it by the light they catch. Canvas shadows ignore the
+  // transform, so the light stays put however a piece turns.
+  const LAMP = Math.atan2(0.85, 0.52);
+  let aim = { x: 0, y: 0 };
+  let aimTo = { x: 0, y: 0 };
+
+  window.addEventListener("pointermove", function (event) {
+    if (event.pointerType !== "mouse" || reducedMotion.matches) return;
+    aimTo = {
+      x: (event.clientX / width) * 2 - 1,
+      y: (event.clientY / height) * 2 - 1,
+    };
+  });
+
+  function light() {
+    // How bright the room is, read from the wall itself, so the light
+    // turns with the colours when the theme changes
+    const day = Math.min(1, Math.max(0, (colors.paper.l - 0.2) / 0.7));
+    const dusk = 1 - day;
+    const angle = LAMP + 0.2 * aim.x;
+    const reach = (1 + 0.3 * dusk) * (1 + 0.2 * aim.y);
+    const lamp = (a) =>
+      `rgba(255, ${Math.round(255 - 18 * dusk)}, ${Math.round(255 - 44 * dusk)}, ${a})`;
+    const shade = (a) =>
+      `rgba(${Math.round(18 - 8 * dusk)}, ${Math.round(20 - 10 * dusk)}, ${Math.round(28 - 19 * dusk)}, ${a})`;
+    return {
+      u: unit * (window.devicePixelRatio || 1),
+      dx: Math.cos(angle) * reach,
+      dy: Math.sin(angle) * reach,
+      rise: 0.003 * day + 0.014 * dusk,
+      highlight: 0.75 * day + 0.2 * dusk,
+      highlightColor: lamp(1),
+      lip: lamp(0.5 * day + 0.12 * dusk),
+      contact: shade(0.32 + 0.22 * dusk),
+      ambient: shade(0.1 + 0.16 * dusk),
+      occlusion: shade(0.07 + 0.1 * dusk),
+      pit: shade(0.4 + 0.2 * dusk),
+      pool: lamp(0.06 * day + 0.07 * dusk),
+      falloff: shade(0.05 + 0.26 * dusk),
+      fold: 0.045 + 0.03 * dusk,
+    };
+  }
+
+  // How far a piece stands off the wall: its letter's height, more when
+  // the pointer is over it, and a good deal more once knocked forward
+  function elevation(piece) {
+    return piece.height + 0.6 * piece.raise + 2.5 * piece.lift;
+  }
+
+  // A piece under the pointer lifts a little and curls up a corner, slowly
+  // and stiffly, as paper would
+  function animate(piece) {
     piece.lift += ((piece.front ? 1 : 0) - piece.lift) * 0.2;
+    const to = piece === hovered && piece.held && !rebuild ? 1 : 0;
+    piece.raise = reducedMotion.matches
+      ? to
+      : piece.raise + (to - piece.raise) * 0.14;
+  }
+
+  // The corner a hovered piece curls up from is the one furthest from the
+  // lamp, and it folds back along a line square to the diagonal
+  const CURL = { x: -Math.SQRT1_2, y: -Math.SQRT1_2 };
+
+  function peelCorner(outline) {
+    const corner = outline.reduce((best, pt) =>
+      pt.x + pt.y > best.x + best.y ? pt : best,
+    );
+    const depth = Math.max(
+      ...outline.map(
+        (pt) => (pt.x - corner.x) * CURL.x + (pt.y - corner.y) * CURL.y,
+      ),
+    );
+    return { ...corner, reach: Math.min(0.6 * unit, 0.4 * depth) };
+  }
+
+  // The part of a polygon on the side of a line where `side` is positive
+  function clip(poly, side) {
+    const out = [];
+    poly.forEach(function (a, i) {
+      const b = poly[(i + 1) % poly.length];
+      const sa = side(a);
+      const sb = side(b);
+      if (sa >= 0) out.push(a);
+      if (sa >= 0 !== sb >= 0) {
+        const t = sa / (sa - sb);
+        out.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+      }
+    });
+    return out;
+  }
+
+  // A curled corner: what is left of the face, and the corner turned back
+  // over it, showing the paper's reverse
+  function peelOf(piece) {
+    const { corner, outline } = piece;
+    const d = corner && piece.raise * corner.reach;
+    if (!d || d < 0.5) return null;
+    const along = (pt) =>
+      (pt.x - corner.x) * CURL.x + (pt.y - corner.y) * CURL.y;
+    const flap = clip(outline, (pt) => d - along(pt)).map(function (pt) {
+      const t = 2 * (d - along(pt));
+      return { x: pt.x + t * CURL.x, y: pt.y + t * CURL.y };
+    });
+    return {
+      face: clip(outline, (pt) => along(pt) - d),
+      flap,
+      fold: { x: corner.x + d * CURL.x, y: corner.y + d * CURL.y },
+      tip: { x: corner.x + 2 * d * CURL.x, y: corner.y + 2 * d * CURL.y },
+    };
+  }
+
+  // Sets the canvas to the piece's pose, in the coordinates its outline was
+  // built in
+  function pose(piece) {
+    const { body, origin } = piece;
     const scale = 1 + 0.03 * piece.lift;
-    // A piece under the pointer rattles a little in place, as if loose, and
-    // its colour turns slightly, both easing in and out so nothing jumps.
-    // Drawing only; the body stays put.
-    const over = piece === hovered && piece.held && !rebuild;
-    piece.rattle += ((over ? 1 : 0) - piece.rattle) * 0.06;
-    const now = performance.now();
-    const wobble = reducedMotion.matches
-      ? 0
-      : piece.rattle *
-        (0.009 * Math.sin(now * 0.016) + 0.003 * Math.sin(now * 0.0255));
-    ctx.save();
     ctx.translate(body.position.x, body.position.y);
-    ctx.rotate(body.angle + wobble);
+    ctx.rotate(body.angle);
     ctx.scale(scale, scale);
     ctx.translate(-origin.x, -origin.y);
+  }
+
+  function trace(poly) {
     ctx.beginPath();
-    outline.forEach((pt, i) =>
+    poly.forEach((pt, i) =>
       i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y),
     );
     ctx.closePath();
-    // Neutrals have next to no hue to turn, so a touch of light shows theirs
-    const tone = colors[palette.tones[index]];
-    const hue = tone.h + 12 * piece.rattle;
-    const light = tone.l + 0.025 * piece.rattle;
-    ctx.fillStyle = `hsl(${hue} ${tone.s * 100}% ${light * 100}%)`;
+  }
+
+  const paint = (tone, dl) =>
+    `hsl(${tone.h} ${tone.s * 100}% ${Math.max(0, Math.min(1, tone.l + dl)) * 100}%)`;
+
+  // The shadow a piece throws on whatever is below it, as the shadow of a
+  // fill that the piece's face then covers. A raised sheet throws a tight,
+  // dark shadow away from the lamp where it leaves the surface, a short
+  // ambient one that lengthens with its height, and a faint occlusion close
+  // all round. A fold rests its edges on the sheet, so it throws only the
+  // tight shadow; its depth is in its shaded face.
+  function castShadow(piece, poly) {
+    const h = elevation(piece);
+    const cast = function (color, blur, distance) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = blur * lit.u;
+      ctx.shadowOffsetX = distance * lit.dx * lit.u;
+      ctx.shadowOffsetY = distance * lit.dy * lit.u;
+      ctx.fill();
+    };
+    ctx.save();
+    pose(piece);
+    trace(poly);
+    ctx.fillStyle = "#000";
+    if (piece.crease && !piece.lift) {
+      cast(lit.contact, 0.018, 0.014);
+    } else {
+      cast(lit.ambient, 0.04 + 0.025 * h, 0.035 * h);
+      cast(lit.contact, 0.012 + 0.006 * h, 0.016 * h);
+      cast(lit.occlusion, 0.02, 0);
+    }
+    ctx.restore();
+  }
+
+  // Filled with a hairline of the same colour round it, which closes the
+  // gaps antialiasing would otherwise leave where pieces meet
+  function fillSealed(color) {
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
     ctx.fill();
-    if (palette.shaded[index]) {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
+    ctx.stroke();
+  }
+
+  // The clear edges that face the lamp, each as bright as it squarely
+  // faces it, inside the face so nothing is cast onto the paper around
+  function highlightEdges(piece) {
+    const { angle } = piece.body;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const reach = Math.hypot(lit.dx, lit.dy);
+    const buckets = [[], [], [], []];
+    piece.edges.forEach(function (edge) {
+      const nx = edge.n.x * cos - edge.n.y * sin;
+      const ny = edge.n.x * sin + edge.n.y * cos;
+      const facing = -(nx * lit.dx + ny * lit.dy) / reach;
+      if (facing > 0.15) buckets[Math.min(3, Math.floor(facing * 4))].push(edge);
+    });
+    ctx.strokeStyle = lit.highlightColor;
+    ctx.lineWidth = 1.6;
+    buckets.forEach(function (edges, k) {
+      if (!edges.length) return;
+      ctx.globalAlpha = lit.highlight * (k + 1) / 4;
+      ctx.beginPath();
+      edges.forEach(function ({ a, b }) {
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+      });
+      ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function drawFace(piece, curl) {
+    const tone = colors.sheet;
+    const dl = 0.004 * piece.tint + lit.rise * elevation(piece);
+    ctx.save();
+    pose(piece);
+    if (piece.crease) {
+      // Each face of the fold is lit by how squarely it turns to the lamp
+      const [a, b] = piece.crease;
+      const len = Math.hypot(b.x - a.x, b.y - a.y);
+      const n = { x: -(b.y - a.y) / len, y: (b.x - a.x) / len };
+      const { angle } = piece.body;
+      const turned = {
+        x: n.x * Math.cos(angle) - n.y * Math.sin(angle),
+        y: n.x * Math.sin(angle) + n.y * Math.cos(angle),
+      };
+      const reach = Math.hypot(lit.dx, lit.dy);
+      const facing = -(turned.x * lit.dx + turned.y * lit.dy) / reach;
+      const side = (pt) => (pt.x - a.x) * n.x + (pt.y - a.y) * n.y;
+      [
+        [clip(piece.outline, side), facing],
+        [clip(piece.outline, (pt) => -side(pt)), -facing],
+      ].forEach(function ([poly, f]) {
+        trace(poly);
+        fillSealed(paint(tone, dl + lit.fold * f));
+      });
+    } else {
+      trace(curl ? curl.face : piece.outline);
+      fillSealed(paint(tone, dl));
+    }
+    ctx.save();
+    trace(curl ? curl.face : piece.outline);
+    ctx.clip();
+    highlightEdges(piece);
+    ctx.restore();
+    if (curl) {
+      // The reverse, darker in the crook of the fold and catching the lamp
+      // toward its tip, with a small shadow on the face below it
+      const under = colors.reverse;
+      const grade = ctx.createLinearGradient(
+        curl.fold.x,
+        curl.fold.y,
+        curl.tip.x,
+        curl.tip.y,
+      );
+      grade.addColorStop(0, paint(under, -0.06));
+      grade.addColorStop(1, paint(under, 0.02));
+      trace(curl.flap);
+      ctx.fillStyle = grade;
+      ctx.shadowColor = lit.contact;
+      ctx.shadowBlur = 0.02 * lit.u;
+      ctx.shadowOffsetX = 0.02 * lit.dx * lit.u;
+      ctx.shadowOffsetY = 0.02 * lit.dy * lit.u;
       ctx.fill();
     }
     ctx.restore();
+  }
+
+  // Where a piece has been taken out, the cut in the wall shows the recess
+  // behind it. The cut's edge on the lamp's side shades the recess below
+  // it, crisply at the edge and fading a short way in, and the far wall of
+  // the cut catches a thin line of the lamp.
+  function drawCut(piece) {
+    const hole = piece.outline;
+    ctx.save();
+    trace(hole);
+    ctx.fillStyle = paint(colors.recess, 0);
+    ctx.fill();
+    ctx.clip();
+    const xs = hole.map((pt) => pt.x);
+    const ys = hole.map((pt) => pt.y);
+    ctx.rect(
+      Math.min(...xs) - unit,
+      Math.min(...ys) - unit,
+      Math.max(...xs) - Math.min(...xs) + 2 * unit,
+      Math.max(...ys) - Math.min(...ys) + 2 * unit,
+    );
+    ctx.fillStyle = "#000";
+    [
+      [lit.ambient, 0.06, 0.07],
+      [lit.pit, 0.012, 0.022],
+      [lit.lip, 0.004, -0.008],
+    ].forEach(function ([color, blur, distance]) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = blur * lit.u;
+      ctx.shadowOffsetX = distance * lit.dx * lit.u;
+      ctx.shadowOffsetY = distance * lit.dy * lit.u;
+      ctx.fill("evenodd");
+    });
+    ctx.restore();
+  }
+
+  // The lamp's pool of light across the whole sheet, falling away from it
+  function shine() {
+    const x = width * (0.2 + 0.1 * aim.x);
+    const y = height * (-0.1 + 0.1 * aim.y);
+    const pool = ctx.createRadialGradient(
+      x,
+      y,
+      0,
+      x,
+      y,
+      Math.hypot(width, height),
+    );
+    pool.addColorStop(0, lit.pool);
+    pool.addColorStop(1, lit.falloff);
+    ctx.fillStyle = pool;
+    ctx.fillRect(0, -thud - 2, width, height + 4);
+  }
+
+  let lit = null;
+
+  // The light is costly to draw, so once everything has come to rest, with
+  // nothing curling and no colour turning, the picture is left as it is
+  // until something changes
+  let drawn = false;
+  function resting() {
+    return (
+      !rebuild &&
+      !turn &&
+      thud < 0.01 &&
+      Math.abs(aim.x - aimTo.x) < 0.002 &&
+      Math.abs(aim.y - aimTo.y) < 0.002 &&
+      pieces.every(
+        (p) =>
+          p.held &&
+          Math.abs(p.raise - (p === hovered && !rebuild ? 1 : 0)) < 0.002 &&
+          Math.abs(p.lift - (p.front ? 1 : 0)) < 0.002,
+      )
+    );
   }
 
   function draw() {
@@ -883,8 +1236,28 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
     ctx.translate(0, thud);
-    pieces.filter((p) => !p.front).forEach(drawPiece);
-    pieces.filter((p) => p.front).forEach(drawPiece);
+    aim.x += (aimTo.x - aim.x) * 0.08;
+    aim.y += (aimTo.y - aim.y) * 0.08;
+    lit = light();
+    pieces.forEach(animate);
+    pieces.filter(displaced).forEach(drawCut);
+    // Lowest first, a level at a time: within a level every shadow goes
+    // down before any face, so pieces of one letter meet without a seam,
+    // and a higher piece's shadow lands on the ones below it
+    const order = pieces
+      .map((piece) => ({ piece, h: elevation(piece), curl: peelOf(piece) }))
+      .sort((a, b) => a.h - b.h);
+    for (let i = 0; i < order.length; ) {
+      let j = i;
+      while (j < order.length && order[j].h - order[i].h < 0.01) j++;
+      const level = order.slice(i, j);
+      level.forEach(({ piece, curl }) =>
+        castShadow(piece, curl ? curl.face : piece.outline),
+      );
+      level.forEach(({ piece, curl }) => drawFace(piece, curl));
+      i = j;
+    }
+    shine();
   }
 
   // Small fixed steps keep a loaded stack from sinking into itself and the
@@ -903,11 +1276,13 @@
     }
     if (rebuild) carry(now);
     thud *= 0.8;
-    draw();
+    if (!drawn || !resting()) draw();
+    drawn = true;
     requestAnimationFrame(frame);
   }
 
   function resize() {
+    drawn = false;
     const dpr = window.devicePixelRatio || 1;
     // Size from the canvas box itself so drawing is never stretched
     const box = canvas.getBoundingClientRect();
@@ -922,16 +1297,6 @@
     // sculpture keeps its arrangement
     if (changedWidth || changedHeight || untouched) build();
   }
-
-  window.addEventListener("keydown", function (event) {
-    const name = COLORWAY_NAMES[event.key - 1];
-    if (!name || event.metaKey || event.ctrlKey || event.altKey) return;
-    colorwayName = name;
-    palette = colorway(name, arrangement.key);
-    const url = new URL(location.href);
-    url.searchParams.set("colorway", name);
-    history.replaceState(null, "", url);
-  });
 
   readColors();
   resize();
