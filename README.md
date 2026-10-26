@@ -6,6 +6,7 @@ A small personal website. My name is built as a sculpture of blocks, and you can
 Plain static HTML, CSS, and vanilla JavaScript — no framework, no build step. Physics comes from [Matter.js](https://brm.io/matter-js/), vendored in `vendor/`.
 
 - `sculpture.js` — the name sculpture: the letters, their blocks, and how they come apart
+- `theme.js` — the pull chain in the top right corner that switches light and dark
 
 ## Local Development
 Serve the directory with any static file server, e.g.:

@@ -12,11 +12,13 @@
   --block-fog: #c9ccd8;
   --sans: "Instrument Sans", system-ui, sans-serif;
   --gutter: 32px;
+  /* The room relights over this; the sculpture follows a beat later */
+  --relight: 280ms cubic-bezier(0.3, 0, 0.2, 1);
 }
 
-/* Follows the system */
+/* Follows the system unless the visitor pulled the chain */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper: #1b1d25;
     --ink: #e9e5dd;
     --muted: #8d90a0;
@@ -28,6 +30,24 @@
     --block-bone: #474b5b;
     --block-fog: #5d6580;
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #1b1d25;
+  --ink: #e9e5dd;
+  --muted: #8d90a0;
+  --rule: #e9e5dd;
+  --block-cobalt: #5577dc;
+  --block-lavender: #a89bd3;
+  --block-coral: #ea8a67;
+  --block-slate: #e9e5dd;
+  --block-bone: #474b5b;
+  --block-fog: #5d6580;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
 }
 
 * {
@@ -44,6 +64,9 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
+  transition:
+    background-color var(--relight),
+    color var(--relight);
 }
 
 :focus-visible {
@@ -96,7 +119,7 @@ a:hover {
 .rebuild {
   position: absolute;
   top: 28px;
-  right: max(var(--gutter), env(safe-area-inset-right));
+  right: calc(max(var(--gutter), env(safe-area-inset-right)) + 40px);
   padding: 0;
   border: 0;
   background: none;
@@ -130,6 +153,90 @@ a:hover {
   right: 0;
   height: 3px;
   background: var(--rule);
+  transition: background-color var(--relight);
+}
+
+/* A light-pull chain hanging from the top edge switches the theme: a
+   small ceiling fitting, a chain of beads on a fine link, and a turned
+   weight at the end. theme.js draws the chain at its current length and
+   leans the whole thing after the pointer (--sway). The button is 44px
+   across and reaches 10px below the weight, so it is easy to catch. */
+
+.pull {
+  --sway: 0deg;
+  position: fixed;
+  top: 0;
+  right: max(calc(var(--gutter) - 16px), env(safe-area-inset-right));
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: rotate(var(--sway));
+  transform-origin: 50% 0;
+  transition: color var(--relight);
+}
+
+.pull svg {
+  display: block;
+  overflow: visible;
+}
+
+.pull:focus-visible {
+  outline: none;
+}
+
+/* Flat ink, with light and shade mixed from it so the beads and weight
+   read as round in either theme */
+.pull-solid {
+  fill: currentColor;
+}
+
+.pull-body {
+  stop-color: currentColor;
+}
+
+.pull-shine {
+  stop-color: color-mix(in srgb, currentColor 62%, white);
+}
+
+.pull-shade {
+  stop-color: color-mix(in srgb, currentColor 80%, black);
+}
+
+.pull-link {
+  fill: color-mix(in srgb, currentColor 70%, transparent);
+}
+
+.pull-shine-line {
+  fill: color-mix(in srgb, currentColor 55%, white);
+  opacity: 0.55;
+}
+
+.pull-groove {
+  fill: color-mix(in srgb, currentColor 70%, black);
+  opacity: 0.6;
+}
+
+.pull-focus {
+  fill: none;
+  stroke: var(--block-cobalt);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.pull:focus-visible .pull-focus {
+  opacity: 1;
+}
+
+.is-pulling,
+.is-pulling * {
+  cursor: grabbing !important;
 }
 
 @media (max-width: 639px) {

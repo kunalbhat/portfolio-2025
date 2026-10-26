@@ -769,13 +769,14 @@
     });
   }
 
-  // Tones are kept as hue, saturation and lightness so a hovered piece can
-  // be turned a little way round the colour wheel
-  function hslOf(hex) {
+  function rgbOf(hex) {
     const n = parseInt(hex.slice(1), 16);
-    const r = (n >> 16) / 255;
-    const g = ((n >> 8) & 255) / 255;
-    const b = (n & 255) / 255;
+    return [(n >> 16) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  }
+
+  // Tones are drawn as hue, saturation and lightness so a hovered piece can
+  // be turned a little way round the colour wheel
+  function hslOf([r, g, b]) {
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const l = (max + min) / 2;
@@ -791,15 +792,49 @@
     return { h: h * 60, s, l };
   }
 
+  // When the theme changes the sculpture's colours turn a beat after the
+  // room around them, and over a little longer, as if the light reaches it
+  // last. A change partway through turns from whatever is showing.
+  const TURN_DELAY = 60;
+  const TURN = 340;
+  let shown = null;
+  let turn = null;
+
   function readColors() {
     const style = getComputedStyle(root);
-    const read = (name) => style.getPropertyValue(name).trim();
-    colors = {};
-    Object.values(TONES).forEach(
-      (tone) => (colors[tone] = hslOf(read("--block-" + tone))),
-    );
+    const target = {};
+    Object.values(TONES).forEach(function (tone) {
+      target[tone] = rgbOf(style.getPropertyValue("--block-" + tone).trim());
+    });
+    if (!shown || reducedMotion.matches) {
+      shown = target;
+      turn = null;
+    } else {
+      turn = { from: shown, to: target, start: performance.now() + TURN_DELAY };
+    }
+    showColors(performance.now());
   }
 
+  function showColors(now) {
+    if (turn) {
+      const t = Math.min(1, Math.max(0, (now - turn.start) / TURN));
+      const e = 1 - Math.pow(1 - t, 3);
+      shown = {};
+      Object.keys(turn.to).forEach(function (tone) {
+        shown[tone] = turn.from[tone].map(
+          (c, i) => c + (turn.to[tone][i] - c) * e,
+        );
+      });
+      if (t === 1) turn = null;
+    }
+    colors = {};
+    Object.keys(shown).forEach((tone) => (colors[tone] = hslOf(shown[tone])));
+  }
+
+  new MutationObserver(readColors).observe(root, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", readColors);
@@ -843,6 +878,7 @@
   }
 
   function draw() {
+    if (turn) showColors(performance.now());
     const dpr = window.devicePixelRatio || 1;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
