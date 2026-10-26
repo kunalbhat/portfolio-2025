@@ -127,18 +127,19 @@ a:hover {
   margin: 0;
 }
 
-/* Two small paper buttons at the top right, level with the name: a round
-   one that switches the light, and a square one that restores the
-   sculpture. Each is a piece of paper standing just off the wall, with a
-   mark pressed into it; hovered it rises a hair, pressed it sinks into the
-   wall. Each button is 44px square around a smaller piece of paper. */
+/* Two round paper buttons at the top right, level with the name: one that
+   restores the sculpture and one that switches the light. Each is a disc
+   of paper standing just off the wall, with a mark pressed into it;
+   hovered it rises a hair, pressed it sinks into the wall. Each button is
+   48px square around its disc. */
 
 .controls {
   position: absolute;
   /* Centred on the first line of the name */
-  top: calc(var(--top) + var(--line) / 2 - 22px);
-  right: max(calc(var(--gutter) - 9px), env(safe-area-inset-right));
+  top: calc(var(--top) + var(--line) / 2 - 24px);
+  right: max(calc(var(--gutter) - 8px), env(safe-area-inset-right));
   display: flex;
+  gap: 4px;
 }
 
 .restore,
@@ -146,8 +147,8 @@ a:hover {
   position: relative;
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   border: 0;
   background: none;
@@ -170,9 +171,9 @@ a:hover {
 .tile {
   --rise: 1;
   display: block;
-  width: 26px;
-  height: 26px;
-  border-radius: 1px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   background: var(--sheet);
   box-shadow:
     calc(var(--lamp-x) * var(--rise) * 1.2px)
@@ -195,15 +196,11 @@ a:hover {
     background-color var(--relight);
 }
 
-.tile-round {
-  border-radius: 50%;
-}
-
 .tile svg {
   display: block;
-  width: 16px;
-  height: 16px;
-  margin: 5px;
+  width: 18px;
+  height: 18px;
+  margin: 7px;
 }
 
 @media (hover: hover) {
@@ -298,7 +295,7 @@ a:hover {
 .restore-tip {
   position: absolute;
   top: 100%;
-  right: 9px;
+  right: 8px;
   font: 500 12px/1 var(--sans);
   letter-spacing: 0.01em;
   color: var(--muted);
