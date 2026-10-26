@@ -12,6 +12,8 @@
   --sans: "Instrument Sans", system-ui, sans-serif;
   --gutter: 32px;
   --top: 28px;
+  --name-size: 22.5px;
+  --line: calc(var(--name-size) * 1.5);
   /* Shadow and catch-light for the controls, which sculpture.js lights
      with the same lamp as the sculpture by setting --lamp-x and -y */
   --shade: rgba(18, 20, 28, 0.32);
@@ -112,7 +114,7 @@ a:hover {
   position: absolute;
   top: var(--top);
   left: max(var(--gutter), env(safe-area-inset-left));
-  font: 500 22.5px/1.5 var(--sans);
+  font: 500 var(--name-size) / 1.5 var(--sans);
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
 }
@@ -134,7 +136,7 @@ a:hover {
 .controls {
   position: absolute;
   /* Centred on the first line of the name */
-  top: calc(var(--top) + 16.875px - 22px);
+  top: calc(var(--top) + var(--line) / 2 - 22px);
   right: max(calc(var(--gutter) - 9px), env(safe-area-inset-right));
   display: flex;
 }
@@ -340,5 +342,6 @@ a:hover {
   :root {
     --gutter: 16px;
     --top: 20px;
+    --name-size: 20px;
   }
 }

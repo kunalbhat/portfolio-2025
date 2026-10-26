@@ -10,7 +10,7 @@
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   // KUNAL BHAT built like a pile of heavy blocks that hold each other up,
-  // in one of two arrangements: wide, for most windows, and tall, for
+  // in one of two arrangements: wide, for most windows, and compact, for
   // phones and other narrow windows.
   //
   // Wide stacks it KUN / ALB / HAT. The A stands on the H and leans out
@@ -19,12 +19,12 @@
   // L, the U spans the L and the B, and the N's long right stem runs down
   // to the T, whose crossbar reaches out past it.
   //
-  // Tall stacks it KU / NA / L / BH / AT with the same pieces, in the same
-  // order. The T's crossbar carries the B and the H, the L's foot spans
-  // them, and the N's long stem stands on the end of the foot. The A runs
-  // its long legs down beside the L onto the H, the U bridges the N and the
-  // A, and the K's arms rest on the flat top of the N's diagonal. The A
-  // needs its own right leg here, added last.
+  // Compact is its own, smaller sculpture with the same rows, built to be
+  // seen whole on a phone: narrower letters with slimmer stems, each row
+  // ten units across. The A stands on the H's stems; the L stands on the A
+  // beside the B, its foot resting on the A's cap; the B rides the A and
+  // the T's crossbar; the K's arms sit on the second A; the U bridges the
+  // L and the B; and the N stands on the B.
   //
   // Pieces are placed on a grid by bounding box, `x` from the left and `y`
   // up from the floor, and coloured by the colourway below.
@@ -76,56 +76,57 @@
     { cut: "rect", x: 12, y: 4, w: 1.5, h: 8 },
   ];
 
-  const TALL = [
-      // H
-      { cut: "rect", x: 4.5, y: 4, w: 1.5, h: 4 },
-      { cut: "rect", x: 7.5, y: 4, w: 1.5, h: 4 },
-      { cut: "rect", x: 6, y: 5.5, w: 1.5, h: 1 },
-      // A
-      { cut: "rect", x: 0, y: 0, w: 1.5, h: 1.25 },
-      { cut: "rect", x: 2.5, y: 0, w: 1.5, h: 1.25 },
-      { cut: "rect", x: 0, y: 1.25, w: 4, h: 0.75 },
-      { cut: "cap", x: 0, y: 2, w: 4, h: 2, r: 0.5 },
-      // T
-      { cut: "rect", x: 5.5, y: 0, w: 1.5, h: 2.5 },
-      { cut: "rect", x: 4, y: 2.5, w: 5, h: 1.5 },
-      // A
-      { cut: "rect", x: 5, y: 8, w: 1.5, h: 5.25 },
-      { cut: "rect", x: 5, y: 13.25, w: 4, h: 0.75 },
-      { cut: "cap", x: 5, y: 14, w: 4, h: 2, r: 0.5 },
-      // L
-      { cut: "rect", x: 0.5, y: 8, w: 4.5, h: 1.25 },
-      { cut: "rect", x: 0.5, y: 9.25, w: 1.5, h: 2.75 },
-      // B
-      { cut: "rect", x: 0.5, y: 4, w: 1.5, h: 4 },
-      { cut: "bowl", x: 2, y: 4, w: 2.5, h: 2 },
-      { cut: "bowl", x: 2, y: 6, w: 2.5, h: 2 },
-      // K
-      { cut: "rect", x: 0, y: 16, w: 1.5, h: 4 },
-      { cut: "quarter", corner: "bl", x: 1.5, y: 16, w: 2, h: 2 },
-      { cut: "quarter", corner: "tl", x: 1.5, y: 18, w: 2, h: 2 },
-      // U
-      { cut: "cradle", x: 3.5, y: 16, w: 4, h: 1.5, r: 0.5 },
-      { cut: "rect", x: 3.5, y: 17.5, w: 1.5, h: 2.5 },
-      { cut: "rect", x: 6, y: 17.5, w: 1.5, h: 2.5 },
-      // N
-      { cut: "rect", x: 0, y: 12, w: 1.5, h: 4 },
-      { cut: "wedge", corner: "tr", x: 1.5, y: 12, w: 2, h: 4 },
-      { cut: "rect", x: 3.5, y: 9.25, w: 1.5, h: 6.75 },
-      // A's right leg, which the L's foot is in the wide arrangement
-      { cut: "rect", x: 7.5, y: 8, w: 1.5, h: 5.25 },
+  const COMPACT = [
+    // H
+    { cut: "rect", x: 0, y: 0, w: 1, h: 4 },
+    { cut: "rect", x: 2.5, y: 0, w: 1, h: 4 },
+    { cut: "rect", x: 1, y: 1.5, w: 1.5, h: 1 },
+    // A
+    { cut: "rect", x: 3.5, y: 0, w: 1, h: 1.25 },
+    { cut: "rect", x: 5.5, y: 0, w: 1, h: 1.25 },
+    { cut: "rect", x: 3.5, y: 1.25, w: 3, h: 0.75 },
+    { cut: "cap", x: 3.5, y: 2, w: 3, h: 2, r: 0.5 },
+    // T
+    { cut: "rect", x: 7.75, y: 0, w: 1, h: 2.5 },
+    { cut: "rect", x: 6.5, y: 2.5, w: 3.5, h: 1.5 },
+
+    // A
+    { cut: "rect", x: 0, y: 4, w: 1, h: 1.25 },
+    { cut: "rect", x: 2, y: 4, w: 1, h: 1.25 },
+    { cut: "rect", x: 0, y: 5.25, w: 3, h: 0.75 },
+    { cut: "cap", x: 0, y: 6, w: 3, h: 2, r: 0.5 },
+    // L
+    { cut: "rect", x: 3, y: 4, w: 1, h: 4 },
+    { cut: "rect", x: 4, y: 4, w: 2, h: 1 },
+    // B
+    { cut: "rect", x: 6, y: 4, w: 1, h: 4 },
+    { cut: "bowl", x: 7, y: 4, w: 3, h: 2 },
+    { cut: "bowl", x: 7, y: 6, w: 3, h: 2 },
+
+    // K
+    { cut: "rect", x: 0, y: 8, w: 1, h: 4 },
+    { cut: "quarter", corner: "bl", x: 1, y: 8, w: 2, h: 2 },
+    { cut: "quarter", corner: "tl", x: 1, y: 10, w: 2, h: 2 },
+    // U
+    { cut: "cradle", x: 3.5, y: 8, w: 3, h: 1.25, r: 0.5 },
+    { cut: "rect", x: 3.5, y: 9.25, w: 1, h: 2.75 },
+    { cut: "rect", x: 5.5, y: 9.25, w: 1, h: 2.75 },
+    // N
+    { cut: "rect", x: 6.5, y: 8, w: 1, h: 4 },
+    { cut: "wedge", corner: "bl", x: 7.5, y: 8, w: 1.5, h: 4 },
+    { cut: "rect", x: 9, y: 8, w: 1, h: 4 },
   ];
 
   const ARRANGEMENTS = {
     wide: { key: "wide", pieces: WIDE, span: { x: 14, y: 12 } },
-    tall: { key: "tall", pieces: TALL, span: { x: 9, y: 20 } },
+    compact: { key: "compact", pieces: COMPACT, span: { x: 10, y: 12 } },
   };
 
   // Which letter each piece belongs to, in the order above. The second A
   // is written a.
   const LETTERS = {
     wide: "H H H  A A A A  T T  a a a  L L  B B B  K K K  U U U  N N N",
-    tall: "H H H  A A A A  T T  a a a  L L  B B B  K K K  U U U  N N N  a",
+    compact: "H H H  A A A A  T T  a a a a  L L  B B B  K K K  U U U  N N N",
   };
 
   // Everything is paper, in a few close tones read from the stylesheet:
@@ -363,39 +364,56 @@
     arrangement.heights = heightsOf(arrangement.pieces, arrangement.letters);
   });
 
-  // The sculpture stands just above the bottom of the window and runs up
-  // as far as it can, in whichever arrangement covers more of it. Wide
-  // reaches the very top unless its top corners would run under the name
-  // or the controls, and then it starts below them; tall always leaves
-  // room for them above it.
+  // The sculpture runs as large as it can, in whichever arrangement covers
+  // more of the window. Wide stands just above the bottom of the window
+  // and reaches the very top, unless its top corners would run under the
+  // name or the buttons, and then it starts below them. Compact is set
+  // with the name as one piece: the name, then the sculpture on its shelf
+  // just beneath it, the two together a little above the middle.
   function layout() {
     const narrow = width < 640;
     const below = narrow ? 8 : 12;
-    const fit = (span, above) =>
-      Math.min(
-        (width - (narrow ? 16 : 64)) / span.x,
-        (height - below - above) / span.y,
-      );
+    // The name and buttons go back to their usual place to be measured
+    root.style.removeProperty("--top");
     const name = masthead.getBoundingClientRect();
     const tools = controls.getBoundingClientRect();
-    const clear = Math.max(name.bottom, tools.bottom) + (narrow ? 12 : 20);
-    const reach = fit(ARRANGEMENTS.wide.span, 0);
+
+    const wideSpan = ARRANGEMENTS.wide.span;
+    const fit = (above) =>
+      Math.min((width - 64) / wideSpan.x, (height - below - above) / wideSpan.y);
+    const reach = fit(0);
     // The K's stem and the N's long stem stand at the top corners
     const left = width / 2 - 6 * reach;
     const right = width / 2 + 6.5 * reach;
     const wide =
       name.right + 12 > left || tools.left - 12 < right
-        ? fit(ARRANGEMENTS.wide.span, clear)
+        ? fit(Math.max(name.bottom, tools.bottom) + 20)
         : reach;
-    const tall = fit(ARRANGEMENTS.tall.span, clear);
+
+    const compactSpan = ARRANGEMENTS.compact.span;
+    const gap = narrow ? 28 : 40;
+    const edge = narrow ? 20 : 32;
+    const compact = Math.min(
+      (width - 2 * (narrow ? 16 : 32)) / compactSpan.x,
+      (height - name.height - gap - 2 * edge) / compactSpan.y,
+    );
+
     const cover = (u, span) => u * u * span.x * span.y;
-    const useTall =
-      cover(tall, ARRANGEMENTS.tall.span) > cover(wide, ARRANGEMENTS.wide.span);
-    arrangement = useTall ? ARRANGEMENTS.tall : ARRANGEMENTS.wide;
-    unit = useTall ? tall : wide;
-    ground = height - below;
+    if (cover(compact, compactSpan) > cover(wide, wideSpan)) {
+      arrangement = ARRANGEMENTS.compact;
+      unit = compact;
+      const group = name.height + gap + compactSpan.y * unit;
+      const top = Math.max(edge, (height - group) * 0.36);
+      root.style.setProperty("--top", top + "px");
+      ground = top + name.height + gap + compactSpan.y * unit;
+    } else {
+      arrangement = ARRANGEMENTS.wide;
+      unit = wide;
+      ground = height - below;
+    }
     root.style.setProperty("--ground", ground + "px");
   }
+
 
   function toWorld(pt) {
     return {
