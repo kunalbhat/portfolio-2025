@@ -67,13 +67,33 @@ export function composeSystem({ cubeScale = 1.15 } = {}) {
     ys: [axis - deepest / 2, axis, axis + deepest / 2, M.front, 0],
     extent: { x0: left - 6, x1: objects.plant.x + FOOTPRINT.plant.r + 6, y0: axis - deepest / 2 - 6, y1: 26 },
   };
-  return { objects, gap, guides, optical: { rubiks: cubeScale } };
+  // The desk surface: a margin of 0.6 gap around the whole system, so the
+  // desk's edges echo the system's own spacing.
+  const e = guides.extent;
+  const m = gap * 0.6;
+  const surface = {
+    x0: e.x0 - m,
+    x1: e.x1 + m,
+    y0: e.y0 - m,
+    y1: 36, // behind the monitor; the back edge sits under the screen
+    radius: 7, // rounded plan corners
+    thickness: 1.8, // a thin, refined slab
+  };
+  return { objects, gap, guides, surface, optical: { rubiks: cubeScale } };
 }
 
 const SYSTEM = composeSystem();
 
 export const LAYOUT = {
-  tone: { base: "#e9e3d8", lit: "#eee9df" }, // v2.0 clay: warm cream stone
+  // v2.1 dark: three planes. A deep warm-graphite surround, a dark desk that
+  // reads distinct from it, and the light clay objects on top.
+  tone: {
+    env: "#24211f", // surround, centre of the vignette
+    envEdge: "#191716", // surround, at the corners
+    base: "#3a3531", // desk top (matches the renders' ground bounce)
+    lit: "#454039", // where the key light pools on the desk
+    edge: "#302c28", // the desk's front faces
+  },
   landscape: {
     stage: { left: 0.16, right: 0.84, top: 0.15, bottom: 0.89, align: 0.5 },
     maxScale: 11.5,
@@ -99,8 +119,12 @@ export function resolveLayout(orientation) {
   for (const [id, pos] of Object.entries(SYSTEM.objects)) {
     objects[id] = { ...pos, optical: SYSTEM.optical[id] };
   }
-  // A faint pool of light under the front row ties the system to one plane.
-  const light = { x: 0, y: SYSTEM.guides.ys[1], radius: orientation === "portrait" ? 60 : 78 };
+  // A soft pool of light on the desk, centred under the system.
+  const light = { x: 4, y: SYSTEM.guides.ys[1] + 6, radius: orientation === "portrait" ? 62 : 82 };
   const showGrid = new URLSearchParams(location.search).has("grid");
-  return { ...crop, objects, desk: { light, guides: showGrid ? SYSTEM.guides : null } };
+  return {
+    ...crop,
+    objects,
+    desk: { light, surface: SYSTEM.surface, guides: showGrid ? SYSTEM.guides : null },
+  };
 }

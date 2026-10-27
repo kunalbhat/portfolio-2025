@@ -190,22 +190,44 @@ export class DeskScene {
    * soft pool of light, centred where the key light falls on the arrangement,
    * ties the objects into one lit scene instead of stickers on a flat colour.
    */
+  /**
+   * Three planes: the surround (CSS background + vignette), the desk surface
+   * drawn here on the desk plane with the renders' own camera, and the
+   * objects above it. The desk is a rounded slab: a soft drop shadow onto the
+   * surround, a thin front face, and a top with a gentle pool of key light.
+   */
   #drawDesk(desk, ox, oy, scale, W, H) {
-    const [lx, ly] = this.project(desk.light.x, desk.light.y);
-    const cx = ox + lx * scale;
-    const cy = oy + ly * scale;
+    const P = (x, y, z = 0) => {
+      const [px, py] = this.project(x, y, z);
+      return [ox + px * scale, oy + py * scale];
+    };
+    const pts = (list) => list.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+    const S = desk.surface;
+    const outline = roundedRect(S.x0, S.y0, S.x1, S.y1, S.radius);
+    const top = outline.map(([x, y]) => P(x, y));
+    const under = outline.map(([x, y]) => P(x, y, -S.thickness));
+    const [lx, ly] = P(desk.light.x, desk.light.y);
     const r = desk.light.radius * scale;
+    const blur = Math.max(6, scale * 2.2);
+    const drop = scale * 2.4;
     this.desk.setAttribute("viewBox", `0 0 ${W} ${H}`);
     this.desk.innerHTML = `
       <defs>
         <radialGradient id="desk-light" gradientUnits="userSpaceOnUse"
-          cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}"
-          gradientTransform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) scale(1.35 0.8) translate(${(-cx).toFixed(1)} ${(-cy).toFixed(1)})">
+          cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="${r.toFixed(1)}"
+          gradientTransform="translate(${lx.toFixed(1)} ${ly.toFixed(1)}) scale(1.4 0.82) translate(${(-lx).toFixed(1)} ${(-ly).toFixed(1)})">
           <stop offset="0" class="desk-lit"/>
           <stop offset="1" class="desk-base"/>
         </radialGradient>
+        <filter id="desk-drop" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="${blur.toFixed(1)}"/>
+        </filter>
       </defs>
-      <rect width="${W}" height="${H}" fill="url(#desk-light)"/>
+      <polygon class="desk-drop" filter="url(#desk-drop)" transform="translate(0 ${drop.toFixed(1)})" points="${pts(under)}"/>
+      <polygon class="desk-side" points="${pts(under)}"/>
+      <polygon class="desk-side" points="${pts(sweep(top, under))}"/>
+      <polygon class="desk-top" fill="url(#desk-light)" points="${pts(top)}"/>
+      <polygon class="desk-rim" points="${pts(top)}"/>
       ${desk.guides ? this.#guides(desk.guides, ox, oy, scale) : ""}`;
   }
 
@@ -293,6 +315,32 @@ export class DeskScene {
     if (!item?.state) return;
     item.wrap.classList.toggle("is-active", on);
   }
+}
+
+/** A rounded rectangle on the desk plane, as a list of [x, y] points. */
+function roundedRect(x0, y0, x1, y1, r, seg = 10) {
+  const out = [];
+  const corners = [
+    [x1 - r, y1 - r, 0],
+    [x0 + r, y1 - r, 90],
+    [x0 + r, y0 + r, 180],
+    [x1 - r, y0 + r, 270],
+  ];
+  for (const [cx, cy, start] of corners) {
+    for (let i = 0; i <= seg; i++) {
+      const a = ((start + (90 * i) / seg) * Math.PI) / 180;
+      out.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+    }
+  }
+  return out;
+}
+
+/**
+ * The slab's side, as one polygon: every top point joined to the point
+ * below it. Drawn behind the top face, only the front-facing band shows.
+ */
+function sweep(top, under) {
+  return [...top, ...under.slice().reverse(), top[0]];
 }
 
 function el(tag, cls) {

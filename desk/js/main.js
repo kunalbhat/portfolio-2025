@@ -9,9 +9,13 @@ import { DeskScene } from "./scene.js";
 const root = document.querySelector(".scene");
 
 const tone = LAYOUT.tone;
-document.documentElement.style.setProperty("--desk-top", tone.base);
-document.documentElement.style.setProperty("--desk-lit", tone.lit);
-document.querySelector('meta[name="theme-color"]')?.setAttribute("content", tone.base);
+const rootStyle = document.documentElement.style;
+rootStyle.setProperty("--env", tone.env);
+rootStyle.setProperty("--env-edge", tone.envEdge);
+rootStyle.setProperty("--desk-top", tone.base);
+rootStyle.setProperty("--desk-lit", tone.lit);
+rootStyle.setProperty("--desk-edge", tone.edge);
+document.querySelector('meta[name="theme-color"]')?.setAttribute("content", tone.env);
 
 function activate(obj, hit) {
   const ix = obj.interaction;

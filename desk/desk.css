@@ -1,12 +1,14 @@
-/* Illustrated desk. Light only for now: the renders are lit for daylight. */
+/* Illustrated desk — v2.1 dark: surround, desk, objects. */
 
 :root {
-  color-scheme: light;
-  --ink: #34394b;
-  --muted: #6f7380;
-  --paper: #fbf8f2;
-  --desk-top: #e9e3d8;
-  --desk-lit: #eee9df; /* soft pool of light under the arrangement */
+  color-scheme: dark;
+  --ink: #e6dfd3; /* warm light type on the dark surround */
+  --muted: #a39b8f;
+  --env: #24211f; /* surround (set from layouts.js) */
+  --env-edge: #191716;
+  --desk-top: #3a3531;
+  --desk-lit: #454039; /* soft pool of light on the desk */
+  --desk-edge: #302c28;
   --sans: "Instrument Sans", system-ui, sans-serif;
   --gutter: clamp(20px, 3.2vw, 44px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -27,7 +29,7 @@ body {
 
 body {
   overflow: hidden;
-  background: var(--desk-top);
+  background: var(--env);
   color: var(--ink);
   font: 400 16px/1.5 var(--sans);
   -webkit-font-smoothing: antialiased;
@@ -73,11 +75,30 @@ body {
   height: 100%;
 }
 
+/* Layer 1: the surround, a deep warm graphite with a soft vignette. */
+.scene {
+  background: radial-gradient(120% 95% at 55% 52%, var(--env) 0%, var(--env) 45%, var(--env-edge) 100%);
+}
+
+/* Layer 2: the desk slab. */
 .desk .desk-lit {
   stop-color: var(--desk-lit);
 }
 .desk .desk-base {
   stop-color: var(--desk-top);
+}
+.desk-drop {
+  fill: #0d0c0b;
+  opacity: 0.5;
+}
+.desk-side {
+  fill: var(--desk-edge);
+}
+.desk-rim {
+  fill: none;
+  stroke: rgba(255, 244, 228, 0.07);
+  stroke-width: 1;
+  stroke-linejoin: round;
 }
 
 .shadows,
