@@ -1,11 +1,5 @@
 {
   "framework": null,
   "buildCommand": null,
-  "outputDirectory": ".",
-  "rewrites": [
-    {
-      "source": "/desk/:section(work|builds|play|about)",
-      "destination": "/desk/index.html"
-    }
-  ]
+  "outputDirectory": "."
 }

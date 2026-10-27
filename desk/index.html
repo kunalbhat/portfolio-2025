@@ -3,11 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Kunal Bhat — Desk</title>
-    <meta
-      name="description"
-      content="Kunal Bhat is a Chicago-based product designer and builder. Explore the objects on his desk."
-    />
+    <title>Kunal Bhat</title>
+    <meta name="description" content="Kunal Bhat’s desk." />
     <meta name="theme-color" content="#eadfcd" />
     <link
       rel="icon"
@@ -16,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/desk/desk.css" />
@@ -25,52 +22,14 @@
   </head>
   <body>
     <header class="site">
-      <div class="identity">
-        <a class="name" href="/desk/">Kunal Bhat</a>
-        <p class="intro">
-          Product designer and curious builder in Chicago, working across design, product, and
-          engineering.
-        </p>
-      </div>
-      <nav class="sections" aria-label="Sections">
-        <ul>
-          <li><a href="/desk/work" data-nav="work">Work</a></li>
-          <li><a href="/desk/builds" data-nav="builds">Builds</a></li>
-          <li><a href="/desk/play" data-nav="play">Play</a></li>
-          <li><a href="/desk/about" data-nav="about">About</a></li>
-        </ul>
-      </nav>
+      <h1 class="name">Kunal Bhat</h1>
     </header>
 
     <main>
-      <section class="scene" aria-label="Kunal’s desk. Each labelled object opens a section.">
-        <noscript>
-          <p class="noscript">
-            The desk needs JavaScript. Everything is also reachable from the links above.
-          </p>
-        </noscript>
+      <section class="scene" aria-label="Kunal’s desk">
+        <noscript><p class="noscript">The desk needs JavaScript to come to life.</p></noscript>
       </section>
-      <p class="hint" aria-hidden="true"><span class="hint-pointer">Most things on the desk open.</span><span class="hint-touch">Tap an object to open it.</span></p>
     </main>
-
-    <dialog class="panel" aria-labelledby="panel-title">
-      <div class="panel-sheet">
-        <div class="panel-head">
-          <div>
-            <p class="panel-eyebrow"></p>
-            <h2 id="panel-title" tabindex="-1"></h2>
-          </div>
-          <button type="button" class="panel-close" aria-label="Close and return to the desk">
-            <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
-              <path d="M5 5l10 10M15 5L5 15" />
-            </svg>
-          </button>
-        </div>
-        <div class="panel-scroll">
-          <div class="panel-body"></div>
-        </div>
-      </div>
-    </dialog>
 
     <script type="module" src="/desk/js/main.js"></script>
     <script>

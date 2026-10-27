@@ -45,8 +45,7 @@ export class DeskScene {
   #create(obj) {
     const geo = this.manifest.objects[obj.id];
     const wrap = el("div", `obj obj-${obj.id}`);
-    wrap.dataset.role = obj.role;
-    const visual = el("div", "visual");
+        const visual = el("div", "visual");
     const wcm = geo.size[0];
     const base = img(geo.layers.object, "base", wcm);
     visual.append(base);
@@ -65,28 +64,30 @@ export class DeskScene {
 
     const hit = el("button", "hit");
     hit.type = "button";
-    hit.setAttribute(
-      "aria-label",
-      obj.role === "nav" ? `${obj.name} — open ${obj.tag}` : `${obj.name} — give it a nudge`,
-    );
-    if (obj.section) hit.dataset.section = obj.section;
+    hit.setAttribute("aria-label", obj.interaction.label);
+    if (obj.interaction.kind === "toggle") hit.setAttribute("aria-pressed", "false");
     const [w, h] = geo.size;
     hit.style.clipPath = `polygon(${geo.hull
       .map(([x, y]) => `${((x / w) * 100).toFixed(2)}% ${((y / h) * 100).toFixed(2)}%`)
       .join(",")})`;
 
+    // Focus outline: the silhouette polygon itself, stroked, so keyboard focus
+    // traces the object rather than a rectangle around its padding.
+    const ring = document.createElementNS(SVG_NS, "svg");
+    ring.classList.add("ring");
+    ring.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    ring.setAttribute("preserveAspectRatio", "none");
+    ring.setAttribute("aria-hidden", "true");
+    const poly = document.createElementNS(SVG_NS, "polygon");
+    poly.setAttribute("points", geo.hull.map(([x, y]) => `${x},${y}`).join(" "));
+    poly.setAttribute("vector-effect", "non-scaling-stroke");
+    ring.append(poly);
+    visual.append(ring);
     wrap.append(visual, hit);
-    let tag = null;
-    if (obj.tag) {
-      tag = el("span", "tag");
-      tag.textContent = obj.tag;
-      tag.setAttribute("aria-hidden", "true");
-      wrap.append(tag);
-    }
     this.objectLayer.append(wrap);
     this.shadowLayer.append(shadow);
 
-    const item = { obj, geo, wrap, visual, base, state, sprite, shadow, hit, tag, frame: 0 };
+    const item = { obj, geo, wrap, visual, base, state, sprite, shadow, hit, frame: 0 };
     const lift = (on) => {
       wrap.classList.toggle("is-lifted", on);
       shadow.classList.toggle("is-lifted", on);
@@ -95,6 +96,14 @@ export class DeskScene {
     hit.addEventListener("pointerleave", () => lift(false));
     hit.addEventListener("focus", () => lift(hit.matches(":focus-visible")));
     hit.addEventListener("blur", () => lift(false));
+    // Pressed state for pointer and keyboard, so a tap visibly lands.
+    const press = (on) => wrap.classList.toggle("is-pressed", on);
+    hit.addEventListener("pointerdown", () => press(true));
+    for (const ev of ["pointerup", "pointerleave", "pointercancel", "blur"]) {
+      hit.addEventListener(ev, () => press(false));
+    }
+    hit.addEventListener("keydown", (e) => (e.key === "Enter" || e.key === " ") && press(true));
+    hit.addEventListener("keyup", () => press(false));
     hit.addEventListener("click", () => this.onActivate(obj, hit));
     return item;
   }
@@ -118,7 +127,7 @@ export class DeskScene {
       const pos = L.objects[item.obj.id];
       if (!pos) continue;
       const [px, py] = this.project(pos.x, pos.y);
-      const s = item.obj.optical;
+      const s = pos.optical ?? item.obj.optical;
       const [w, h] = item.geo.size;
       const [ax, ay] = item.geo.anchor;
       // Use the object's hull, not its shadow padding, for framing.
@@ -126,16 +135,19 @@ export class DeskScene {
       const ys = item.geo.hull.map(([, y]) => py + (y - ay) * s);
       rects.push({ item, px, py, s, w, h, ax, ay, x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) });
     }
-    const bx0 = Math.min(...rects.map((r) => r.x0));
-    const bx1 = Math.max(...rects.map((r) => r.x1));
-    const by0 = Math.min(...rects.map((r) => r.y0));
-    const by1 = Math.max(...rects.map((r) => r.y1));
+    // Frame the composition on its key objects only; anything else (the plant
+    // on a phone, say) may run off the edge like a crop of a larger desk.
+    const framed = rects.filter((r) => !L.frame || L.frame.includes(r.item.obj.id));
+    const bx0 = Math.min(...framed.map((r) => r.x0));
+    const bx1 = Math.max(...framed.map((r) => r.x1));
+    const by0 = Math.min(...framed.map((r) => r.y0));
+    const by1 = Math.max(...framed.map((r) => r.y1));
 
     const st = L.stage;
     const sw = (st.right - st.left) * W;
     const sh = (st.bottom - st.top) * H;
     const scale = Math.min(sw / (bx1 - bx0), sh / (by1 - by0), L.maxScale);
-    const ox = st.left * W + (sw - (bx1 - bx0) * scale) / 2 - bx0 * scale;
+    const ox = st.left * W + (sw - (bx1 - bx0) * scale) * (st.alignX ?? 0.5) - bx0 * scale;
     const oy = st.top * H + (sh - (by1 - by0) * scale) * (st.align ?? 0.5) - by0 * scale;
     this.scale = scale;
     this.root.style.setProperty("--cm", `${scale}px`);
@@ -164,11 +176,6 @@ export class DeskScene {
           im.src = im.dataset.src;
         }
       }
-      if (item.tag) {
-        const [tx, ty] = tagPoint(item.geo.hull);
-        item.tag.style.left = `${((tx / r.w) * 100).toFixed(2)}%`;
-        item.tag.style.top = `${((ty / r.h) * 100).toFixed(2)}%`;
-      }
       item.density = scale * s * dpr > this.manifest.densities[0] * 1.15 ? 1 : 0;
       if (item.sprite) this.#prepareSprite(item);
     }
@@ -176,31 +183,28 @@ export class DeskScene {
     this.#drawDesk(L.desk, ox, oy, scale, W, H);
   }
 
+  /**
+   * The desk is one continuous surface that runs past every edge of the
+   * window: no edges, no thickness, nothing that reads as a platform. A very
+   * soft pool of light, centred where the key light falls on the arrangement,
+   * ties the objects into one lit scene instead of stickers on a flat colour.
+   */
   #drawDesk(desk, ox, oy, scale, W, H) {
-    const P = (x, y, z = 0) => {
-      const [px, py] = this.project(x, y, z);
-      return [ox + px * scale, oy + py * scale];
-    };
-    const far = 2000;
-    const { front, right, thickness: t } = desk;
-    const poly = (pts) => pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
-    const top = [P(-far, front), P(right, front), P(right, far), P(-far, far)];
-    const frontFace = [P(-far, front), P(right, front), P(right, front, -t), P(-far, front, -t)];
-    const rightFace = [P(right, front), P(right, far), P(right, far, -t), P(right, front, -t)];
-    const edge = [P(-far, front), P(right, front), P(right, far)];
+    const [lx, ly] = this.project(desk.light.x, desk.light.y);
+    const cx = ox + lx * scale;
+    const cy = oy + ly * scale;
+    const r = desk.light.radius * scale;
     this.desk.setAttribute("viewBox", `0 0 ${W} ${H}`);
     this.desk.innerHTML = `
       <defs>
-        <linearGradient id="desk-floor" gradientUnits="userSpaceOnUse"
-          x1="${P(right, front)[0]}" y1="${P(right, front, -t)[1]}" x2="${P(right, front)[0] - 0.3 * W}" y2="${P(right, front, -t)[1] + 0.35 * H}">
-          <stop offset="0" class="floor-near"/><stop offset="1" class="floor-far"/>
-        </linearGradient>
+        <radialGradient id="desk-light" gradientUnits="userSpaceOnUse"
+          cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}"
+          gradientTransform="translate(${cx.toFixed(1)} ${cy.toFixed(1)}) scale(1.35 0.8) translate(${(-cx).toFixed(1)} ${(-cy).toFixed(1)})">
+          <stop offset="0" class="desk-lit"/>
+          <stop offset="1" class="desk-base"/>
+        </radialGradient>
       </defs>
-      <rect class="floor" width="${W}" height="${H}" fill="url(#desk-floor)"/>
-      <polygon class="desk-top" points="${poly(top)}"/>
-      <polygon class="desk-front" points="${poly(frontFace)}"/>
-      <polygon class="desk-right" points="${poly(rightFace)}"/>
-      <polyline class="desk-edge" points="${poly(edge)}"/>`;
+      <rect width="${W}" height="${H}" fill="url(#desk-light)"/>`;
   }
 
   // -- frame sequences --------------------------------------------------------
@@ -273,25 +277,6 @@ export class DeskScene {
     if (!item?.state) return;
     item.wrap.classList.toggle("is-active", on);
   }
-
-  setRecede(on) {
-    this.root.classList.toggle("is-receded", on);
-  }
-}
-
-/** Where a label sits: on the silhouette's top edge, above its horizontal centre. */
-function tagPoint(hull) {
-  const xs = hull.map(([x]) => x);
-  const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
-  let top = Infinity;
-  for (let i = 0; i < hull.length; i++) {
-    const [x1, y1] = hull[i];
-    const [x2, y2] = hull[(i + 1) % hull.length];
-    if ((x1 - cx) * (x2 - cx) <= 0 && x1 !== x2) {
-      top = Math.min(top, y1 + ((cx - x1) / (x2 - x1)) * (y2 - y1));
-    }
-  }
-  return [cx, Number.isFinite(top) ? top : Math.min(...hull.map(([, y]) => y))];
 }
 
 function el(tag, cls) {
