@@ -18,6 +18,8 @@
  * @property {number} [interaction.step]    frames advanced per activation
  * @property {boolean} [interaction.loop]   sequence returns to rest (plant)
  * @property {boolean} [interaction.light]  this toggle is the room's light (lamp)
+ * @property {{ href: string, text: string }} [link]
+ *   a path onward: revealed beside the object once it has been played with
  */
 
 /** @type {DeskObject[]} */
@@ -57,5 +59,19 @@ export const OBJECTS = [
     name: "Pilea plant",
     optical: 1,
     interaction: { kind: "frames", frames: "sway", step: 12, loop: true, label: "Nudge the plant" },
+  },
+  {
+    id: "photoframe",
+    name: "Photo frame",
+    optical: 1,
+    interaction: { kind: "toggle", state: "next", label: "Photo frame: product work at Aura" },
+    link: { href: "/desk/work/", text: "Product work" },
+  },
+  {
+    id: "arcade",
+    name: "Arcade cabinet",
+    optical: 1,
+    interaction: { kind: "toggle", state: "play", label: "Arcade cabinet: games and experiments" },
+    link: { href: "/desk/play/", text: "Games & experiments" },
   },
 ];

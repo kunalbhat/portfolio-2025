@@ -4,13 +4,13 @@
 //
 // Three depth bands, read back to front:
 //
-//   back    lamp · plant          the two objects that frame the scene
-//   middle  monitor · Mac mini    the anchor, and the machine beside it
-//   front   cube · notebook       small things within reach
+//   back    lamp · monitor · plant          the frame of the scene
+//   middle  photo frame · Mac mini          work under the lamp; the machine
+//   front   cube · notebook · arcade        small things within reach, and play
 //
-// and four columns. The monitor's screen width sets the system and the gap;
-// the lamp and plant columns sit outside it, and the front row reuses them:
-// the cube stands in the lamp's column, the notebook in the plant's.
+// on a few columns. The lamp column (left) and plant column (right) carry an
+// object in every row; the monitor's screen edge sits one gap from the plant,
+// which keeps it clear of the lamp, and the notebook shares its centre line.
 //
 // The same numbers drive the Blender study renders
 // (illustrated-desk/tools/palette_study.py LAYOUT) and the night renders, whose
@@ -19,13 +19,13 @@
 const SCREEN_W = 61.5; // monitor screen width
 const GAP = 13.72; // the system's spacing unit
 const COL = {
-  lamp: -46, // one gap and a bit outside the screen's left edge
-  monitor: 0,
-  macmini: SCREEN_W / 2 + GAP + 6.35, // one gap right of the screen
-  plant: 68, // right edge column
+  lamp: -46,
+  plant: 68,
+  monitor: 68 - 4.7 - GAP - SCREEN_W / 2, // ≈ 19: screen edge one gap from the plant pot
+  macmini: SCREEN_W / 2 + GAP + 6.35, // where it stood beside the screen
 };
 const ROW = {
-  back: 13.5 + GAP / 2 + 6.6, // behind the monitor's foot, half a gap clear
+  back: 13.5 + GAP / 2 + 6.6,
   middle: 0,
   front: -21,
 };
@@ -37,13 +37,15 @@ const snap = (v) => Math.round(v / SNAP) * SNAP;
 export function composeSystem() {
   const objects = {
     lamp: { x: COL.lamp, y: ROW.back },
+    monitor: { x: snap(COL.monitor), y: ROW.back },
     plant: { x: COL.plant, y: ROW.back },
-    monitor: { x: COL.monitor, y: ROW.middle },
+    photoframe: { x: COL.lamp, y: ROW.middle },
     macmini: { x: snap(COL.macmini), y: 3 },
     rubiks: { x: COL.lamp, y: ROW.front },
-    notebook: { x: COL.plant, y: ROW.front },
+    notebook: { x: snap(COL.monitor), y: ROW.front },
+    arcade: { x: COL.plant, y: ROW.front },
   };
-  const surface = { x0: -62, x1: 84, y0: -45.5, y1: snap(ROW.back + 16), radius: 7, thickness: 1.8 };
+  const surface = { x0: -62, x1: 84, y0: -45.5, y1: snap(ROW.back + 22), radius: 7, thickness: 1.8 };
   const guides = {
     xs: Object.values(COL),
     ys: Object.values(ROW),
@@ -89,7 +91,7 @@ export const TONES = {
 export const LAYOUT = {
   landscape: {
     // The whole desk, slab and all, with room around it.
-    stage: { left: 0.06, right: 0.94, top: 0.12, bottom: 0.94, align: 0.5 },
+    stage: { left: 0.06, right: 0.94, top: 0.11, bottom: 0.88, align: 0.5 },
     frameDesk: true,
     maxScale: 11.5,
   },

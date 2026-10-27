@@ -30,7 +30,8 @@ export class DeskScene {
     this.desk.setAttribute("aria-hidden", "true");
     this.shadowLayer = el("div", "shadows");
     this.objectLayer = el("div", "objects");
-    root.append(this.desk, this.shadowLayer, this.objectLayer);
+    this.linkLayer = el("div", "links");
+    root.append(this.desk, this.shadowLayer, this.objectLayer, this.linkLayer);
     for (const obj of objects) this.items.set(obj.id, this.#create(obj));
 
     new ResizeObserver(() => this.layout()).observe(root);
@@ -96,7 +97,19 @@ export class DeskScene {
     this.objectLayer.append(wrap);
     this.shadowLayer.append(shadow);
 
-    const item = { obj, geo, wrap, visual, modes, shadow, hit, frame: 0 };
+    // A path onward (photo frame -> work, arcade -> games), revealed once the
+    // object has been played with, in one slot at the bottom of the view so
+    // it never covers another object (above all, the lamp). Hidden links are
+    // out of the tab order.
+    let link = null;
+    if (obj.link) {
+      link = el("a", "obj-link");
+      link.href = obj.link.href;
+      link.innerHTML = `<span></span><span class="obj-link-arrow" aria-hidden="true">→</span>`;
+      link.firstChild.textContent = obj.link.text;
+      this.linkLayer.append(link);
+    }
+    const item = { obj, geo, wrap, visual, modes, shadow, hit, link, frame: 0 };
     const lift = (on) => {
       wrap.classList.toggle("is-lifted", on);
       shadow.classList.toggle("is-lifted", on);
@@ -114,6 +127,25 @@ export class DeskScene {
     hit.addEventListener("keydown", (e) => (e.key === "Enter" || e.key === " ") && press(true));
     hit.addEventListener("keyup", () => press(false));
     hit.addEventListener("click", () => this.onActivate(obj, hit));
+    // Keyboard order: a revealed link comes right after its own object, even
+    // though it lives in a layer above all objects.
+    if (link) {
+      hit.addEventListener("keydown", (e) => {
+        if (e.key === "Tab" && !e.shiftKey && link.classList.contains("is-shown")) {
+          e.preventDefault();
+          link.focus();
+        }
+      });
+      link.addEventListener("keydown", (e) => {
+        if (e.key !== "Tab") return;
+        const hits = [...this.objectLayer.querySelectorAll(".hit")];
+        const next = e.shiftKey ? hit : hits[hits.indexOf(hit) + 1];
+        if (next) {
+          e.preventDefault();
+          next.focus();
+        }
+      });
+    }
     return item;
   }
 
@@ -364,6 +396,11 @@ export class DeskScene {
     const item = this.items.get(id);
     if (!item?.obj.interaction.state) return;
     item.wrap.classList.toggle("is-active", on);
+    // One path at a time: the newest replaces any other.
+    if (on && item.link) {
+      for (const other of this.items.values()) other.link?.classList.remove("is-shown");
+    }
+    item.link?.classList.toggle("is-shown", on);
   }
 }
 

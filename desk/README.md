@@ -2,7 +2,9 @@
 
 An alternate homepage at `/desk`: Kunal's desk, drawn in the browser, with
 Blender-rendered objects you can play with (the screen and Mac mini switch on,
-the notebook opens, the cube twists, the plant sways). The desk lamp is the
+the notebook opens, the cube twists, the plant sways, the photo frame turns to
+the next photo and the arcade starts a game; those two then offer a link to
+product work and to games). The desk lamp is the
 room's light: off is daylight, on is dusk lit by the lamp. The existing
 homepage is untouched.
 

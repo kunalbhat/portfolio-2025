@@ -172,6 +172,7 @@ body {
 .objects {
   position: absolute;
   inset: 0;
+  z-index: 1; /* own stacking context, so the link layer can sit above */
   opacity: 0;
   transition: opacity 450ms var(--ease), transform var(--reveal) var(--ease);
 }
@@ -329,6 +330,55 @@ body {
 .obj.is-pressed .visual {
   transform: translateY(calc(var(--cm) * 0.12)) scale(0.985);
   transition-duration: 70ms;
+}
+
+/* A path onward, revealed once an object is switched on: one slot at the
+   bottom of the view, so it never covers the desk. */
+.links {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.obj-link {
+  position: absolute;
+  left: 50%;
+  bottom: max(28px, calc(env(safe-area-inset-bottom) + 16px));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 11px 16px 11px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--env);
+  font: 500 15px/1.2 var(--sans);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 10px 24px -12px rgba(20, 6, 20, 0.5);
+  transform: translate(-50%, 8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms var(--ease), transform 220ms var(--ease), visibility 0s linear 220ms,
+    background-color var(--room) var(--room-ease) var(--room-delay), color var(--room) var(--room-ease) var(--room-delay);
+}
+.obj-link.is-shown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition-delay: 140ms, 140ms, 0s, var(--room-delay), var(--room-delay);
+}
+.obj-link-arrow {
+  transition: transform var(--quick) var(--ease);
+}
+.obj-link:hover .obj-link-arrow {
+  transform: translateX(2px);
+}
+.obj-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .noscript {
