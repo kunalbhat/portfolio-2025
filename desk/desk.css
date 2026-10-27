@@ -173,13 +173,49 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1; /* own stacking context, so the label can sit above */
-  opacity: 0;
-  transition: opacity 450ms var(--ease), transform var(--reveal) var(--ease);
 }
 
-.scene.is-ready .shadows,
-.scene.is-ready .objects {
-  opacity: 1;
+/* ------------------------------------------------------------- entrance
+
+   Once every image has decoded: the desk settles in (rises a touch and
+   eases to full size), then the objects pop onto it one after another, back
+   to front (--i, set by scene.js), each growing from where it meets the
+   desk with its shadow. Transform and opacity only, composited, so it stays
+   smooth; will-change is held only while the entrance runs. */
+.desk {
+  transform-origin: 50% 58%;
+  transition: opacity 420ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 820ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scene:not(.is-ready) .desk {
+  opacity: 0;
+  transform: translateY(calc(var(--cm) * 3)) scale(0.965);
+}
+.obj,
+.shadow {
+  --enter: calc(260ms + var(--i, 0) * 65ms);
+}
+.obj {
+  transition: opacity 300ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--enter),
+    transform 560ms cubic-bezier(0.34, 1.36, 0.5, 1) var(--enter);
+}
+.scene:not(.is-ready) .obj {
+  opacity: 0;
+  transform: scale(0.8);
+}
+.scene:not(.is-ready) .shadow {
+  opacity: 0;
+  transform: scale(0.7);
+}
+.scene:not(.is-settled) .desk,
+.scene:not(.is-settled) .obj,
+.scene:not(.is-settled) .shadow {
+  will-change: transform, opacity;
+}
+.site {
+  transition: opacity 500ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms;
+}
+html:not(.is-ready) .site {
+  opacity: 0;
 }
 
 .shadow,
@@ -198,7 +234,8 @@ body {
   pointer-events: none;
   user-select: none;
   filter: drop-shadow(0 0 0 transparent);
-  transition: filter 460ms var(--ease);
+  transition: filter 460ms var(--ease), opacity 360ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--enter),
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--enter);
 }
 :root[data-mode="night"] .shadow {
   --spread: rgba(8, 0, 12, 0.5);
@@ -207,7 +244,7 @@ body {
   filter: drop-shadow(
     0 calc(var(--cm) * 0.35 * var(--bloom)) calc(var(--cm) * 1.1 * var(--bloom)) var(--spread)
   );
-  transition-duration: 280ms;
+  transition-duration: 280ms, 360ms, 600ms;
 }
 .shadow-monitor {
   --bloom: 1.8;
@@ -390,6 +427,18 @@ body {
     animation-duration: 1ms !important;
   }
   .obj.is-pressed .visual {
+    transform: none;
+  }
+  /* The entrance becomes a single quiet fade: no movement, no stagger. */
+  .desk,
+  .obj,
+  .shadow,
+  .site {
+    transition-delay: 0s !important;
+  }
+  .scene:not(.is-ready) .desk,
+  .scene:not(.is-ready) .obj,
+  .scene:not(.is-ready) .shadow {
     transform: none;
   }
 }

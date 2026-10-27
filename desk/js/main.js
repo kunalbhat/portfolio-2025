@@ -68,8 +68,8 @@ const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
 html.classList.add("no-transition");
 setMode(asked === "night" || asked === "day" ? asked : prefersDark ? "night" : "day");
 
-// Coordinated reveal: lay out, wait for every resting image of the current
-// light to decode (or fail), then fade the objects in together.
+// Coordinated entrance: lay out, wait for every resting image of the current
+// light to decode (or fail), then bring in the desk and the objects (desk.css).
 scene.layout();
 requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove("no-transition")));
 const ready = scene.images().map((im) =>
@@ -79,6 +79,15 @@ const ready = scene.images().map((im) =>
 );
 const timeout = new Promise((r) => setTimeout(r, 4000));
 Promise.race([Promise.all(ready), timeout]).then(() => {
-  root.classList.add("is-ready");
-  setTimeout(() => scene.preloadSprites(), 400);
+  // Start the entrance on a fresh frame, after the hidden state has painted
+  // with transitions on, so every step animates from the very start.
+  html.classList.remove("no-transition");
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      root.classList.add("is-ready");
+      html.classList.add("is-ready");
+      setTimeout(() => root.classList.add("is-settled"), 1900);
+      setTimeout(() => scene.preloadSprites(), 900);
+    }),
+  );
 });

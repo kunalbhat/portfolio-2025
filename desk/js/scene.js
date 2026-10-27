@@ -101,6 +101,11 @@ export class DeskScene {
     this.shadowLayer.append(shadow);
 
     const item = { obj, geo, wrap, visual, modes, shadow, hit, frame: 0 };
+    // The entrance grows each object and its shadow from where it meets the
+    // desk (its ground anchor in the render).
+    const origin = `${((geo.anchor[0] / geo.size[0]) * 100).toFixed(2)}% ${((geo.anchor[1] / geo.size[1]) * 100).toFixed(2)}%`;
+    wrap.style.transformOrigin = origin;
+    shadow.style.transformOrigin = origin;
     // Hovered: the object stays put; only its shadow blooms (desk.css).
     const lift = (on) => {
       wrap.classList.toggle("is-hovered", on);
@@ -230,6 +235,13 @@ export class DeskScene {
       item.density = scale * s * dpr > this.manifest.densities[0] * 1.15 ? 1 : 0;
       if (item.obj.interaction.frames) this.#prepareSprite(item);
     }
+    // Entrance order: back to front, then left to right (desk.css --i).
+    [...rects]
+      .sort((a, b) => a.py - b.py || a.px - b.px)
+      .forEach((r, i) => {
+        r.item.wrap.style.setProperty("--i", i);
+        r.item.shadow.style.setProperty("--i", i);
+      });
 
     this.#drawDesk(L.desk, ox, oy, scale, W, H);
   }
