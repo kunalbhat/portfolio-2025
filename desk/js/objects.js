@@ -8,7 +8,8 @@
  * @property {number} optical     display scale for legibility (1 = true scale)
  * @property {Object} interaction
  * @property {"toggle" | "frames"} interaction.kind
- *   toggle: switches between the resting render and an alternate state
+ *   toggle: switches between the resting render and an alternate state (or,
+ *   for the lamp, the whole scene between daylight and lamplight)
  *   frames: plays part of a frame sequence (the cube turns, the plant sways)
  * @property {string} [interaction.state]   alternate render for toggles
  * @property {string} interaction.label     accessible name of the control; toggles
@@ -16,10 +17,17 @@
  * @property {string} [interaction.frames]  frame sequence name
  * @property {number} [interaction.step]    frames advanced per activation
  * @property {boolean} [interaction.loop]   sequence returns to rest (plant)
+ * @property {boolean} [interaction.light]  this toggle is the room's light (lamp)
  */
 
 /** @type {DeskObject[]} */
 export const OBJECTS = [
+  {
+    id: "lamp",
+    name: "Desk lamp",
+    optical: 1,
+    interaction: { kind: "toggle", light: true, label: "Desk lamp" },
+  },
   {
     id: "monitor",
     name: "Monitor",

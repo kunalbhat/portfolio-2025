@@ -45,22 +45,31 @@ export class DeskScene {
   #create(obj) {
     const geo = this.manifest.objects[obj.id];
     const wrap = el("div", `obj obj-${obj.id}`);
-        const visual = el("div", "visual");
+    const visual = el("div", "visual");
+    const shadow = el("div", `shadow shadow-${obj.id}`);
     const wcm = geo.size[0];
-    const base = img(geo.layers.object, "base", wcm);
-    visual.append(base);
-    let state = null;
-    if (obj.interaction.state) {
-      state = img(geo.states[obj.interaction.state], "state", wcm);
-      visual.append(state);
+    // One set of layers per light (day, night), stacked; the scene's mode
+    // crossfades between them. Both share one crop, anchor and silhouette.
+    const modes = {};
+    for (const [m, g] of Object.entries(geo.modes)) {
+      const layer = el("div", `layer m-${m}`);
+      const base = img(g.layers.object, "base", wcm);
+      layer.append(base);
+      let state = null;
+      if (obj.interaction.state) {
+        state = img(g.states[obj.interaction.state], "state", wcm);
+        layer.append(state);
+      }
+      let sprite = null;
+      if (obj.interaction.frames) {
+        sprite = el("div", "sprite");
+        layer.append(sprite);
+      }
+      visual.append(layer);
+      const sh = img(g.layers.shadow, `m-${m}`, wcm);
+      shadow.append(sh);
+      modes[m] = { geo: g, base, state, sprite, shadow: sh };
     }
-    let sprite = null;
-    if (obj.interaction.frames) {
-      sprite = el("div", "sprite");
-      visual.append(sprite);
-    }
-    const shadow = img(geo.layers.shadow, "shadow", wcm);
-    shadow.classList.add(`shadow-${obj.id}`);
 
     const hit = el("button", "hit");
     hit.type = "button";
@@ -87,7 +96,7 @@ export class DeskScene {
     this.objectLayer.append(wrap);
     this.shadowLayer.append(shadow);
 
-    const item = { obj, geo, wrap, visual, base, state, sprite, shadow, hit, frame: 0 };
+    const item = { obj, geo, wrap, visual, modes, shadow, hit, frame: 0 };
     const lift = (on) => {
       wrap.classList.toggle("is-lifted", on);
       shadow.classList.toggle("is-lifted", on);
@@ -110,7 +119,14 @@ export class DeskScene {
 
   /** All image elements, for a coordinated reveal once they have decoded. */
   images() {
-    return [...this.root.querySelectorAll("img.base, img.shadow")];
+    const m = this.mode;
+    return [...this.root.querySelectorAll(`.layer.m-${m} img.base, .shadow img.m-${m}`)];
+  }
+
+  /** Daylight or lamplight: the whole scene follows the lamp. */
+  setMode(mode) {
+    this.mode = mode;
+    this.root.dataset.mode = mode;
   }
 
   layout() {
@@ -139,6 +155,13 @@ export class DeskScene {
     // Frame the composition on its key objects only; anything else (the plant
     // on a phone, say) may run off the edge like a crop of a larger desk.
     const framed = rects.filter((r) => !L.frame || L.frame.includes(r.item.obj.id));
+    // Optionally the whole desk slab too, so its edges never clip.
+    if (L.frameDesk) {
+      const S = L.desk.surface;
+      const corners = [[S.x0, S.y0], [S.x1, S.y0], [S.x1, S.y1], [S.x0, S.y1]];
+      const p = corners.map(([x, y]) => this.project(x, y, 0)).concat(corners.map(([x, y]) => this.project(x, y, -S.thickness)));
+      framed.push({ x0: Math.min(...p.map((q) => q[0])), x1: Math.max(...p.map((q) => q[0])), y0: Math.min(...p.map((q) => q[1])), y1: Math.max(...p.map((q) => q[1])) });
+    }
     const bx0 = Math.min(...framed.map((r) => r.x0));
     const bx1 = Math.max(...framed.map((r) => r.x1));
     const by0 = Math.min(...framed.map((r) => r.y0));
@@ -170,7 +193,7 @@ export class DeskScene {
       }
       // Farther objects (higher on screen) sit behind nearer ones.
       item.wrap.style.zIndex = String(Math.round(r.py * 10) + 1000);
-      for (const im of [...item.wrap.querySelectorAll("img"), item.shadow]) {
+      for (const im of [...item.wrap.querySelectorAll("img"), ...item.shadow.querySelectorAll("img")]) {
         im.sizes = `${Math.ceil(width)}px`;
         if (!im.getAttribute("srcset")) {
           im.srcset = im.dataset.srcset;
@@ -178,7 +201,7 @@ export class DeskScene {
         }
       }
       item.density = scale * s * dpr > this.manifest.densities[0] * 1.15 ? 1 : 0;
-      if (item.sprite) this.#prepareSprite(item);
+      if (item.obj.interaction.frames) this.#prepareSprite(item);
     }
 
     this.#drawDesk(L.desk, ox, oy, scale, W, H);
@@ -207,6 +230,12 @@ export class DeskScene {
     const top = outline.map(([x, y]) => P(x, y));
     const under = outline.map(([x, y]) => P(x, y, -S.thickness));
     const [lx, ly] = P(desk.light.x, desk.light.y);
+    // The lamp's pool: a circle on the desk plane, so its gradient is mapped
+    // through the camera (a projected circle is an ellipse).
+    const { ca, sa, se } = this.k;
+    const R = desk.pool.radius * scale;
+    const [qx, qy] = P(desk.pool.x, desk.pool.y);
+    const pm = [ca * R, sa * se * R, sa * R, -ca * se * R, qx, qy].map((v) => v.toFixed(2)).join(" ");
     const r = desk.light.radius * scale;
     const blur = Math.max(6, scale * 2.2);
     const drop = scale * 2.4;
@@ -219,6 +248,15 @@ export class DeskScene {
           <stop offset="0" class="desk-lit"/>
           <stop offset="1" class="desk-base"/>
         </radialGradient>
+        <radialGradient id="lamp-pool" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1"
+          gradientTransform="matrix(${pm})">
+          <stop offset="0" stop-color="#fff1ea"/>
+          <stop offset="0.12" stop-color="#ffd8cd"/>
+          <stop offset="0.3" stop-color="#ee6d64" stop-opacity="0.96"/>
+          <stop offset="0.5" stop-color="#b21d36" stop-opacity="0.8"/>
+          <stop offset="0.72" stop-color="#7e0a32" stop-opacity="0.42"/>
+          <stop offset="1" stop-color="#600832" stop-opacity="0"/>
+        </radialGradient>
         <filter id="desk-drop" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="${blur.toFixed(1)}"/>
         </filter>
@@ -227,6 +265,8 @@ export class DeskScene {
       <polygon class="desk-side" points="${pts(under)}"/>
       <polygon class="desk-side" points="${pts(sweep(top, under))}"/>
       <polygon class="desk-top" fill="url(#desk-light)" points="${pts(top)}"/>
+      <polygon class="lamp-pool" fill="url(#lamp-pool)" points="${pts(top)}"
+        style="transform-origin: ${qx.toFixed(1)}px ${qy.toFixed(1)}px"/>
       <polygon class="desk-rim" points="${pts(top)}"/>
       ${desk.guides ? this.#guides(desk.guides, ox, oy, scale) : ""}`;
   }
@@ -247,14 +287,16 @@ export class DeskScene {
 
   // -- frame sequences --------------------------------------------------------
   #prepareSprite(item) {
-    const f = item.geo.frames[item.obj.interaction.frames];
-    const files = f.files;
-    const key = Object.keys(files)[item.density] ?? Object.keys(files)[0];
-    const url = `/desk/assets/${files[key]}`;
-    if (item.sprite.dataset.url !== url) {
-      item.sprite.dataset.url = url;
-      item.sprite.style.backgroundImage = `url("${url}")`;
-      item.sprite.style.backgroundSize = `${f.cols * 100}% ${f.rows * 100}%`;
+    for (const m of Object.values(item.modes)) {
+      const f = m.geo.frames[item.obj.interaction.frames];
+      const files = f.files;
+      const key = Object.keys(files)[item.density] ?? Object.keys(files)[0];
+      const url = `/desk/assets/${files[key]}`;
+      if (m.sprite.dataset.url !== url) {
+        m.sprite.dataset.url = url;
+        m.sprite.style.backgroundImage = `url("${url}")`;
+        m.sprite.style.backgroundSize = `${f.cols * 100}% ${f.rows * 100}%`;
+      }
     }
     this.#showFrame(item, item.frame);
   }
@@ -262,28 +304,36 @@ export class DeskScene {
   /** Warm the sprite sheets once the scene is visible, so first taps are instant. */
   preloadSprites() {
     for (const item of this.items.values()) {
-      if (item.sprite?.dataset.url) {
-        const im = new Image();
-        im.src = item.sprite.dataset.url;
+      for (const m of Object.values(item.modes)) {
+        if (m.sprite?.dataset.url) {
+          const im = new Image();
+          im.src = m.sprite.dataset.url;
+        }
       }
     }
   }
 
+  #frames(item) {
+    return item.geo.modes.day.frames[item.obj.interaction.frames];
+  }
+
   #showFrame(item, i) {
-    const f = item.geo.frames[item.obj.interaction.frames];
+    const f = this.#frames(item);
     const col = i % f.cols;
     const row = Math.floor(i / f.cols);
-    item.sprite.style.backgroundPosition = `${(col / (f.cols - 1)) * 100}% ${(row / Math.max(1, f.rows - 1)) * 100}%`;
     const showing = i !== 0;
-    item.sprite.classList.toggle("is-on", showing);
-    item.base.classList.toggle("is-off", showing);
+    for (const m of Object.values(item.modes)) {
+      m.sprite.style.backgroundPosition = `${(col / (f.cols - 1)) * 100}% ${(row / Math.max(1, f.rows - 1)) * 100}%`;
+      m.sprite.classList.toggle("is-on", showing);
+      m.base.classList.toggle("is-off", showing);
+    }
   }
 
   /** Play `step` frames forward with an ease-out; resolves when done. */
   playFrames(id) {
     const item = this.items.get(id);
     const ix = item.obj.interaction;
-    const f = item.geo.frames[ix.frames];
+    const f = this.#frames(item);
     if (item.playing) return item.playing;
     if (REDUCED.matches) return Promise.resolve();
     const from = item.frame;
@@ -312,7 +362,7 @@ export class DeskScene {
   /** Show or hide an object's alternate render (screen on, notebook open). */
   setActive(id, on) {
     const item = this.items.get(id);
-    if (!item?.state) return;
+    if (!item?.obj.interaction.state) return;
     item.wrap.classList.toggle("is-active", on);
   }
 }

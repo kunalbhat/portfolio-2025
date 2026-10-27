@@ -1,5 +1,10 @@
 {
  "style": "2.1",
+ "world": "rose2",
+ "modes": [
+  "day",
+  "night"
+ ],
  "camera": {
   "elevation": 37.0,
   "azimuth": -38.0
@@ -9,6 +14,160 @@
   32.0
  ],
  "objects": {
+  "lamp": {
+   "size": [
+    48.625,
+    44.719
+   ],
+   "anchor": [
+    17.095,
+    35.747
+   ],
+   "hull": [
+    [
+     10.556,
+     34.206
+    ],
+    [
+     15.512,
+     10.031
+    ],
+    [
+     15.619,
+     9.697
+    ],
+    [
+     16.012,
+     9.153
+    ],
+    [
+     16.916,
+     8.747
+    ],
+    [
+     17.875,
+     8.934
+    ],
+    [
+     35.663,
+     18.663
+    ],
+    [
+     35.966,
+     18.859
+    ],
+    [
+     42.737,
+     23.819
+    ],
+    [
+     43.306,
+     24.678
+    ],
+    [
+     43.356,
+     25.441
+    ],
+    [
+     42.909,
+     26.566
+    ],
+    [
+     41.931,
+     27.681
+    ],
+    [
+     41.125,
+     28.347
+    ],
+    [
+     40.163,
+     28.994
+    ],
+    [
+     39.066,
+     29.6
+    ],
+    [
+     21.016,
+     38.663
+    ],
+    [
+     20.322,
+     38.947
+    ],
+    [
+     18.794,
+     39.337
+    ],
+    [
+     17.15,
+     39.475
+    ],
+    [
+     15.906,
+     39.409
+    ],
+    [
+     15.103,
+     39.284
+    ],
+    [
+     13.963,
+     38.981
+    ],
+    [
+     12.569,
+     38.344
+    ],
+    [
+     11.519,
+     37.534
+    ],
+    [
+     10.916,
+     36.766
+    ],
+    [
+     10.644,
+     36.172
+    ],
+    [
+     10.491,
+     35.294
+    ]
+   ],
+   "modes": {
+    "day": {
+     "layers": {
+      "object": {
+       "16": "lamp-day-object@16.webp",
+       "32": "lamp-day-object@32.webp"
+      },
+      "shadow": {
+       "16": "lamp-day-shadow@16.webp",
+       "32": "lamp-day-shadow@32.webp"
+      }
+     },
+     "states": {},
+     "frames": {}
+    },
+    "night": {
+     "layers": {
+      "object": {
+       "16": "lamp-night-object@16.webp",
+       "32": "lamp-night-object@32.webp"
+      },
+      "shadow": {
+       "16": "lamp-night-shadow@16.webp",
+       "32": "lamp-night-shadow@32.webp"
+      }
+     },
+     "states": {},
+     "frames": {}
+    }
+   }
+  },
   "monitor": {
    "size": [
     73.156,
@@ -132,23 +291,46 @@
      62.381
     ]
    ],
-   "layers": {
-    "object": {
-     "16": "monitor-object@16.webp",
-     "32": "monitor-object@32.webp"
+   "modes": {
+    "day": {
+     "layers": {
+      "object": {
+       "16": "monitor-day-object@16.webp",
+       "32": "monitor-day-object@32.webp"
+      },
+      "shadow": {
+       "16": "monitor-day-shadow@16.webp",
+       "32": "monitor-day-shadow@32.webp"
+      }
+     },
+     "states": {
+      "on": {
+       "16": "monitor-day-state-on@16.webp",
+       "32": "monitor-day-state-on@32.webp"
+      }
+     },
+     "frames": {}
     },
-    "shadow": {
-     "16": "monitor-shadow@16.webp",
-     "32": "monitor-shadow@32.webp"
+    "night": {
+     "layers": {
+      "object": {
+       "16": "monitor-night-object@16.webp",
+       "32": "monitor-night-object@32.webp"
+      },
+      "shadow": {
+       "16": "monitor-night-shadow@16.webp",
+       "32": "monitor-night-shadow@32.webp"
+      }
+     },
+     "states": {
+      "on": {
+       "16": "monitor-night-state-on@16.webp",
+       "32": "monitor-night-state-on@32.webp"
+      }
+     },
+     "frames": {}
     }
-   },
-   "states": {
-    "on": {
-     "16": "monitor-state-on@16.webp",
-     "32": "monitor-state-on@32.webp"
-    }
-   },
-   "frames": {}
+   }
   },
   "macmini": {
    "size": [
@@ -273,23 +455,46 @@
      12.188
     ]
    ],
-   "layers": {
-    "object": {
-     "16": "macmini-object@16.webp",
-     "32": "macmini-object@32.webp"
+   "modes": {
+    "day": {
+     "layers": {
+      "object": {
+       "16": "macmini-day-object@16.webp",
+       "32": "macmini-day-object@32.webp"
+      },
+      "shadow": {
+       "16": "macmini-day-shadow@16.webp",
+       "32": "macmini-day-shadow@32.webp"
+      }
+     },
+     "states": {
+      "on": {
+       "16": "macmini-day-state-on@16.webp",
+       "32": "macmini-day-state-on@32.webp"
+      }
+     },
+     "frames": {}
     },
-    "shadow": {
-     "16": "macmini-shadow@16.webp",
-     "32": "macmini-shadow@32.webp"
+    "night": {
+     "layers": {
+      "object": {
+       "16": "macmini-night-object@16.webp",
+       "32": "macmini-night-object@32.webp"
+      },
+      "shadow": {
+       "16": "macmini-night-shadow@16.webp",
+       "32": "macmini-night-shadow@32.webp"
+      }
+     },
+     "states": {
+      "on": {
+       "16": "macmini-night-state-on@16.webp",
+       "32": "macmini-night-state-on@32.webp"
+      }
+     },
+     "frames": {}
     }
-   },
-   "states": {
-    "on": {
-     "16": "macmini-state-on@16.webp",
-     "32": "macmini-state-on@32.webp"
-    }
-   },
-   "frames": {}
+   }
   },
   "rubiks": {
    "size": [
@@ -414,25 +619,53 @@
      9.762
     ]
    ],
-   "layers": {
-    "object": {
-     "16": "rubiks-object@16.webp",
-     "32": "rubiks-object@32.webp"
+   "modes": {
+    "day": {
+     "layers": {
+      "object": {
+       "16": "rubiks-day-object@16.webp",
+       "32": "rubiks-day-object@32.webp"
+      },
+      "shadow": {
+       "16": "rubiks-day-shadow@16.webp",
+       "32": "rubiks-day-shadow@32.webp"
+      }
+     },
+     "states": {},
+     "frames": {
+      "twist": {
+       "count": 36,
+       "cols": 6,
+       "rows": 6,
+       "files": {
+        "16": "rubiks-day-twist@16.webp",
+        "32": "rubiks-day-twist@32.webp"
+       }
+      }
+     }
     },
-    "shadow": {
-     "16": "rubiks-shadow@16.webp",
-     "32": "rubiks-shadow@32.webp"
-    }
-   },
-   "states": {},
-   "frames": {
-    "twist": {
-     "count": 36,
-     "cols": 6,
-     "rows": 6,
-     "files": {
-      "16": "rubiks-twist@16.webp",
-      "32": "rubiks-twist@32.webp"
+    "night": {
+     "layers": {
+      "object": {
+       "16": "rubiks-night-object@16.webp",
+       "32": "rubiks-night-object@32.webp"
+      },
+      "shadow": {
+       "16": "rubiks-night-shadow@16.webp",
+       "32": "rubiks-night-shadow@32.webp"
+      }
+     },
+     "states": {},
+     "frames": {
+      "twist": {
+       "count": 36,
+       "cols": 6,
+       "rows": 6,
+       "files": {
+        "16": "rubiks-night-twist@16.webp",
+        "32": "rubiks-night-twist@32.webp"
+       }
+      }
      }
     }
    }
@@ -560,23 +793,46 @@
      13.488
     ]
    ],
-   "layers": {
-    "object": {
-     "16": "notebook-object@16.webp",
-     "32": "notebook-object@32.webp"
+   "modes": {
+    "day": {
+     "layers": {
+      "object": {
+       "16": "notebook-day-object@16.webp",
+       "32": "notebook-day-object@32.webp"
+      },
+      "shadow": {
+       "16": "notebook-day-shadow@16.webp",
+       "32": "notebook-day-shadow@32.webp"
+      }
+     },
+     "states": {
+      "open": {
+       "16": "notebook-day-state-open@16.webp",
+       "32": "notebook-day-state-open@32.webp"
+      }
+     },
+     "frames": {}
     },
-    "shadow": {
-     "16": "notebook-shadow@16.webp",
-     "32": "notebook-shadow@32.webp"
+    "night": {
+     "layers": {
+      "object": {
+       "16": "notebook-night-object@16.webp",
+       "32": "notebook-night-object@32.webp"
+      },
+      "shadow": {
+       "16": "notebook-night-shadow@16.webp",
+       "32": "notebook-night-shadow@32.webp"
+      }
+     },
+     "states": {
+      "open": {
+       "16": "notebook-night-state-open@16.webp",
+       "32": "notebook-night-state-open@32.webp"
+      }
+     },
+     "frames": {}
     }
-   },
-   "states": {
-    "open": {
-     "16": "notebook-state-open@16.webp",
-     "32": "notebook-state-open@32.webp"
-    }
-   },
-   "frames": {}
+   }
   },
   "plant": {
    "size": [
@@ -701,25 +957,53 @@
      14.791
     ]
    ],
-   "layers": {
-    "object": {
-     "16": "plant-object@16.webp",
-     "32": "plant-object@32.webp"
+   "modes": {
+    "day": {
+     "layers": {
+      "object": {
+       "16": "plant-day-object@16.webp",
+       "32": "plant-day-object@32.webp"
+      },
+      "shadow": {
+       "16": "plant-day-shadow@16.webp",
+       "32": "plant-day-shadow@32.webp"
+      }
+     },
+     "states": {},
+     "frames": {
+      "sway": {
+       "count": 12,
+       "cols": 4,
+       "rows": 3,
+       "files": {
+        "16": "plant-day-sway@16.webp",
+        "32": "plant-day-sway@32.webp"
+       }
+      }
+     }
     },
-    "shadow": {
-     "16": "plant-shadow@16.webp",
-     "32": "plant-shadow@32.webp"
-    }
-   },
-   "states": {},
-   "frames": {
-    "sway": {
-     "count": 12,
-     "cols": 4,
-     "rows": 3,
-     "files": {
-      "16": "plant-sway@16.webp",
-      "32": "plant-sway@32.webp"
+    "night": {
+     "layers": {
+      "object": {
+       "16": "plant-night-object@16.webp",
+       "32": "plant-night-object@32.webp"
+      },
+      "shadow": {
+       "16": "plant-night-shadow@16.webp",
+       "32": "plant-night-shadow@32.webp"
+      }
+     },
+     "states": {},
+     "frames": {
+      "sway": {
+       "count": 12,
+       "cols": 4,
+       "rows": 3,
+       "files": {
+        "16": "plant-night-sway@16.webp",
+        "32": "plant-night-sway@32.webp"
+       }
+      }
      }
     }
    }

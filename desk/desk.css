@@ -1,20 +1,51 @@
-/* Illustrated desk — v2.1 dark: surround, desk, objects. */
+/* Illustrated desk — Rose, in two lights. The lamp switches the scene
+   between daylight (data-mode="day") and lamplight (data-mode="night"). Both
+   palettes are set from layouts.js TONES as --day-* / --night-* properties. */
 
 :root {
-  color-scheme: dark;
-  --ink: #e6dfd3; /* warm light type on the dark surround */
-  --muted: #a39b8f;
-  --env: #24211f; /* surround (set from layouts.js) */
-  --env-edge: #191716;
-  --desk-top: #3a3531;
-  --desk-lit: #454039; /* soft pool of light on the desk */
-  --desk-edge: #302c28;
+  color-scheme: light;
+  --env: var(--day-env);
+  --env-edge: var(--day-env-edge);
+  --desk-top: var(--day-base);
+  --desk-lit: var(--day-lit);
+  --desk-edge: var(--day-edge);
+  --desk-drop: var(--day-drop);
+  --desk-rim: var(--day-rim);
+  --ink: var(--day-ink);
   --sans: "Instrument Sans", system-ui, sans-serif;
   --gutter: clamp(20px, 3.2vw, 44px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --quick: 160ms;
   --reveal: 300ms;
   --cm: 10px; /* set by scene.js: CSS px per scene centimetre */
+  /* The room's change of light. Lamp on: the lamp leads, the room follows
+     and dims a beat later. Lamp off: daylight returns, slower and softer. */
+  --room: 1150ms;
+  --room-delay: 0ms;
+  --room-ease: cubic-bezier(0.45, 0, 0.3, 1);
+}
+
+:root[data-mode="night"] {
+  color-scheme: dark;
+  --env: var(--night-env);
+  --env-edge: var(--night-env-edge);
+  --desk-top: var(--night-base);
+  --desk-lit: var(--night-lit);
+  --desk-edge: var(--night-edge);
+  --desk-drop: var(--night-drop);
+  --desk-rim: var(--night-rim);
+  --ink: var(--night-ink);
+  --room: 800ms;
+  --room-delay: 160ms;
+  --room-ease: cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+/* First paint (and the initial light) never animates. */
+.no-transition *,
+.no-transition *::before,
+.no-transition *::after {
+  transition: none !important;
+  animation: none !important;
 }
 
 * {
@@ -31,6 +62,8 @@ body {
   overflow: hidden;
   background: var(--env);
   color: var(--ink);
+  transition: background-color var(--room) var(--room-ease) var(--room-delay),
+    color var(--room) var(--room-ease) var(--room-delay);
   font: 400 16px/1.5 var(--sans);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -75,12 +108,32 @@ body {
   height: 100%;
 }
 
-/* Layer 1: the surround, a deep warm graphite with a soft vignette. */
+/* Layer 1: the surround. Daylight on the element, dusk on a layer above it
+   that fades in, since gradients themselves cannot transition. */
 .scene {
-  background: radial-gradient(120% 95% at 55% 52%, var(--env) 0%, var(--env) 45%, var(--env-edge) 100%);
+  background: radial-gradient(120% 95% at 55% 52%, var(--day-env) 0%, var(--day-env) 45%, var(--day-env-edge) 100%);
+}
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(110% 90% at 38% 62%, var(--night-env) 0%, var(--night-env) 35%, var(--night-env-edge) 100%);
+  opacity: 0;
+  transition: opacity var(--room) var(--room-ease) var(--room-delay);
+}
+:root[data-mode="night"] .scene::before {
+  opacity: 1;
 }
 
 /* Layer 2: the desk slab. */
+.desk .desk-lit,
+.desk .desk-base,
+.desk-drop,
+.desk-side,
+.desk-rim {
+  transition: stop-color var(--room) var(--room-ease) var(--room-delay),
+    fill var(--room) var(--room-ease) var(--room-delay), stroke var(--room) var(--room-ease) var(--room-delay);
+}
 .desk .desk-lit {
   stop-color: var(--desk-lit);
 }
@@ -88,15 +141,29 @@ body {
   stop-color: var(--desk-top);
 }
 .desk-drop {
-  fill: #0d0c0b;
+  fill: var(--desk-drop);
   opacity: 0.5;
 }
 .desk-side {
   fill: var(--desk-edge);
 }
+
+/* The lamp's pool of light on the desk: it spreads out from under the shade
+   as the lamp comes on, and draws back when it goes off. */
+.lamp-pool {
+  opacity: 0;
+  transform: scale(0.62);
+  transition: opacity 650ms var(--room-ease), transform 800ms var(--room-ease);
+}
+:root[data-mode="night"] .lamp-pool {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 900ms cubic-bezier(0.2, 0.7, 0.2, 1) 110ms,
+    transform 1100ms cubic-bezier(0.16, 0.8, 0.2, 1) 110ms;
+}
 .desk-rim {
   fill: none;
-  stroke: rgba(255, 244, 228, 0.07);
+  stroke: var(--desk-rim);
   stroke-width: 1;
   stroke-linejoin: round;
 }
@@ -120,7 +187,6 @@ body {
 }
 
 .shadow {
-  display: block;
   pointer-events: none;
   user-select: none;
   transition: opacity var(--quick) var(--ease), filter var(--quick) var(--ease);
@@ -146,6 +212,42 @@ body {
   position: absolute;
   inset: 0;
   transition: transform var(--quick) var(--ease);
+}
+
+/* Day and night renders of each object, stacked: night fades in on top. */
+.layer,
+.shadow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity var(--room) var(--room-ease) var(--room-delay);
+}
+.layer.m-night,
+.shadow img.m-night,
+:root[data-mode="night"] .shadow img.m-day {
+  opacity: 0;
+}
+:root[data-mode="night"] .layer.m-night,
+:root[data-mode="night"] .shadow img.m-night {
+  opacity: 1;
+}
+
+/* The lamp itself switches first: a quick catch and flicker of the bulb and
+   rim, before the room follows. Off is a short fade. */
+.obj-lamp .layer.m-night {
+  transition: opacity 240ms var(--room-ease);
+}
+:root[data-mode="night"] .obj-lamp .layer.m-night {
+  animation: lamp-on 460ms linear;
+}
+@keyframes lamp-on {
+  0% { opacity: 0; }
+  14% { opacity: 1; }
+  22% { opacity: 0.35; }
+  34% { opacity: 0.95; }
+  46% { opacity: 0.7; }
+  100% { opacity: 1; }
 }
 
 .visual img,
