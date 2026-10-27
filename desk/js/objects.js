@@ -8,8 +8,8 @@
  * @property {number} optical     display scale for legibility (1 = true scale)
  * @property {Object} interaction
  * @property {"toggle" | "frames"} interaction.kind
- *   toggle: switches between the resting render and an alternate state (or,
- *   for the lamp, the whole scene between daylight and lamplight)
+ *   toggle: shows an alternate state while hovered (or, for the lamp, switches
+ *   the whole scene between daylight and lamplight on click)
  *   frames: plays part of a frame sequence (the cube turns, the plant sways)
  * @property {string} [interaction.state]   alternate render for toggles
  * @property {string} interaction.label     accessible name of the control; toggles
@@ -18,8 +18,7 @@
  * @property {number} [interaction.step]    frames advanced per activation
  * @property {boolean} [interaction.loop]   sequence returns to rest (plant)
  * @property {boolean} [interaction.light]  this toggle is the room's light (lamp)
- * @property {{ href: string, text: string }} [link]
- *   a path onward: revealed beside the object once it has been played with
+ * @property {string} [note]  label popped on click (defaults to the name)
  */
 
 /** @type {DeskObject[]} */
@@ -65,13 +64,13 @@ export const OBJECTS = [
     name: "Photo frame",
     optical: 1,
     interaction: { kind: "toggle", state: "next", label: "Photo frame: product work at Aura" },
-    link: { href: "/desk/work/", text: "Product work" },
+    note: "Product work at Aura",
   },
   {
     id: "arcade",
     name: "Arcade cabinet",
     optical: 1,
     interaction: { kind: "toggle", state: "play", label: "Arcade cabinet: games and experiments" },
-    link: { href: "/desk/play/", text: "Games & experiments" },
+    note: "Games & experiments",
   },
 ];

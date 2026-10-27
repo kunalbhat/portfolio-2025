@@ -30,8 +30,11 @@ export class DeskScene {
     this.desk.setAttribute("aria-hidden", "true");
     this.shadowLayer = el("div", "shadows");
     this.objectLayer = el("div", "objects");
-    this.linkLayer = el("div", "links");
-    root.append(this.desk, this.shadowLayer, this.objectLayer, this.linkLayer);
+    // One small text label, popped by a click or tap (and announced).
+    this.label = el("p", "desk-label");
+    this.label.setAttribute("role", "status");
+    this.label.setAttribute("aria-live", "polite");
+    root.append(this.desk, this.shadowLayer, this.objectLayer, this.label);
     for (const obj of objects) this.items.set(obj.id, this.#create(obj));
 
     new ResizeObserver(() => this.layout()).observe(root);
@@ -75,7 +78,7 @@ export class DeskScene {
     const hit = el("button", "hit");
     hit.type = "button";
     hit.setAttribute("aria-label", obj.interaction.label);
-    if (obj.interaction.kind === "toggle") hit.setAttribute("aria-pressed", "false");
+    if (obj.interaction.light) hit.setAttribute("aria-pressed", "false");
     const [w, h] = geo.size;
     hit.style.clipPath = `polygon(${geo.hull
       .map(([x, y]) => `${((x / w) * 100).toFixed(2)}% ${((y / h) * 100).toFixed(2)}%`)
@@ -97,55 +100,46 @@ export class DeskScene {
     this.objectLayer.append(wrap);
     this.shadowLayer.append(shadow);
 
-    // A path onward (photo frame -> work, arcade -> games), revealed once the
-    // object has been played with, in one slot at the bottom of the view so
-    // it never covers another object (above all, the lamp). Hidden links are
-    // out of the tab order.
-    let link = null;
-    if (obj.link) {
-      link = el("a", "obj-link");
-      link.href = obj.link.href;
-      link.innerHTML = `<span></span><span class="obj-link-arrow" aria-hidden="true">→</span>`;
-      link.firstChild.textContent = obj.link.text;
-      this.linkLayer.append(link);
-    }
-    const item = { obj, geo, wrap, visual, modes, shadow, hit, link, frame: 0 };
+    const item = { obj, geo, wrap, visual, modes, shadow, hit, frame: 0 };
     const lift = (on) => {
       wrap.classList.toggle("is-lifted", on);
       shadow.classList.toggle("is-lifted", on);
     };
-    hit.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && lift(true));
-    hit.addEventListener("pointerleave", () => lift(false));
-    hit.addEventListener("focus", () => lift(hit.matches(":focus-visible")));
-    hit.addEventListener("blur", () => lift(false));
+    // Hover (mouse) or keyboard focus brings an object into its state; a
+    // click or tap is reported separately, with how it happened, so touch
+    // (which has no hover) can play the state on tap instead.
+    const hover = (on) => this.onHover?.(obj, on);
+    let pointer = "mouse";
+    hit.addEventListener("pointerenter", (e) => {
+      if (e.pointerType !== "mouse") return;
+      lift(true);
+      hover(true);
+    });
+    hit.addEventListener("pointerleave", (e) => {
+      lift(false);
+      if (e.pointerType === "mouse") hover(false);
+    });
+    hit.addEventListener("focus", () => {
+      const keyboard = hit.matches(":focus-visible");
+      lift(keyboard);
+      if (keyboard) hover(true);
+    });
+    hit.addEventListener("blur", () => {
+      lift(false);
+      hover(false);
+    });
     // Pressed state for pointer and keyboard, so a tap visibly lands.
     const press = (on) => wrap.classList.toggle("is-pressed", on);
-    hit.addEventListener("pointerdown", () => press(true));
+    hit.addEventListener("pointerdown", (e) => {
+      pointer = e.pointerType || "mouse";
+      press(true);
+    });
     for (const ev of ["pointerup", "pointerleave", "pointercancel", "blur"]) {
       hit.addEventListener(ev, () => press(false));
     }
     hit.addEventListener("keydown", (e) => (e.key === "Enter" || e.key === " ") && press(true));
     hit.addEventListener("keyup", () => press(false));
-    hit.addEventListener("click", () => this.onActivate(obj, hit));
-    // Keyboard order: a revealed link comes right after its own object, even
-    // though it lives in a layer above all objects.
-    if (link) {
-      hit.addEventListener("keydown", (e) => {
-        if (e.key === "Tab" && !e.shiftKey && link.classList.contains("is-shown")) {
-          e.preventDefault();
-          link.focus();
-        }
-      });
-      link.addEventListener("keydown", (e) => {
-        if (e.key !== "Tab") return;
-        const hits = [...this.objectLayer.querySelectorAll(".hit")];
-        const next = e.shiftKey ? hit : hits[hits.indexOf(hit) + 1];
-        if (next) {
-          e.preventDefault();
-          next.focus();
-        }
-      });
-    }
+    hit.addEventListener("click", (e) => this.onActivate(obj, hit, e.detail === 0 ? "keyboard" : pointer));
     return item;
   }
 
@@ -391,16 +385,25 @@ export class DeskScene {
     return item.playing;
   }
 
+  isActive(id) {
+    return this.items.get(id)?.wrap.classList.contains("is-active") ?? false;
+  }
+
+  /** Pop the label for a moment. */
+  showLabel(text) {
+    clearTimeout(this.labelTimer);
+    this.label.textContent = text;
+    this.label.classList.remove("is-shown");
+    void this.label.offsetWidth; // restart the pop if one is already showing
+    this.label.classList.add("is-shown");
+    this.labelTimer = setTimeout(() => this.label.classList.remove("is-shown"), 2600);
+  }
+
   /** Show or hide an object's alternate render (screen on, notebook open). */
   setActive(id, on) {
     const item = this.items.get(id);
     if (!item?.obj.interaction.state) return;
     item.wrap.classList.toggle("is-active", on);
-    // One path at a time: the newest replaces any other.
-    if (on && item.link) {
-      for (const other of this.items.values()) other.link?.classList.remove("is-shown");
-    }
-    item.link?.classList.toggle("is-shown", on);
   }
 }
 
