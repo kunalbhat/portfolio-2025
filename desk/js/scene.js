@@ -14,9 +14,8 @@ export class DeskScene {
    * @param {import("./objects.js").DeskObject[]} objects
    * @param {(obj: import("./objects.js").DeskObject, el: HTMLElement) => void} onActivate
    */
-  constructor(root, manifest, objects, onActivate, variant) {
+  constructor(root, manifest, objects, onActivate) {
     this.root = root;
-    this.variant = variant;
     this.manifest = manifest;
     this.objects = objects;
     this.onActivate = onActivate;
@@ -120,7 +119,7 @@ export class DeskScene {
     const H = box.height;
     if (!W || !H) return;
     const orientation = pickLayout(W, H);
-    const L = resolveLayout(this.variant, orientation);
+    const L = resolveLayout(orientation);
     this.root.dataset.layout = orientation;
 
     // Composition bounds (projected cm) from each object's image box.
@@ -206,7 +205,22 @@ export class DeskScene {
           <stop offset="1" class="desk-base"/>
         </radialGradient>
       </defs>
-      <rect width="${W}" height="${H}" fill="url(#desk-light)"/>`;
+      <rect width="${W}" height="${H}" fill="url(#desk-light)"/>
+      ${desk.guides ? this.#guides(desk.guides, ox, oy, scale) : ""}`;
+  }
+
+  /** Construction lines of the layout system, drawn on the desk plane (?grid). */
+  #guides(g, ox, oy, scale) {
+    const P = (x, y) => {
+      const [px, py] = this.project(x, y);
+      return `${(ox + px * scale).toFixed(1)},${(oy + py * scale).toFixed(1)}`;
+    };
+    const { x0, x1, y0, y1 } = g.extent;
+    const lines = [
+      ...g.xs.map((x) => `<polyline points="${P(x, y0)} ${P(x, y1)}"/>`),
+      ...g.ys.map((y) => `<polyline points="${P(x0, y)} ${P(x1, y)}"/>`),
+    ];
+    return `<g class="guides">${lines.join("")}</g>`;
   }
 
   // -- frame sequences --------------------------------------------------------

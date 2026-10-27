@@ -227,3 +227,12 @@ body {
     transform: none;
   }
 }
+
+/* ?grid — the layout system's construction lines, for review only. */
+.guides polyline {
+  fill: none;
+  stroke: #b0563a;
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.55;
+}

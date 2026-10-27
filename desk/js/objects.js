@@ -35,7 +35,7 @@ export const OBJECTS = [
   {
     id: "rubiks",
     name: "Rubik's cube",
-    optical: 1.3,
+    optical: 1.15,
     interaction: { kind: "frames", frames: "twist", step: 9, label: "Twist the Rubik’s cube" },
   },
   {
