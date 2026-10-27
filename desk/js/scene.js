@@ -2,7 +2,7 @@
 // orthographic camera as the Blender renders, draws the desk surface, and
 // places each object as a component (shadow layer + visual + hit region).
 
-import { LAYOUTS, pickLayout } from "./layouts.js";
+import { pickLayout, resolveLayout } from "./layouts.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)");
@@ -14,8 +14,9 @@ export class DeskScene {
    * @param {import("./objects.js").DeskObject[]} objects
    * @param {(obj: import("./objects.js").DeskObject, el: HTMLElement) => void} onActivate
    */
-  constructor(root, manifest, objects, onActivate) {
+  constructor(root, manifest, objects, onActivate, variant) {
     this.root = root;
+    this.variant = variant;
     this.manifest = manifest;
     this.objects = objects;
     this.onActivate = onActivate;
@@ -118,8 +119,9 @@ export class DeskScene {
     const W = box.width;
     const H = box.height;
     if (!W || !H) return;
-    const L = LAYOUTS[pickLayout(W, H)];
-    this.root.dataset.layout = pickLayout(W, H);
+    const orientation = pickLayout(W, H);
+    const L = resolveLayout(this.variant, orientation);
+    this.root.dataset.layout = orientation;
 
     // Composition bounds (projected cm) from each object's image box.
     const rects = [];
