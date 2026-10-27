@@ -101,9 +101,10 @@ export class DeskScene {
     this.shadowLayer.append(shadow);
 
     const item = { obj, geo, wrap, visual, modes, shadow, hit, frame: 0 };
+    // Hovered: the object stays put; only its shadow blooms (desk.css).
     const lift = (on) => {
-      wrap.classList.toggle("is-lifted", on);
-      shadow.classList.toggle("is-lifted", on);
+      wrap.classList.toggle("is-hovered", on);
+      shadow.classList.toggle("is-hovered", on);
     };
     // Hover (mouse) or keyboard focus brings an object into its state; a
     // click or tap is reported separately, with how it happened, so touch

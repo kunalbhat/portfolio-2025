@@ -187,26 +187,44 @@ body {
   position: absolute;
 }
 
+/* Hover: objects stay on the desk; only the shadow answers. Its contact core
+   stays exactly where it is (the object has not moved); a soft penumbra
+   blooms out around it, as if the light leaned in a little closer. Sized in
+   desk centimetres, so it reads the same at every zoom; larger objects get a
+   wider bloom. */
 .shadow {
+  --bloom: 1;
+  --spread: rgba(80, 14, 36, 0.38);
   pointer-events: none;
   user-select: none;
-  transition: opacity var(--quick) var(--ease), filter var(--quick) var(--ease);
+  filter: drop-shadow(0 0 0 transparent);
+  transition: filter 460ms var(--ease);
 }
-
-/* A raised object casts a softer, fainter shadow; without this the dark
-   contact core would show as a hard slab under it. */
-.shadow.is-lifted {
-  opacity: 0.6;
-  filter: blur(calc(var(--cm) * 0.18));
+:root[data-mode="night"] .shadow {
+  --spread: rgba(8, 0, 12, 0.5);
+}
+.shadow.is-hovered {
+  filter: drop-shadow(
+    0 calc(var(--cm) * 0.35 * var(--bloom)) calc(var(--cm) * 1.1 * var(--bloom)) var(--spread)
+  );
+  transition-duration: 280ms;
+}
+.shadow-monitor {
+  --bloom: 1.8;
+}
+.shadow-lamp,
+.shadow-photoframe,
+.shadow-arcade,
+.shadow-plant,
+.shadow-notebook {
+  --bloom: 1.3;
+}
+.shadow-rubiks {
+  --bloom: 0.7;
 }
 
 .obj {
-  --lift: 0.55;
   pointer-events: none;
-}
-
-.obj-monitor {
-  --lift: 0.35;
 }
 
 .visual {
@@ -283,10 +301,6 @@ body {
   opacity: 0;
 }
 
-.obj.is-lifted .visual {
-  transform: translateY(calc(var(--cm) * var(--lift) * -1));
-}
-
 /* The hit region is the object's silhouette (clip-path from the render
    manifest), so transparent padding and shadows never catch clicks. */
 .hit {
@@ -326,9 +340,10 @@ body {
   opacity: 1;
 }
 
-/* Pressed: the object settles a touch into the desk under the finger/click. */
+/* Pressed: the object gives a touch under the finger/click. */
 .obj.is-pressed .visual {
-  transform: translateY(calc(var(--cm) * 0.12)) scale(0.985);
+  transform: scale(0.985); /* a small give, from the base: never leaves the desk */
+  transform-origin: 50% 85%;
   transition-duration: 70ms;
 }
 
@@ -374,7 +389,6 @@ body {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
   }
-  .obj.is-lifted .visual,
   .obj.is-pressed .visual {
     transform: none;
   }
