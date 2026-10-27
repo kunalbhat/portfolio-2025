@@ -73,7 +73,7 @@ export function composeSystem({ cubeScale = 1.15 } = {}) {
 const SYSTEM = composeSystem();
 
 export const LAYOUT = {
-  tone: { base: "#e7e2d8", lit: "#ebe7de" },
+  tone: { base: "#e9e3d8", lit: "#eee9df" }, // v2.0 clay: warm cream stone
   landscape: {
     stage: { left: 0.16, right: 0.84, top: 0.15, bottom: 0.89, align: 0.5 },
     maxScale: 11.5,

@@ -5,8 +5,8 @@
   --ink: #34394b;
   --muted: #6f7380;
   --paper: #fbf8f2;
-  --desk-top: #e7e2d8;
-  --desk-lit: #ebe7de; /* soft pool of light under the arrangement */
+  --desk-top: #e9e3d8;
+  --desk-lit: #eee9df; /* soft pool of light under the arrangement */
   --sans: "Instrument Sans", system-ui, sans-serif;
   --gutter: clamp(20px, 3.2vw, 44px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
