@@ -78,7 +78,7 @@ export class DeskScene {
     const hit = el("button", "hit");
     hit.type = "button";
     hit.setAttribute("aria-label", obj.interaction.label);
-    if (obj.interaction.light) hit.setAttribute("aria-pressed", "false");
+    if (obj.interaction.kind === "toggle") hit.setAttribute("aria-pressed", "false");
     const [w, h] = geo.size;
     hit.style.clipPath = `polygon(${geo.hull
       .map(([x, y]) => `${((x / w) * 100).toFixed(2)}% ${((y / h) * 100).toFixed(2)}%`)
@@ -111,41 +111,19 @@ export class DeskScene {
       wrap.classList.toggle("is-hovered", on);
       shadow.classList.toggle("is-hovered", on);
     };
-    // Hover (mouse) or keyboard focus brings an object into its state; a
-    // click or tap is reported separately, with how it happened, so touch
-    // (which has no hover) can play the state on tap instead.
-    const hover = (on) => this.onHover?.(obj, on);
-    let pointer = "mouse";
-    hit.addEventListener("pointerenter", (e) => {
-      if (e.pointerType !== "mouse") return;
-      lift(true);
-      hover(true);
-    });
-    hit.addEventListener("pointerleave", (e) => {
-      lift(false);
-      if (e.pointerType === "mouse") hover(false);
-    });
-    hit.addEventListener("focus", () => {
-      const keyboard = hit.matches(":focus-visible");
-      lift(keyboard);
-      if (keyboard) hover(true);
-    });
-    hit.addEventListener("blur", () => {
-      lift(false);
-      hover(false);
-    });
+    hit.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && lift(true));
+    hit.addEventListener("pointerleave", () => lift(false));
+    hit.addEventListener("focus", () => lift(hit.matches(":focus-visible")));
+    hit.addEventListener("blur", () => lift(false));
     // Pressed state for pointer and keyboard, so a tap visibly lands.
     const press = (on) => wrap.classList.toggle("is-pressed", on);
-    hit.addEventListener("pointerdown", (e) => {
-      pointer = e.pointerType || "mouse";
-      press(true);
-    });
+    hit.addEventListener("pointerdown", () => press(true));
     for (const ev of ["pointerup", "pointerleave", "pointercancel", "blur"]) {
       hit.addEventListener(ev, () => press(false));
     }
     hit.addEventListener("keydown", (e) => (e.key === "Enter" || e.key === " ") && press(true));
     hit.addEventListener("keyup", () => press(false));
-    hit.addEventListener("click", (e) => this.onActivate(obj, hit, e.detail === 0 ? "keyboard" : pointer));
+    hit.addEventListener("click", () => this.onActivate(obj, hit));
     return item;
   }
 
@@ -396,10 +374,6 @@ export class DeskScene {
       requestAnimationFrame(tick);
     });
     return item.playing;
-  }
-
-  isActive(id) {
-    return this.items.get(id)?.wrap.classList.contains("is-active") ?? false;
   }
 
   /** Pop the label for a moment. */

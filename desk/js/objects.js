@@ -8,8 +8,8 @@
  * @property {number} optical     display scale for legibility (1 = true scale)
  * @property {Object} interaction
  * @property {"toggle" | "frames"} interaction.kind
- *   toggle: shows an alternate state while hovered (or, for the lamp, switches
- *   the whole scene between daylight and lamplight on click)
+ *   toggle: switches between the resting render and an alternate state (or,
+ *   for the lamp, the whole scene between daylight and lamplight)
  *   frames: plays part of a frame sequence (the cube turns, the plant sways)
  * @property {string} [interaction.state]   alternate render for toggles
  * @property {string} interaction.label     accessible name of the control; toggles
@@ -72,5 +72,12 @@ export const OBJECTS = [
     optical: 1,
     interaction: { kind: "toggle", state: "play", label: "Arcade cabinet: games and experiments" },
     note: "Games & experiments",
+  },
+  {
+    id: "cup",
+    name: "Coffee cup",
+    optical: 1,
+    interaction: { kind: "toggle", state: "empty", label: "Coffee cup" },
+    note: "Coffee",
   },
 ];

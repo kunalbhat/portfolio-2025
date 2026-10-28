@@ -28,39 +28,26 @@ function setMode(mode) {
   lamp?.setAttribute("aria-pressed", String(mode === "night"));
 }
 
-// Hover (or keyboard focus) brings an object into its state: the screen
-// lights, the notebook opens, the cube twists. The lamp is the exception: it
-// is a switch, so it only answers a click.
-function hover(obj, on) {
-  const ix = obj.interaction;
-  if (ix.light) return;
-  if (ix.kind === "frames") {
-    if (on) scene.playFrames(obj.id);
-  } else {
-    scene.setActive(obj.id, on);
-  }
-}
-
-// A click pops the object's label. Touch has no hover, so a tap also plays the
-// state (and the state leaves again when focus moves on); the keyboard replays
-// one-shot motions (cube, plant) on Enter.
-function activate(obj, hit, how) {
+// A click (or tap, or Enter) puts an object in its state: the screen lights,
+// the notebook opens, the cube twists. Toggles stay until clicked again. The
+// lamp is the room's light switch. Every other object also pops its label.
+function activate(obj, hit) {
   const ix = obj.interaction;
   if (ix.light) {
     setMode(scene.mode === "night" ? "day" : "night");
     return;
   }
-  if (how === "touch" || how === "pen") {
-    if (ix.kind === "frames") scene.playFrames(obj.id);
-    else scene.setActive(obj.id, !scene.isActive(obj.id));
-  } else if (how === "keyboard" && ix.kind === "frames") {
+  if (ix.kind === "frames") {
     scene.playFrames(obj.id);
+  } else {
+    const on = hit.getAttribute("aria-pressed") !== "true";
+    hit.setAttribute("aria-pressed", String(on));
+    scene.setActive(obj.id, on);
   }
   scene.showLabel(obj.note ?? obj.name);
 }
 
 const scene = new DeskScene(root, manifest, OBJECTS, activate);
-scene.onHover = hover;
 
 // Start in the light the visitor's system prefers (?mode= overrides, for review).
 const asked = new URLSearchParams(location.search).get("mode");

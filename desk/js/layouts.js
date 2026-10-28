@@ -6,11 +6,12 @@
 //
 //   back    lamp · monitor · plant          the frame of the scene
 //   middle  photo frame · Mac mini          work under the lamp; the machine
-//   front   cube · notebook · arcade        small things within reach, and play
+//   front   cube · notebook · cup · arcade  small things within reach, and play
 //
 // on a few columns. The lamp column (left) and plant column (right) carry an
 // object in every row; the monitor's screen edge sits one gap from the plant,
 // which keeps it clear of the lamp, and the notebook shares its centre line.
+// The cup stands in the Mac mini's column, one spot left of the arcade.
 //
 // The same numbers drive the Blender study renders
 // (illustrated-desk/tools/palette_study.py LAYOUT) and the night renders, whose
@@ -43,6 +44,7 @@ export function composeSystem() {
     macmini: { x: snap(COL.macmini), y: 3 },
     rubiks: { x: COL.lamp, y: ROW.front },
     notebook: { x: snap(COL.monitor), y: ROW.front },
+    cup: { x: snap(COL.macmini), y: ROW.front },
     arcade: { x: COL.plant, y: ROW.front },
   };
   const surface = { x0: -62, x1: 84, y0: -45.5, y1: snap(ROW.back + 22), radius: 7, thickness: 1.8 };
@@ -58,7 +60,7 @@ const SYSTEM = composeSystem();
 
 // Where the lamp's beam meets the desk, relative to the lamp (from the Blender
 // lamp rig: "[desk] lamp light ... hits desk at").
-export const LAMP_POOL = { dx: 9.3, dy: -29.3, radius: 48 };
+export const LAMP_POOL = { dx: 12.2, dy: -38.8, radius: 84 };
 
 /**
  * Rose, in two lights. Day: open daylight, a warm peach room and a rose desk.
