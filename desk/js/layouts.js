@@ -12,6 +12,8 @@
 // object in every row; the monitor's screen edge sits one gap from the plant,
 // which keeps it clear of the lamp, and the notebook shares its centre line.
 // The cup stands in the Mac mini's column, one spot left of the arcade.
+// Nougat sits in the plant's column, just in front of the plant, clear of
+// the arcade: a small discovery rather than a centrepiece.
 //
 // The same numbers drive the Blender study renders
 // (illustrated-desk/tools/palette_study.py LAYOUT) and the night renders, whose
@@ -46,6 +48,7 @@ export function composeSystem() {
     notebook: { x: snap(COL.monitor), y: ROW.front },
     cup: { x: snap(COL.macmini), y: ROW.front },
     arcade: { x: COL.plant, y: ROW.front },
+    nougat: { x: COL.plant, y: 8 },
   };
   const surface = { x0: -62, x1: 84, y0: -45.5, y1: snap(ROW.back + 22), radius: 7, thickness: 1.8 };
   const guides = {

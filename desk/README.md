@@ -3,8 +3,9 @@
 An alternate homepage at `/desk`: Kunal's desk, drawn in the browser, with
 Blender-rendered objects you can play with (the screen and Mac mini switch on,
 the notebook opens, the cube twists, the plant sways, the photo frame turns to
-the next photo, the arcade starts a game, the coffee cup empties). A click (or tap, or Enter) puts an
-object in its state and pops a small label; hover only blooms its shadow.
+the next photo, the arcade starts a game, the coffee cup empties, Nougat the
+dog looks up, then wags). A click (or tap, or Enter) puts an object in its
+state and pops a small label; hover only blooms its shadow.
 Nothing navigates away.
 The desk lamp is the
 room's light: off is daylight, on is dusk lit by the lamp. The existing

@@ -321,7 +321,8 @@ html:not(.is-ready) .site {
   transition: opacity 200ms var(--ease);
 }
 
-.obj.is-active .state {
+.obj.is-active .state,
+.visual .state.is-on {
   opacity: 1;
 }
 

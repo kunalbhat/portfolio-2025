@@ -64,6 +64,11 @@ export class DeskScene {
         state = img(g.states[obj.interaction.state], "state", wcm);
         layer.append(state);
       }
+      for (const name of obj.interaction.states ?? []) {
+        const pose = img(g.states[name], "state", wcm);
+        pose.dataset.state = name;
+        layer.append(pose);
+      }
       let sprite = null;
       if (obj.interaction.frames) {
         sprite = el("div", "sprite");
@@ -391,6 +396,15 @@ export class DeskScene {
     const item = this.items.get(id);
     if (!item?.obj.interaction.state) return;
     item.wrap.classList.toggle("is-active", on);
+  }
+
+  /** Show one of an object's poses (Nougat), or null for the resting render. */
+  setPose(id, name) {
+    const item = this.items.get(id);
+    if (!item) return;
+    for (const pose of item.wrap.querySelectorAll(".state[data-state]")) {
+      pose.classList.toggle("is-on", pose.dataset.state === name);
+    }
   }
 }
 

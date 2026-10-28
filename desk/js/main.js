@@ -39,6 +39,12 @@ function activate(obj, hit) {
   }
   if (ix.kind === "frames") {
     scene.playFrames(obj.id);
+  } else if (ix.kind === "cycle") {
+    // rest -> each pose in turn -> rest
+    const poses = ["", ...ix.states];
+    const next = poses[(poses.indexOf(hit.dataset.pose ?? "") + 1) % poses.length];
+    hit.dataset.pose = next;
+    scene.setPose(obj.id, next || null);
   } else {
     const on = hit.getAttribute("aria-pressed") !== "true";
     hit.setAttribute("aria-pressed", String(on));

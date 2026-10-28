@@ -7,11 +7,13 @@
  * @property {string} name        accessible name
  * @property {number} optical     display scale for legibility (1 = true scale)
  * @property {Object} interaction
- * @property {"toggle" | "frames"} interaction.kind
+ * @property {"toggle" | "frames" | "cycle"} interaction.kind
  *   toggle: switches between the resting render and an alternate state (or,
  *   for the lamp, the whole scene between daylight and lamplight)
  *   frames: plays part of a frame sequence (the cube turns, the plant sways)
+ *   cycle: each click shows the next pose, then returns to rest (Nougat)
  * @property {string} [interaction.state]   alternate render for toggles
+ * @property {string[]} [interaction.states] poses for cycles, in order
  * @property {string} interaction.label     accessible name of the control; toggles
  *   report on/off (or open/closed) through aria-pressed
  * @property {string} [interaction.frames]  frame sequence name
@@ -79,5 +81,12 @@ export const OBJECTS = [
     optical: 1,
     interaction: { kind: "toggle", state: "empty", label: "Coffee cup" },
     note: "Coffee",
+  },
+  {
+    id: "nougat",
+    name: "Nougat",
+    optical: 1,
+    interaction: { kind: "cycle", states: ["curious", "happy"], label: "Nougat" },
+    note: "Nougat",
   },
 ];
