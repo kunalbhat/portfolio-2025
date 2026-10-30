@@ -21,20 +21,55 @@ for (const [mode, tone] of Object.entries(TONES)) {
 }
 
 let nightTimer;
-function setMode(mode, { instant = false } = {}) {
+function setMode(mode, { initial = false } = {}) {
   scene.setMode(mode);
   html.dataset.mode = mode;
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", TONES[mode].env);
   const lamp = root.querySelector(".obj-lamp .hit");
   lamp?.setAttribute("aria-pressed", String(mode === "night"));
-  // Things that follow the room (the neon sign): on at night, buzzing on just
-  // after the lamp catches; off with the daylight.
+  // The neon name follows the room: on at night, buzzing on just after the
+  // lamp catches; off with the daylight. (On load it buzzes on with the
+  // entrance instead, whatever the light.)
+  if (initial) return;
   clearTimeout(nightTimer);
-  const follow = () => {
-    for (const obj of OBJECTS.filter((o) => o.interaction.night)) setToggle(obj.id, mode === "night");
-  };
-  if (mode === "night" && !instant) nightTimer = setTimeout(follow, 900);
-  else follow();
+  if (mode === "night") nightTimer = setTimeout(() => setNeon(true), 900);
+  else setNeon(false);
+}
+
+// The name in the corner, in neon: the Blender sign's renders, cropped to its
+// tubes. Unlit and lit, once per light, crossfading like the desk objects.
+const logo = document.querySelector(".logo");
+function buildLogo() {
+  const geo = manifest.objects.neon;
+  const xs = geo.hull.map(([x]) => x);
+  const ys = geo.hull.map(([, y]) => y);
+  const [x0, y0] = [Math.min(...xs), Math.min(...ys)];
+  const crop = document.createElement("span");
+  crop.className = "logo-crop";
+  crop.setAttribute("aria-hidden", "true");
+  crop.style.aspectRatio = `${Math.max(...xs) - x0} / ${Math.max(...ys) - y0}`;
+  const w = Math.max(...xs) - x0;
+  for (const [m, g] of Object.entries(geo.modes)) {
+    for (const [cls, files] of [["off", g.layers.object], ["on", g.states.on]]) {
+      const im = document.createElement("img");
+      im.className = `logo-${cls} m-${m}`;
+      im.src = `/desk/assets/${files["16"]}`;
+      im.alt = "";
+      im.decoding = "async";
+      // Position the full render so only the tubes show in the crop.
+      im.style.width = `${(geo.size[0] / w) * 100}%`;
+      im.style.left = `${(-x0 / w) * 100}%`;
+      im.style.top = `${(-y0 / w) * 100}cqw`;
+      crop.append(im);
+    }
+  }
+  logo.prepend(crop);
+}
+buildLogo();
+logo.addEventListener("click", () => setNeon(logo.getAttribute("aria-pressed") !== "true"));
+
+function setNeon(on) {
+  logo.setAttribute("aria-pressed", String(on));
 }
 
 function setToggle(id, on) {
@@ -75,7 +110,7 @@ const scene = new DeskScene(root, manifest, OBJECTS, activate);
 const asked = new URLSearchParams(location.search).get("mode");
 const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
 html.classList.add("no-transition");
-setMode(asked === "night" || asked === "day" ? asked : prefersDark ? "night" : "day", { instant: true });
+setMode(asked === "night" || asked === "day" ? asked : prefersDark ? "night" : "day", { initial: true });
 
 // Coordinated entrance: lay out, wait for every resting image of the current
 // light to decode (or fail), then bring in the desk and the objects (desk.css).
@@ -96,6 +131,8 @@ Promise.race([Promise.all(ready), timeout]).then(() => {
       root.classList.add("is-ready");
       html.classList.add("is-ready");
       setTimeout(() => root.classList.add("is-settled"), 1900);
+      // The name fades in unlit, then buzzes on.
+      nightTimer = setTimeout(() => setNeon(true), 700);
       setTimeout(() => scene.preloadSprites(), 900);
     }),
   );
