@@ -13,7 +13,8 @@
 // which keeps it clear of the lamp, and the notebook shares its centre line.
 // The cup stands in the Mac mini's column, one spot left of the arcade.
 // Nougat sits in the plant's column, just in front of the plant, clear of
-// the arcade: a small discovery rather than a centrepiece.
+// the arcade: a small discovery rather than a centrepiece. The Orbit
+// turntable sits in the middle row, halfway between the lamp and the monitor.
 //
 // The same numbers drive the Blender study renders
 // (illustrated-desk/tools/palette_study.py LAYOUT) and the night renders, whose
@@ -49,6 +50,7 @@ export function composeSystem() {
     cup: { x: snap(COL.macmini), y: ROW.front },
     arcade: { x: COL.plant, y: ROW.front },
     nougat: { x: COL.plant, y: 8 },
+    turntable: { x: (COL.lamp + snap(COL.monitor)) / 2, y: ROW.middle },
   };
   const surface = { x0: -62, x1: 84, y0: -45.5, y1: snap(ROW.back + 22), radius: 7, thickness: 1.8 };
   const guides = {

@@ -84,6 +84,7 @@ export class DeskScene {
     hit.type = "button";
     hit.setAttribute("aria-label", obj.interaction.label);
     if (obj.interaction.kind === "toggle") hit.setAttribute("aria-pressed", "false");
+    if (obj.interaction.kind === "embed") hit.setAttribute("aria-haspopup", "dialog");
     const [w, h] = geo.size;
     hit.style.clipPath = `polygon(${geo.hull
       .map(([x, y]) => `${((x / w) * 100).toFixed(2)}% ${((y / h) * 100).toFixed(2)}%`)
@@ -396,6 +397,65 @@ export class DeskScene {
     const item = this.items.get(id);
     if (!item?.obj.interaction.state) return;
     item.wrap.classList.toggle("is-active", on);
+  }
+
+  /**
+   * Open an object's live page (the Orbit player, built in Spline) in a card
+   * that grows out of the object over the desk. The page loads only now, and
+   * closing removes it, so nothing keeps playing or rendering in the background.
+   */
+  openEmbed(id, { url, title }) {
+    const item = this.items.get(id);
+    if (!item || this.embed) return;
+    const scrim = el("div", "embed-scrim");
+    const card = el("div", "embed");
+    card.setAttribute("role", "dialog");
+    card.setAttribute("aria-label", title);
+    const frame = document.createElement("iframe");
+    frame.src = url;
+    frame.title = title;
+    frame.allow = "autoplay; fullscreen";
+    const close = el("button", "embed-close");
+    close.type = "button";
+    close.setAttribute("aria-label", `Close ${title}`);
+    close.textContent = "×";
+    card.append(frame, close);
+    this.root.append(scrim, card);
+
+    // Grow from the object's centre (offsets ignore transforms, so this is
+    // measured on the card's resting box).
+    const o = item.wrap.getBoundingClientRect();
+    const s = this.root.getBoundingClientRect();
+    card.style.transformOrigin = `${o.left + o.width / 2 - s.left - card.offsetLeft}px ${o.top + o.height / 2 - s.top - card.offsetTop}px`;
+
+    const onKey = (e) => e.key === "Escape" && this.closeEmbed();
+    this.embed = { card, scrim, hit: item.hit, onKey };
+    scrim.addEventListener("click", () => this.closeEmbed());
+    close.addEventListener("click", () => this.closeEmbed());
+    document.addEventListener("keydown", onKey);
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        scrim.classList.add("is-open");
+        card.classList.add("is-open");
+        close.focus({ preventScroll: true });
+      }),
+    );
+  }
+
+  closeEmbed() {
+    const e = this.embed;
+    if (!e) return;
+    this.embed = null;
+    document.removeEventListener("keydown", e.onKey);
+    e.scrim.classList.remove("is-open");
+    e.card.classList.remove("is-open");
+    e.hit.focus({ preventScroll: true });
+    const done = () => {
+      e.card.remove();
+      e.scrim.remove();
+    };
+    e.card.addEventListener("transitionend", done, { once: true });
+    setTimeout(done, 700); // in case no transition runs (reduced motion)
   }
 
   /** Show one of an object's poses (Nougat), or null for the resting render. */

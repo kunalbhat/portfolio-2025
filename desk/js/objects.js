@@ -7,11 +7,14 @@
  * @property {string} name        accessible name
  * @property {number} optical     display scale for legibility (1 = true scale)
  * @property {Object} interaction
- * @property {"toggle" | "frames" | "cycle"} interaction.kind
+ * @property {"toggle" | "frames" | "cycle" | "embed"} interaction.kind
  *   toggle: switches between the resting render and an alternate state (or,
  *   for the lamp, the whole scene between daylight and lamplight)
  *   frames: plays part of a frame sequence (the cube turns, the plant sways)
  *   cycle: each click shows the next pose, then returns to rest (Nougat)
+ *   embed: opens a live page in a card over the desk (the Orbit player)
+ * @property {string} [interaction.url]     page an embed opens
+ * @property {string} [interaction.title]   accessible name of that page
  * @property {string} [interaction.state]   alternate render for toggles
  * @property {string[]} [interaction.states] poses for cycles, in order
  * @property {string} interaction.label     accessible name of the control; toggles
@@ -88,5 +91,16 @@ export const OBJECTS = [
     optical: 1,
     interaction: { kind: "cycle", states: ["curious", "happy"], label: "Nougat" },
     note: "Nougat",
+  },
+  {
+    id: "turntable",
+    name: "Orbit turntable",
+    optical: 1,
+    interaction: {
+      kind: "embed",
+      url: "https://my.spline.design/orbitmusicplayer-vezc8aVt508k2edHtSjm1vNz/",
+      title: "Orbit music player",
+      label: "Orbit: open the music player",
+    },
   },
 ];

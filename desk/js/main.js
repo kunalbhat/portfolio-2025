@@ -37,6 +37,10 @@ function activate(obj, hit) {
     setMode(scene.mode === "night" ? "day" : "night");
     return;
   }
+  if (ix.kind === "embed") {
+    scene.openEmbed(obj.id, ix);
+    return;
+  }
   if (ix.kind === "frames") {
     scene.playFrames(obj.id);
   } else if (ix.kind === "cycle") {
