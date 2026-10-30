@@ -23,6 +23,8 @@
  * @property {number} [interaction.step]    frames advanced per activation
  * @property {boolean} [interaction.loop]   sequence returns to rest (plant)
  * @property {boolean} [interaction.light]  this toggle is the room's light (lamp)
+ * @property {boolean} [interaction.night]  this toggle follows the room: on at
+ *   night, off by day, and still clickable (the neon sign)
  * @property {string} [note]  label popped on click (defaults to the name)
  */
 
@@ -102,5 +104,12 @@ export const OBJECTS = [
       title: "Orbit music player",
       label: "Orbit: open the music player",
     },
+  },
+  {
+    id: "neon",
+    name: "Neon sign",
+    optical: 1,
+    interaction: { kind: "toggle", state: "on", night: true, label: "Neon sign: kunal" },
+    note: "Kunal Bhat",
   },
 ];

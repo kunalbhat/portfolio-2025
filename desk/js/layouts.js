@@ -15,6 +15,8 @@
 // Nougat sits in the plant's column, just in front of the plant, clear of
 // the arcade: a small discovery rather than a centrepiece. The Orbit
 // turntable sits in the middle row, halfway between the lamp and the monitor.
+// The neon sign hangs on the wall just past the desk's back edge, 30 cm up,
+// above the lamp (z lifts an object off the desk plane).
 //
 // The same numbers drive the Blender study renders
 // (illustrated-desk/tools/palette_study.py LAYOUT) and the night renders, whose
@@ -51,6 +53,7 @@ export function composeSystem() {
     arcade: { x: COL.plant, y: ROW.front },
     nougat: { x: COL.plant, y: 8 },
     turntable: { x: (COL.lamp + snap(COL.monitor)) / 2, y: ROW.middle },
+    neon: { x: -32, y: 52, z: 30 },
   };
   const surface = { x0: -62, x1: 84, y0: -45.5, y1: snap(ROW.back + 22), radius: 7, thickness: 1.8 };
   const guides = {

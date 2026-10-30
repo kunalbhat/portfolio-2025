@@ -20,12 +20,26 @@ for (const [mode, tone] of Object.entries(TONES)) {
   }
 }
 
-function setMode(mode) {
+let nightTimer;
+function setMode(mode, { instant = false } = {}) {
   scene.setMode(mode);
   html.dataset.mode = mode;
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", TONES[mode].env);
   const lamp = root.querySelector(".obj-lamp .hit");
   lamp?.setAttribute("aria-pressed", String(mode === "night"));
+  // Things that follow the room (the neon sign): on at night, buzzing on just
+  // after the lamp catches; off with the daylight.
+  clearTimeout(nightTimer);
+  const follow = () => {
+    for (const obj of OBJECTS.filter((o) => o.interaction.night)) setToggle(obj.id, mode === "night");
+  };
+  if (mode === "night" && !instant) nightTimer = setTimeout(follow, 900);
+  else follow();
+}
+
+function setToggle(id, on) {
+  root.querySelector(`.obj-${id} .hit`)?.setAttribute("aria-pressed", String(on));
+  scene.setActive(id, on);
 }
 
 // A click (or tap, or Enter) puts an object in its state: the screen lights,
@@ -50,9 +64,7 @@ function activate(obj, hit) {
     hit.dataset.pose = next;
     scene.setPose(obj.id, next || null);
   } else {
-    const on = hit.getAttribute("aria-pressed") !== "true";
-    hit.setAttribute("aria-pressed", String(on));
-    scene.setActive(obj.id, on);
+    setToggle(obj.id, hit.getAttribute("aria-pressed") !== "true");
   }
   scene.showLabel(obj.note ?? obj.name);
 }
@@ -63,7 +75,7 @@ const scene = new DeskScene(root, manifest, OBJECTS, activate);
 const asked = new URLSearchParams(location.search).get("mode");
 const prefersDark = matchMedia("(prefers-color-scheme: dark)").matches;
 html.classList.add("no-transition");
-setMode(asked === "night" || asked === "day" ? asked : prefersDark ? "night" : "day");
+setMode(asked === "night" || asked === "day" ? asked : prefersDark ? "night" : "day", { instant: true });
 
 // Coordinated entrance: lay out, wait for every resting image of the current
 // light to decode (or fail), then bring in the desk and the objects (desk.css).

@@ -159,7 +159,7 @@ export class DeskScene {
     for (const item of this.items.values()) {
       const pos = L.objects[item.obj.id];
       if (!pos) continue;
-      const [px, py] = this.project(pos.x, pos.y);
+      const [px, py] = this.project(pos.x, pos.y, pos.z ?? 0);
       const s = pos.optical ?? item.obj.optical;
       const [w, h] = item.geo.size;
       const [ax, ay] = item.geo.anchor;
