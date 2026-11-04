@@ -1,11 +1,16 @@
 :root {
   color-scheme: light dark;
   --bg: #ffffff;
-  --ink: #111111;
-  --muted: #8a8a8a;
+  --ink: #222222;
+  --strong: #111111;
+  --muted: #6a6a6a;
   --rule: #ebebeb;
-  --underline: #d9d9d9;
+  --underline: #cfcfcf;
   --sans: "Inter", system-ui, -apple-system, sans-serif;
+  /* Type scale */
+  --name-size: 28px;
+  --body-size: 18px;
+  --small-size: 14px;
 }
 
 /* Dark follows the system until the lamp is switched */
@@ -13,8 +18,9 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --bg: #111111;
-    --ink: #ededed;
-    --muted: #8c8c8c;
+    --ink: #e8e8e8;
+    --strong: #ffffff;
+    --muted: #9a9a9a;
     --rule: #262626;
     --underline: #3a3a3a;
   }
@@ -23,8 +29,9 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #111111;
-  --ink: #ededed;
-  --muted: #8c8c8c;
+  --ink: #e8e8e8;
+  --strong: #ffffff;
+  --muted: #9a9a9a;
   --rule: #262626;
   --underline: #3a3a3a;
 }
@@ -86,13 +93,17 @@
   box-sizing: border-box;
 }
 
+/* Type in the manner of the big product brands: a confident grotesque,
+   near-black ink, a calm grey for anything secondary, the name drawn in
+   tight and the body only a touch. */
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font: 400 17px/1.7 var(--sans);
-  letter-spacing: -0.005em;
+  font: 400 var(--body-size) / 1.6 var(--sans);
+  letter-spacing: -0.008em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
@@ -103,7 +114,7 @@ main {
   flex-direction: column;
   min-height: 100vh;
   min-height: 100svh;
-  max-width: calc(36rem + 32px);
+  max-width: calc(35rem + 32px);
   padding: 48px 16px 40px;
   margin: 0 0 0 max(0px, calc(5vw - 32px));
 }
@@ -111,21 +122,28 @@ main {
 h1,
 .role {
   margin: 0;
-  font-size: inherit;
-  font-weight: 400;
-  line-height: 1.55;
+  font-size: var(--name-size);
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+}
+
+h1 {
+  font-weight: 600;
+  color: var(--strong);
 }
 
 .role {
+  font-weight: 500;
   color: var(--muted);
 }
 
 .bio {
-  margin-top: 56px;
+  margin-top: 48px;
 }
 
 .bio p {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
+  text-wrap: pretty;
 }
 
 .bio .aside {
@@ -138,8 +156,8 @@ a {
   color: inherit;
   text-decoration: underline;
   text-decoration-color: var(--underline);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
   transition: text-decoration-color 120ms;
 }
 
@@ -183,6 +201,21 @@ a:hover {
   cursor: grabbing;
 }
 
+/* A line of type just over the blocks, behind the canvas, so a tall
+   enough tower stands in front of it */
+.prompt {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  margin: 0;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+#blocks {
+  position: relative;
+}
+
 /* The lamp's switch for keyboards and screen readers. It stays out of
    sight; focused, the lamp on the canvas gets a ring instead. */
 .blocks {
@@ -208,10 +241,13 @@ footer {
   padding-top: 24px;
   border-top: 1px solid var(--rule);
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--small-size);
+  font-weight: 500;
+  letter-spacing: -0.004em;
 }
 
 footer a {
+  color: var(--ink);
   text-decoration-color: transparent;
 }
 
@@ -220,8 +256,9 @@ footer a:hover {
 }
 
 @media (max-width: 639px) {
-  body {
-    font-size: 16px;
+  :root {
+    --name-size: 24px;
+    --body-size: 17px;
   }
 
   main {
