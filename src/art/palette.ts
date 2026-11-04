@@ -85,6 +85,8 @@ export const P = {
     black: hex('#1e1618'),
     dark: hex('#2e2020'),
     brown: hex('#5a3a26'),
+    lightBrown: hex('#8a6038'),
+    dirtyBlonde: hex('#b08a52'),
     auburn: hex('#8a3e24'),
     blonde: hex('#d6b060'),
     grey: hex('#b0aaa6'),

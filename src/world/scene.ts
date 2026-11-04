@@ -774,9 +774,9 @@ function playground(game: Game, story: Story) {
   const set = add(new Prop(props.swingSet(), 110, 528));
   void set;
   const barY = 528 - 29;
-  const niam: Look = { skin: 'fair', hair: 'black', style: 'swoop', top: 'red', bottom: 'navy', kid: true };
-  const kavi: Look = { skin: 'fair', hair: 'black', style: 'short', top: 'sky', bottom: 'denim', kid: true };
-  const rendi: Look = { skin: 'light', hair: 'dark', style: 'long', top: 'green', topKind: 'coat', bottom: 'black' };
+  const niam: Look = { skin: 'fair', hair: 'lightBrown', style: 'swoop', top: 'red', bottom: 'navy', kid: true };
+  const kavi: Look = { skin: 'fair', hair: 'lightBrown', style: 'short', top: 'sky', bottom: 'denim', kid: true };
+  const rendi: Look = { skin: 'light', hair: 'dirtyBlonde', style: 'long', top: 'green', topKind: 'coat', bottom: 'black' };
   const swing = (sx: number, look: Look, phase: number, id: string) =>
     add(new Custom(sx, 524, {
       update: (s, c, dt) => {
