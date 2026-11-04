@@ -6,6 +6,8 @@ import { Person, Entity, Custom } from './world/actors';
 import { person } from './art/people';
 import { pigeon } from './art/animals';
 import { openGhostHop } from './ui/minigame';
+import { openCreator, MY_NPC_KEY } from './ui/creator';
+import { loadVisitors, visitors } from './world/visitors';
 import { WORLD_W, WORLD_H } from './world/layout';
 
 // Find Kunal. A tiny town in the first week of November; somewhere in it,
@@ -44,6 +46,7 @@ const story: Story = {
   found: () => onFound(),
   isFound: () => found,
   openGame: () => openGhostHop(() => canvas.focus()),
+  moveIn: () => openCreator({ onDone: () => canvas.focus(), announce }),
 };
 
 // ---- world ----------------------------------------------------------------
@@ -275,12 +278,11 @@ function onFound() {
 
 // ---- keyboard / screen reader: everything with a label is tabbable --------
 const list = $<HTMLUListElement>('#things');
-const labelled = game.entities.filter((e) => e.label && e !== kunal);
-for (const e of [...labelled, kunal]) {
+function addToList(e: Entity, label = e.label!, before?: Element | null) {
   const li = document.createElement('li');
   const b = document.createElement('button');
   b.type = 'button';
-  b.textContent = e === kunal ? 'Kunal (this gives it away)' : e.label!;
+  b.textContent = label;
   b.addEventListener('focus', () => {
     focused = e;
     const bx = game.boxOf(e)!;
@@ -290,8 +292,30 @@ for (const e of [...labelled, kunal]) {
   b.addEventListener('blur', () => { if (focused === e) focused = null; });
   b.addEventListener('click', () => e.tap?.(game.ctx));
   li.appendChild(b);
-  list.appendChild(li);
+  list.insertBefore(li, before ?? null);
+  return li;
 }
+for (const e of game.entities.filter((e) => e.label && e !== kunal)) addToList(e);
+const kunalItem = addToList(kunal, 'Kunal (this gives it away)');
+
+// ---- people who moved in ----------------------------------------------------
+$<HTMLButtonElement>('#movein').addEventListener('click', () => { hideIntro(); story.moveIn(); });
+loadVisitors(game).then(async () => {
+  for (const p of visitors.values()) addToList(p, p.label, kunalItem);
+  let mine: { id: string; name: string } | null = null;
+  try { mine = JSON.parse(localStorage.getItem(MY_NPC_KEY) ?? 'null'); } catch { /* none */ }
+  if (!mine?.id) return;
+  const me = visitors.get(mine.id);
+  let welcomed = false;
+  try { welcomed = sessionStorage.getItem('findkunal:welcomed') === mine.id; sessionStorage.setItem('findkunal:welcomed', mine.id); } catch { /* fine */ }
+  if (me && !welcomed) {
+    setTimeout(() => {
+      toast(`Welcome home, ${mine!.name}! You live here now. Look for the ring.`, 6000);
+      rings.push({ x: me.x, y: me.y - 8, r: 22, t: game.t });
+      me.hop(5);
+    }, 3200);
+  }
+});
 
 // ---- go ----------------------------------------------------------------------
 let last = performance.now();

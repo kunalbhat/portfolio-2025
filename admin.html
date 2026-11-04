@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Town hall · Find Kunal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="admin">
+    <main class="admin-main">
+      <h1>Town hall</h1>
+      <p class="admin-sub">New residents waiting to move in. Match each code to a Venmo payment, then approve.</p>
+      <form id="login" class="card admin-login" hidden>
+        <label class="field"><span>Admin token</span><input type="password" name="token" autocomplete="current-password" required /></label>
+        <button class="primary" type="submit">Open the books</button>
+        <p class="admin-error" role="alert"></p>
+      </form>
+      <section id="board" hidden>
+        <h2>Waiting <span id="pcount"></span></h2>
+        <div id="pending" class="admin-grid"></div>
+        <h2>Living in town <span id="acount"></span></h2>
+        <div id="approved" class="admin-grid"></div>
+        <p><button type="button" class="ghost-btn" id="logout">Forget token on this device</button></p>
+      </section>
+    </main>
+    <script type="module" src="./src/admin.ts"></script>
+  </body>
+</html>

@@ -22,6 +22,7 @@ import {
 
 export interface Story {
   discover(id: string): void;
+  moveIn(): void;
   found(): void;
   isFound(): boolean;
   openGame(): void;
@@ -506,6 +507,21 @@ export function buildScene(game: Game, story: Story): { ground: HTMLCanvasElemen
   add(new Hotspot(SPOTS.arcadeWindow, 'The arcade', (c) => {
     c.bubbles.say(SPOTS.arcadeWindow.x + 50, SPOTS.arcadeWindow.y - 4, 'INSERT COIN', 1.6, 'shout');
   }, 1));
+
+  // ---- a sign by the main gate: you can live here too --------------------
+  {
+    const sb = new Bitmap(40, 26);
+    sb.vline(6, 12, 13, P.wood[1]); sb.vline(33, 12, 13, P.wood[1]);
+    sb.rect(1, 1, 38, 13, P.cream); sb.hline(1, 1, 38, P.white);
+    sb.rect(1, 13, 38, 1, P.wood[2]);
+    drawTextCentered(sb, 'MOVE IN!', 20, 2, hex('#c8302a'));
+    drawTextCentered(sb, 'ONLY $5', 20, 8, P.ink);
+    sb.outline();
+    const signE = prop({ bm: sb, ax: 20, ay: 25 }, 690, 462, 26);
+    signE.label = 'A sign: move into town, $5';
+    signE.priority = 3;
+    signE.tap = () => story.moveIn();
+  }
 
   // ---- little stories, then the crowds that make it a search -------------
   addVignettes({ game, bm, who, prop });
