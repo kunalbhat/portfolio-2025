@@ -22,16 +22,20 @@ const SPOTS: Record<VisitorNpc['zone'], [number, number][]> = {
 
 export const visitors = new Map<string, Person>();
 
+/**
+ * Place a sample of residents: each part of town fills its hand-picked spots
+ * and stops, so a popular town never turns into a crowd that buries the art.
+ * The API sends a fresh random sample (with your own resident first).
+ */
 export function placeVisitors(game: Game, npcs: VisitorNpc[]) {
   const count: Record<string, number> = { park: 0, street: 0, lake: 0 };
   for (const n of npcs) {
     if (visitors.has(n.id)) continue;
-    const list = SPOTS[n.zone] ?? SPOTS.park;
-    const i = count[n.zone]++;
-    const [bx, by] = list[i % list.length];
-    // more people than spots: squeeze in beside whoever's already there
-    const ring = Math.floor(i / list.length);
-    const x = bx + ring * 9 * (ring % 2 ? 1 : -1), y = by + (ring ? 3 : 0);
+    const zone = SPOTS[n.zone] ? n.zone : 'park';
+    const list = SPOTS[zone];
+    if (count[zone] >= list.length) continue;
+    const i = count[zone]++;
+    const [x, y] = list[i];
     const p = game.add(new Person({ ...n.look, kid: false, shoes: n.look.shoes ?? 'charcoal' }, x, y, 'stand', i % 2 === 1));
     p.label = `${titleCase(n.name)}, who moved in`;
     p.idle = [['stand', 3 + (i % 3)], ['wave0', 0.3], ['wave1', 0.3], ['stand', 2], [i % 2 ? 'side' : 'back', 1.5]];
@@ -44,9 +48,10 @@ export function placeVisitors(game: Game, npcs: VisitorNpc[]) {
   }
 }
 
-export async function loadVisitors(game: Game): Promise<VisitorNpc[]> {
+export async function loadVisitors(game: Game, me?: string): Promise<VisitorNpc[]> {
   try {
-    const res = await fetch('/api/npcs', { headers: { Accept: 'application/json' } });
+    const url = me && /^[A-Z0-9]{5}$/.test(me) ? `/api/npcs?me=${me}` : '/api/npcs';
+    const res = await fetch(url, { headers: { Accept: 'application/json' } });
     if (!res.ok) return [];
     const { npcs } = (await res.json()) as { npcs: VisitorNpc[] };
     placeVisitors(game, npcs ?? []);

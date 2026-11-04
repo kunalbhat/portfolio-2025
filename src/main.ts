@@ -300,10 +300,10 @@ const kunalItem = addToList(kunal, 'Kunal (this gives it away)');
 
 // ---- people who moved in ----------------------------------------------------
 $<HTMLButtonElement>('#movein').addEventListener('click', () => { hideIntro(); story.moveIn(); });
-loadVisitors(game).then(async () => {
+let mine: { id: string; name: string } | null = null;
+try { mine = JSON.parse(localStorage.getItem(MY_NPC_KEY) ?? 'null'); } catch { /* none */ }
+loadVisitors(game, mine?.id).then(async () => {
   for (const p of visitors.values()) addToList(p, p.label, kunalItem);
-  let mine: { id: string; name: string } | null = null;
-  try { mine = JSON.parse(localStorage.getItem(MY_NPC_KEY) ?? 'null'); } catch { /* none */ }
   if (!mine?.id) return;
   const me = visitors.get(mine.id);
   let welcomed = false;
