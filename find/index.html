@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Find Kunal</title>
+    <meta name="description" content="A tiny pixel town. Somewhere in it is Kunal Bhat, a designer. Can you find him?" />
+    <meta name="theme-color" content="#231b2e" />
+    <link rel="icon" href="/find/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/find/assets/index-CgpknchP.js"></script>
+    <link rel="stylesheet" crossorigin href="/find/assets/index-Be9mxYpv.css">
+  </head>
+  <body>
+    <canvas id="world" tabindex="0" role="img"
+      aria-label="A busy pixel-art neighbourhood in Chicago in autumn: an elevated train, a café, a design studio, a rooftop cinema, a park with a playground, a pond, a tennis court and the lakefront, full of people. Kunal is hidden somewhere in it. Use the list of things to explore with the Tab key, or ask for a hint."></canvas>
+
+    <div id="loading" aria-hidden="true"><span>Building the town…</span></div>
+
+    <section id="find" class="card find" aria-labelledby="find-title">
+      <canvas id="portrait" aria-hidden="true"></canvas>
+      <div class="find-text">
+        <h1 id="find-title">Find Kunal</h1>
+        <p>Mustard sweater. Probably has a coffee.</p>
+        <div class="find-actions">
+          <button type="button" id="hint" class="ghost-btn">Hint</button>
+          <button type="button" id="reveal" class="sr-only sr-focusable">Find him for me</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="sr-only" aria-label="Things in the town">
+      <ul id="things"></ul>
+    </nav>
+
+    <div id="guide" class="guide" aria-hidden="true"></div>
+    <div id="toast" class="toast" role="status"></div>
+    <div id="live" class="sr-only" aria-live="polite"></div>
+
+    <button type="button" id="chip" class="chip" hidden></button>
+
+    <section id="intro" class="card intro" hidden aria-labelledby="intro-title" role="dialog">
+      <h2 id="intro-title">Hey, you found me!</h2>
+      <p class="lead">I’m Kunal. I design things, build little worlds, and occasionally get lost in them.</p>
+      <p>I’m a product designer who came up through engineering and product management, and I still like making the thing as much as designing it. The rest of this town is mostly my life: Rendi and our boys Kavi and Niam are at the swings, and Nougat has someone’s tennis ball.</p>
+      <p class="more">There’s more hiding in here. Have a look around.</p>
+      <div class="intro-actions">
+        <button type="button" id="explore" class="primary">Keep exploring</button>
+        <div id="links" class="links"></div>
+      </div>
+    </section>
+
+    <div class="zoom" role="group" aria-label="Zoom">
+      <button type="button" id="zin" aria-label="Zoom in">+</button>
+      <button type="button" id="zout" aria-label="Zoom out">−</button>
+    </div>
+
+  </body>
+</html>
