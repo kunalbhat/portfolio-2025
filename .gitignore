@@ -1,16 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies (only present if you run local static-server tooling via npm/npx)
 /node_modules
-
-# misc
+/dist
 .DS_Store
-
-# env files
 .env*
-
-# vercel
 .vercel
-
-# next.js build output
-/.next
+/tools/out

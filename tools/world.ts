@@ -1,0 +1,15 @@
+import { Bitmap } from '../src/art/bitmap';
+import { paintGround } from '../src/world/ground';
+import { paintTrack, paintBuildings } from '../src/world/buildings';
+import { WORLD_W, WORLD_H } from '../src/world/layout';
+const p = new URLSearchParams(location.search);
+const bm = new Bitmap(WORLD_W, WORLD_H);
+const t0 = performance.now();
+paintGround(bm); paintTrack(bm); paintBuildings(bm);
+console.log('paint ms', Math.round(performance.now() - t0));
+const src = bm.canvas();
+const c = document.getElementById('c') as HTMLCanvasElement;
+const s = +(p.get('s') ?? 1), x = +(p.get('x') ?? 0), y = +(p.get('y') ?? 0), w = +(p.get('w') ?? WORLD_W), h = +(p.get('h') ?? WORLD_H);
+c.width = w * s; c.height = h * s;
+const ctx = c.getContext('2d')!; ctx.imageSmoothingEnabled = false;
+ctx.drawImage(src, x, y, w, h, 0, 0, w * s, h * s);
