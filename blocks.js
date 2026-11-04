@@ -19,30 +19,37 @@
   //   wedge     a right triangle, square corner bottom left
   //   dome      a half disc, flat side down
   //   disc      a cylinder seen end on
+  //
+  // Unpainted wood in a few light-to-medium tones, each piece edged with a
+  // faint darker line so neighbouring blocks of similar tone stay distinct,
+  // and every corner softly rounded, like sanded wood.
   const COLORS = {
-    red: "#d83a2e",
-    blue: "#2350b4",
-    yellow: "#f2b827",
+    birch: "#e8d2ad",
+    maple: "#dcba8b",
+    beech: "#cfa575",
+    oak: "#c09060",
   };
+  const EDGE = "rgba(105, 66, 28, 0.13)";
+  const DOT = "rgba(105, 66, 28, 0.22)";
 
   // Enough for a gate with a roof, a domed tower, and a few odd pieces
   const SET = [
-    { cut: "rect", w: 1.25, h: 2.25, c: "blue" },
-    { cut: "rect", w: 1.25, h: 2.25, c: "blue" },
-    { cut: "rect", w: 4.5, h: 0.75, c: "yellow" },
-    { cut: "roof", w: 3.5, h: 1.5, c: "red" },
-    { cut: "rect", w: 1.75, h: 1.75, c: "red" },
-    { cut: "dome", w: 1.75, h: 0.875, c: "yellow" },
-    { cut: "wedge", w: 1.5, h: 1, c: "blue" },
-    { cut: "disc", w: 1.25, h: 1.25, c: "red" },
+    { cut: "rect", w: 1.25, h: 2.25, c: "maple" },
+    { cut: "rect", w: 1.25, h: 2.25, c: "maple" },
+    { cut: "rect", w: 4.5, h: 0.75, c: "birch" },
+    { cut: "roof", w: 3.5, h: 1.5, c: "oak" },
+    { cut: "rect", w: 1.75, h: 1.75, c: "beech" },
+    { cut: "dome", w: 1.75, h: 0.875, c: "birch" },
+    { cut: "wedge", w: 1.5, h: 1, c: "oak" },
+    { cut: "disc", w: 1.25, h: 1.25, c: "maple" },
   ];
 
   // The lamp: a heavy round foot, a thin stem, and a tapered shade, all one
   // body
   const LAMP = {
-    base: { w: 1.6, h: 0.35, c: "yellow" },
-    stem: { w: 0.22, h: 1.65, c: "blue" },
-    shade: { bottom: 1.8, top: 0.95, h: 1.05, c: "red" },
+    base: { w: 1.6, h: 0.35, c: "oak" },
+    stem: { w: 0.22, h: 1.65, c: "beech" },
+    shade: { bottom: 1.8, top: 0.95, h: 1.05, c: "birch" },
   };
   const SPAN = 12.75;
 
@@ -142,7 +149,7 @@
       default: {
         const body = Bodies.rectangle(left + w / 2, bottom - h / 2, w, h, {
           ...MATERIAL,
-          chamfer: { radius: Math.min(2, unit * 0.06) },
+          chamfer: { radius: unit * 0.16 },
         });
         body.piece = piece;
         return body;
@@ -156,7 +163,7 @@
 
   function makeLamp(cx, floor) {
     const { base, stem, shade } = LAMP;
-    const r = Math.min(2, unit * 0.06);
+    const r = unit * 0.12;
 
     // The foot is dense, so the lamp stands up and rights itself easily
     const foot = Bodies.rectangle(cx, floor - (base.h * unit) / 2, base.w * unit, base.h * unit, {
@@ -260,7 +267,7 @@
     // start of the column and the lamp, in no particular order
     const pieces = SET.map((piece) => shape(piece));
     const from = bleed + unit * 1.4;
-    const to = lamp.bounds.min.x - unit * 3.2;
+    const to = lamp.bounds.min.x - unit * 4.2;
     const slots = shuffle(pieces.map((_, i) => from + ((i + 0.5) / pieces.length) * (to - from)));
     const g = 0.001 * engine.gravity.y * (1000 / 60) ** 2; // px per frame²
 
@@ -640,10 +647,29 @@
     glow = t >= 1 ? glowTarget : glowFrom + (glowTarget - glowFrom) * k;
   }
 
+  // Trace a part with its corners rounded. Each corner's radius is held
+  // under half its shorter edge, so the dome's curve and the rectangles'
+  // own chamfers pass through untouched and only the sharp corners soften.
   function trace(part) {
     const v = part.vertices;
-    ctx.moveTo(v[0].x, v[0].y);
-    for (let i = 1; i < v.length; i++) ctx.lineTo(v[i].x, v[i].y);
+    const n = v.length;
+    const r = unit * 0.16;
+    const start = {
+      x: (v[n - 1].x + v[0].x) / 2,
+      y: (v[n - 1].y + v[0].y) / 2,
+    };
+    ctx.moveTo(start.x, start.y);
+    for (let i = 0; i < n; i++) {
+      const a = v[(i + n - 1) % n];
+      const b = v[i];
+      const c = v[(i + 1) % n];
+      const k = Math.min(
+        r,
+        Math.hypot(b.x - a.x, b.y - a.y) / 2,
+        Math.hypot(c.x - b.x, c.y - b.y) / 2,
+      );
+      ctx.arcTo(b.x, b.y, c.x, c.y, k);
+    }
     ctx.closePath();
   }
 
@@ -720,6 +746,10 @@
           ctx.beginPath();
           trace(part);
           ctx.fill();
+          ctx.strokeStyle = EDGE;
+          ctx.lineWidth = 1;
+          ctx.lineJoin = "round";
+          ctx.stroke();
         }
         drawBulb();
         if (focused) {
@@ -743,11 +773,15 @@
         }
       }
       ctx.fill();
+      ctx.strokeStyle = EDGE;
+      ctx.lineWidth = 1;
+      ctx.lineJoin = "round";
+      ctx.stroke();
 
       // A small dot marks the cylinder's axle, so you can see it roll
       if (body.circleRadius) {
         const r = body.circleRadius * 0.55;
-        ctx.fillStyle = "rgba(0,0,0,0.14)";
+        ctx.fillStyle = DOT;
         ctx.beginPath();
         ctx.arc(
           body.position.x + Math.cos(body.angle) * r,
