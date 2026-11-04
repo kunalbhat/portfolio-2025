@@ -1,12 +1,12 @@
 # Kunal Bhat
 
-A small personal website. My name is cut and folded from paper, lit by one lamp, and you can take it apart a piece at a time.
+A small personal website: a few paragraphs of type, and a set of toy blocks you can push around.
 
 ## Tech Stack
 Plain static HTML, CSS, and vanilla JavaScript — no framework, no build step. Physics comes from [Matter.js](https://brm.io/matter-js/), vendored in `vendor/`.
 
-- `sculpture.js` — the name sculpture: the letters, their pieces, how they are lit, and how they come apart
-- `theme.js` — the pull chain in the top right corner that switches light and dark
+- `blocks.js` — the toy blocks: the set, how they drop to the floor, dragging them around, and the toy lamp
+- `theme.js` — light and dark: the lamp switches it, and the new theme wipes out from the bulb
 
 ## Local Development
 Serve the directory with any static file server, e.g.:
