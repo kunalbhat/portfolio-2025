@@ -1,5 +1,5 @@
 (function () {
-  const { Engine, Bodies, Body, Composite, Query, Vector } = Matter;
+  const { Engine, Events, Bodies, Body, Composite, Query, Vector } = Matter;
 
   const canvas = document.getElementById("blocks");
   if (!canvas) return;
@@ -8,10 +8,11 @@
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const theme = window.siteTheme;
 
-  // A handful of wooden toy blocks in primary colours, set out on the rule
-  // above the footer, and a little toy lamp that switches the page between
-  // light and dark. Positions are in block units: `x` from the left, `y`
-  // up from the floor, by bounding box.
+  // A handful of wooden toy blocks in primary colours, tossed in from the
+  // left edge of the window to land in a jumble on the rule above the
+  // footer, for visitors to build with; and a little toy lamp, standing at
+  // the right, that switches the page between light and dark. Sizes are in
+  // block units.
   //
   //   rect      a block or plank
   //   roof      an isosceles triangle, point up
@@ -24,48 +25,52 @@
     yellow: "#f2b827",
   };
 
+  // Enough for a gate with a roof, a domed tower, and a few odd pieces
   const SET = [
-    // A gate: two pillars, a lintel, and a roof
-    { cut: "rect", x: 0, y: 0, w: 1.25, h: 2.25, c: "blue" },
-    { cut: "rect", x: 2.75, y: 0, w: 1.25, h: 2.25, c: "blue" },
-    { cut: "rect", x: -0.25, y: 2.25, w: 4.5, h: 0.75, c: "yellow" },
-    { cut: "roof", x: 0.25, y: 3, w: 3.5, h: 1.5, c: "red" },
-    // A cube with a dome on it
-    { cut: "rect", x: 4.75, y: 0, w: 1.75, h: 1.75, c: "red" },
-    { cut: "dome", x: 4.75, y: 1.75, w: 1.75, h: 0.875, c: "yellow" },
-    // A wedge and a cylinder, loose on the floor
-    { cut: "wedge", x: 7.25, y: 0, w: 1.5, h: 1, c: "blue" },
-    { cut: "disc", x: 9, y: 0, w: 1.25, h: 1.25, c: "red" },
+    { cut: "rect", w: 1.25, h: 2.25, c: "blue" },
+    { cut: "rect", w: 1.25, h: 2.25, c: "blue" },
+    { cut: "rect", w: 4.5, h: 0.75, c: "yellow" },
+    { cut: "roof", w: 3.5, h: 1.5, c: "red" },
+    { cut: "rect", w: 1.75, h: 1.75, c: "red" },
+    { cut: "dome", w: 1.75, h: 0.875, c: "yellow" },
+    { cut: "wedge", w: 1.5, h: 1, c: "blue" },
+    { cut: "disc", w: 1.25, h: 1.25, c: "red" },
   ];
 
   // The lamp: a heavy round foot, a thin stem, and a tapered shade, all one
-  // body. `x` is the centre line.
+  // body
   const LAMP = {
-    x: 11.5,
     base: { w: 1.6, h: 0.35, c: "yellow" },
     stem: { w: 0.22, h: 1.65, c: "blue" },
     shade: { bottom: 1.8, top: 0.95, h: 1.05, c: "red" },
   };
   const SPAN = 12.75;
 
-  // Heavy, dead wood: no bounce, lots of grip, a little air drag so a
-  // rolling cylinder comes to rest
+  // Heavy, dead wood for building with: no bounce, a lot of grip so a
+  // block set on another stays put, and enough air drag that things come
+  // to rest promptly instead of sliding and rolling about
   const MATERIAL = {
     restitution: 0,
-    friction: 0.9,
-    frictionStatic: 1.2,
-    frictionAir: 0.012,
+    friction: 1,
+    frictionStatic: 2,
+    frictionAir: 0.025,
     density: 0.004,
-    slop: 0.02,
+    slop: 0.015,
   };
+
+  // The left wall is left out of a block's collisions until it has been
+  // tossed in past it
+  const WALL = 0x0002;
+  const ALL = 0xffffffff;
 
   // The lamp's light, warm in either theme
   const BULB_ON = "#fff4d6";
   const BULB_OFF = "rgba(128, 128, 128, 0.35)";
 
-  let engine, bodies, lamp, unit, width, height, dpr;
+  let engine, bodies, lamp, unit, width, height, dpr, bleed, column;
   let grip = null;
   let press = null;
+  let lastTap = null;
   let quiet = 0;
   let focused = false;
   let running = false;
@@ -93,11 +98,13 @@
     return body;
   }
 
-  function shape(piece, ox, floor) {
+  // Each piece is cut with its bounding box at the origin; build() moves
+  // it to where it starts
+  function shape(piece) {
     const w = piece.w * unit;
     const h = piece.h * unit;
-    const left = ox + piece.x * unit;
-    const bottom = floor - piece.y * unit;
+    const left = 0;
+    const bottom = h;
     let verts;
 
     switch (piece.cut) {
@@ -147,8 +154,7 @@
     return body;
   }
 
-  function makeLamp(ox, floor) {
-    const cx = ox + LAMP.x * unit;
+  function makeLamp(cx, floor) {
     const { base, stem, shade } = LAMP;
     const r = Math.min(2, unit * 0.06);
 
@@ -198,53 +204,124 @@
     return body;
   }
 
+  function shuffle(list) {
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+    return list;
+  }
+
   function build() {
+    // The canvas reaches left past the text column to the edge of the
+    // window, so the blocks can come in from off screen. `bleed` is that
+    // extra width; the column, where they land and play, starts after it.
+    const figure = canvas.parentElement;
+    column = figure.clientWidth;
+    bleed = Math.max(0, Math.round(figure.getBoundingClientRect().left));
+    canvas.style.marginLeft = `${-bleed}px`;
+    canvas.style.width = `${column + bleed}px`;
+
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = canvas.clientWidth;
+    width = column + bleed;
     height = canvas.clientHeight;
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
 
-    unit = Math.min(26, (width - 8) / SPAN);
+    unit = Math.min(26, (column - 8) / SPAN);
     const floor = height;
 
     // No sleeping: a sleeping block left resting on one that is pulled away
     // stays hanging in the air. The loop stops itself once all is still.
     engine = Engine.create({ enableSleeping: false });
     engine.gravity.y = 1;
-    engine.positionIterations = 12;
-    engine.velocityIterations = 8;
+    engine.positionIterations = 14;
+    engine.velocityIterations = 10;
 
-    // A floor, two walls, and a ceiling at the top of the canvas, so
-    // nothing can be thrown out of sight
+    // A floor, walls at either end of the column, and a ceiling at the top
+    // of the canvas, so nothing can get out of sight
     const t = 400;
     Composite.add(engine.world, [
       Bodies.rectangle(width / 2, floor + t / 2, width + t * 2, t, { isStatic: true, friction: 1 }),
-      Bodies.rectangle(-t / 2, height / 2, t, height + t * 2, { isStatic: true }),
+      Bodies.rectangle(bleed - t / 2, height / 2, t, height + t * 2, {
+        isStatic: true,
+        collisionFilter: { category: WALL },
+      }),
       Bodies.rectangle(width + t / 2, height / 2, t, height + t * 2, { isStatic: true }),
       Bodies.rectangle(width / 2, -t / 2, width + t * 2, t, { isStatic: true }),
     ]);
 
-    lamp = makeLamp(2, floor);
-    bodies = SET.map((piece) => shape(piece, 2, floor)).concat(lamp);
+    // The lamp stands at the right end from the start
+    lamp = makeLamp(width - unit * 1.3, floor);
+    lamp.added = true;
+    Composite.add(engine.world, lamp);
 
-    // Built in place, then lifted and let go one at a time from the bottom
-    // up, so the set drops to the floor and settles. The lamp comes last.
-    const lift = reducedMotion.matches ? 0 : height * 0.35;
-    const order = bodies
-      .map((body, i) => ({ body, i }))
-      .sort(
-        (a, b) =>
-          (a.body.isLamp ? 1 : 0) - (b.body.isLamp ? 1 : 0) ||
-          b.body.bounds.max.y - a.body.bounds.max.y ||
-          a.i - b.i,
-      );
-    drops = order.map(({ body }, n) => {
-      Body.setPosition(body, { x: body.position.x, y: body.position.y - lift });
-      return { body, at: reducedMotion.matches ? 0 : 120 + n * 70 };
+    // Where each block will come down: spread along the floor between the
+    // start of the column and the lamp, in no particular order
+    const pieces = SET.map((piece) => shape(piece));
+    const from = bleed + unit * 1.4;
+    const to = lamp.bounds.min.x - unit * 3.2;
+    const slots = shuffle(pieces.map((_, i) => from + ((i + 0.5) / pieces.length) * (to - from)));
+    const g = 0.001 * engine.gravity.y * (1000 / 60) ** 2; // px per frame²
+
+    // The farthest spots are thrown to first, so later throws don't have
+    // to clear the ones already down
+    bodies = [lamp];
+    const throws = pieces
+      .map((body, i) => ({ body, tx: slots[i] + (Math.random() - 0.5) * unit * 0.6 }))
+      .sort((a, b) => b.tx - a.tx);
+    drops = throws.map(({ body, tx }, n) => {
+      const bw = body.bounds.max.x - body.bounds.min.x;
+      const bh = body.bounds.max.y - body.bounds.min.y;
+      bodies.push(body);
+
+      if (reducedMotion.matches) {
+        Body.setPosition(body, { x: tx, y: floor - bh / 2 - 1 });
+        return { body, at: 0, v: { x: 0, y: 0 }, spin: 0 };
+      }
+
+      // Thrown underarm from just off the left edge of the window: a short,
+      // low arc timed to come down on its spot, turning as it goes
+      const r = Math.hypot(bw, bh) / 2;
+      const x0 = -r - 4;
+      const y0 = height * (0.42 + Math.random() * 0.16);
+      const frames = 40 + Math.random() * 14;
+      const land = floor - bh / 2;
+      let vy = (land - y0 - 0.5 * g * frames * frames) / frames;
+      // Keep the top of the arc under the ceiling
+      const apex = y0 - (vy * vy) / (2 * g);
+      if (apex < r + 4) vy = -Math.sqrt(Math.max(0, 2 * g * (y0 - r - 4)));
+      const vx = (tx - x0) / frames;
+
+      // No air drag in flight, so the arc comes down where it's aimed;
+      // it comes back on the first touch
+      Body.setPosition(body, { x: x0, y: y0 });
+      Body.setAngle(body, (Math.random() - 0.5) * 0.8);
+      body.collisionFilter.mask = ALL & ~WALL;
+      body.entering = true;
+      body.flying = true;
+      body.frictionAir = 0;
+      return {
+        body,
+        at: 250 + n * 150,
+        v: { x: vx, y: vy },
+        spin: (Math.random() - 0.5) * 0.16,
+      };
     });
+    Events.on(engine, "collisionStart", (event) => {
+      for (const pair of event.pairs) {
+        for (const body of [pair.bodyA.parent, pair.bodyB.parent]) {
+          if (body.flying) {
+            body.flying = false;
+            body.frictionAir = MATERIAL.frictionAir;
+          }
+        }
+      }
+    });
+
     grip = null;
     press = null;
+    lastTap = null;
     quiet = 0;
     acc = 0;
   }
@@ -254,24 +331,28 @@
     return Vector.add(lamp.position, Vector.rotate(lamp.bulb, lamp.angle));
   }
 
-  // Dragging. Rather than a spring, which winds up and whips the block
-  // around, each step the held block is given the velocity that carries
-  // the point you grabbed toward the pointer, capped so it can't outrun
-  // the collisions. Gravity still turns it gently about that point, so a
-  // block lifted by its corner swings to hang, and its spin is damped so it
-  // settles rather than twirls. Let go, and it keeps the speed it had,
-  // within limits: a flick throws it, a drop just drops it.
+  // Dragging, tuned for building rather than throwing. Each step the held
+  // block is given the velocity that carries the point you grabbed toward
+  // the pointer, capped, and while held it is made light, so knocking into
+  // the others it gives way and nudges them rather than barging through. It doesn't
+  // swing: it eases to the nearest quarter turn and holds it, so it lines
+  // up with whatever you set it on. Let go and it is set down, not thrown.
   //
-  // A quick tap on the lamp, with hardly any movement, switches it instead.
+  // To turn a block: while holding it, scroll or press R (Shift+R the
+  // other way); or double-click it where it lies. A quick tap on the lamp
+  // switches it instead.
 
+  const QUARTER = Math.PI / 2;
   const HOLD = {
-    follow: 0.45, // how much of the gap to the pointer to close each step
-    maxSpeed: 14, // px per step while held
-    spinDamp: 0.86, // angular velocity kept each step while held
-    swing: 0.35, // how strongly gravity turns a held block about the grip
+    follow: 0.38, // how much of the gap to the pointer to close each step
+    ease: 0.6, // how much of that velocity to take on each step
+    maxSpeed: 8, // px per frame while held
+    lightness: 0.12, // a held block's mass, as a share of its own
+    turn: 0.18, // how much of the gap to the target angle to close
+    maxTurn: 0.12, // radians per frame
   };
-  const THROW = { speed: 9, spin: 0.12 }; // px and radians per step
-  const LIMIT = { speed: 16, spin: 0.35 }; // for any block, any time
+  const SET_DOWN = { speed: 2.5, spin: 0.03 }; // what a block keeps on release
+  const LIMIT = { speed: 14, spin: 0.3 }; // for any block, once it's in play
 
   function local(e) {
     const r = canvas.getBoundingClientRect();
@@ -291,37 +372,44 @@
   function clampTarget(p) {
     const pad = unit * 0.25;
     return {
-      x: Math.max(pad, Math.min(width - pad, p.x)),
+      x: Math.max(bleed + pad, Math.min(width - pad, p.x)),
       y: Math.max(pad, Math.min(height - pad, p.y)),
     };
+  }
+
+  function squared(angle) {
+    return Math.round(angle / QUARTER) * QUARTER;
   }
 
   function hold() {
     if (!grip) return;
     const body = grip.body;
     const at = Vector.add(body.position, Vector.rotate(grip.offset, body.angle));
-    const want = clampVector(
-      Vector.mult(Vector.sub(clampTarget(grip.target), at), HOLD.follow),
-      HOLD.maxSpeed,
+    const gap = Vector.sub(clampTarget(grip.target), at);
+    const want = clampVector(Vector.mult(gap, HOLD.follow), HOLD.maxSpeed);
+    Body.setVelocity(
+      body,
+      Vector.add(Vector.mult(body.velocity, 1 - HOLD.ease), Vector.mult(want, HOLD.ease)),
     );
-    // Ease toward that velocity, so a sudden jerk of the pointer doesn't
-    // become a sudden jerk of the block
-    Body.setVelocity(body, Vector.add(Vector.mult(body.velocity, 0.35), Vector.mult(want, 0.65)));
+    const turn = grip.angle - body.angle;
+    Body.setAngularVelocity(
+      body,
+      Math.max(-HOLD.maxTurn, Math.min(HOLD.maxTurn, turn * HOLD.turn)),
+    );
 
-    // Gravity's turn about the grip: the centre wants to hang below it
-    const arm = Vector.sub(body.position, at);
-    const lever = Math.hypot(arm.x, arm.y);
-    let spin = body.angularVelocity * HOLD.spinDamp;
-    if (lever > unit * 0.15) {
-      const lean = Math.atan2(arm.x, arm.y); // 0 when hanging straight down
-      spin += Math.sin(lean) * HOLD.swing * 0.01;
+    // A turn in place finishes by itself once the block is square again
+    if (grip.auto) {
+      grip.frames++;
+      const done =
+        (Math.abs(turn) < 0.02 && Math.hypot(gap.x, gap.y) < 2 && grip.frames > 10) ||
+        grip.frames > 70;
+      if (done) letGo();
     }
-    Body.setAngularVelocity(body, spin);
   }
 
   function limit() {
     for (const body of bodies) {
-      if (!body.added) continue;
+      if (!body.added || body.entering) continue;
       const v = clampVector(body.velocity, LIMIT.speed);
       if (v !== body.velocity) Body.setVelocity(body, v);
       if (Math.abs(body.angularVelocity) > LIMIT.spin) {
@@ -330,29 +418,102 @@
     }
   }
 
+  // Once a tossed block is clear of the left wall, it collides with it. One
+  // that knocks into another and stalls before it's in is nudged along.
+  function admit() {
+    for (const body of bodies) {
+      if (!body.entering) continue;
+      if (body.bounds.min.x > bleed + 1) {
+        body.entering = false;
+        body.collisionFilter.mask = ALL;
+      } else if (!body.flying && body.velocity.x < 1.5 && !(grip && grip.body === body)) {
+        Body.setVelocity(body, { x: 2.5, y: Math.min(body.velocity.y, 0) - 0.4 });
+      }
+    }
+  }
+
+  function take(next) {
+    next.mass = next.body.mass;
+    Body.setMass(next.body, next.mass * HOLD.lightness);
+    grip = next;
+  }
+
+  // Set the held block down: it keeps only a little of its motion, and if
+  // it is all but square, it is squared exactly so stacks sit flush
+  function letGo() {
+    if (!grip) return;
+    const body = grip.body;
+    Body.setVelocity(body, clampVector(body.velocity, SET_DOWN.speed));
+    Body.setAngularVelocity(
+      body,
+      Math.max(-SET_DOWN.spin, Math.min(SET_DOWN.spin, body.angularVelocity)),
+    );
+    if (Math.abs(grip.angle - body.angle) < 0.05) {
+      Body.setAngle(body, grip.angle);
+      Body.setAngularVelocity(body, 0);
+    }
+    Body.setMass(body, grip.mass);
+    if (grip.id !== null) {
+      try {
+        if (canvas.hasPointerCapture(grip.id)) canvas.releasePointerCapture(grip.id);
+      } catch (err) {}
+    }
+    grip = null;
+    canvas.classList.remove("is-holding");
+    quiet = 0;
+    wake();
+  }
+
+  // Turn a block a quarter: the held one, or one lying on the floor, which
+  // is lifted just clear, turned, and set back down
+  function turn(body, dir) {
+    if (grip && !grip.auto && grip.body === body) {
+      grip.angle += dir * QUARTER;
+      wake();
+      return;
+    }
+    if (grip) letGo();
+    const bw = body.bounds.max.x - body.bounds.min.x;
+    const bh = body.bounds.max.y - body.bounds.min.y;
+    const lift = Math.max(0, (bw - bh) / 2) + 3;
+    take({
+      id: null,
+      auto: true,
+      frames: 0,
+      body,
+      offset: { x: 0, y: 0 },
+      target: { x: body.position.x, y: body.position.y - lift },
+      angle: squared(body.angle) + dir * QUARTER,
+    });
+    wake();
+  }
+
   canvas.addEventListener("pointerdown", (e) => {
-    if (grip || !bodies) return;
+    if (!bodies) return;
+    if (grip && !grip.auto) return;
     const p = local(e);
     const body = hit(p);
     if (!body) return;
+    if (grip) letGo();
     e.preventDefault();
     try {
       canvas.setPointerCapture(e.pointerId);
     } catch (err) {}
     press = { body, x: e.clientX, y: e.clientY, t: performance.now(), moved: false };
-    grip = {
+    take({
       id: e.pointerId,
       body,
       target: p,
       offset: Vector.rotate(Vector.sub(p, body.position), -body.angle),
-    };
+      angle: squared(body.angle),
+    });
     canvas.classList.add("is-holding");
     wake();
   });
 
   canvas.addEventListener("pointermove", (e) => {
     const p = local(e);
-    if (grip) {
+    if (grip && !grip.auto) {
       if (e.pointerId !== grip.id) return;
       if (press && Math.hypot(e.clientX - press.x, e.clientY - press.y) > 5) {
         press.moved = true;
@@ -360,37 +521,59 @@
       grip.target = p;
       wake();
     } else if (bodies) {
+      // Booleans, always: classList.toggle with `undefined` flips the class
+      // on every move instead of setting it, and the cursor flickers
       const body = hit(p);
-      canvas.classList.toggle("is-over", !!body && !body.isLamp);
-      canvas.classList.toggle("is-over-lamp", !!body && body.isLamp);
+      const lampy = !!(body && body.isLamp);
+      canvas.classList.toggle("is-over", !!body && !lampy);
+      canvas.classList.toggle("is-over-lamp", lampy);
     }
   });
 
   function release(e) {
-    if (!grip || (e && e.pointerId !== undefined && e.pointerId !== grip.id)) return;
-    const body = grip.body;
-    Body.setVelocity(body, clampVector(body.velocity, THROW.speed));
-    Body.setAngularVelocity(
-      body,
-      Math.max(-THROW.spin, Math.min(THROW.spin, body.angularVelocity)),
-    );
-    try {
-      if (canvas.hasPointerCapture(grip.id)) canvas.releasePointerCapture(grip.id);
-    } catch (err) {}
-    grip = null;
-    canvas.classList.remove("is-holding");
+    if (!grip || grip.auto) return;
+    if (e && e.pointerId !== undefined && e.pointerId !== grip.id) return;
+    const now = performance.now();
     const tap =
-      press &&
-      press.body.isLamp &&
-      !press.moved &&
-      e &&
-      e.type === "pointerup" &&
-      performance.now() - press.t < 450;
+      press && !press.moved && e && e.type === "pointerup" && now - press.t < 350;
+    const body = press && press.body;
     press = null;
-    quiet = 0;
-    wake();
-    if (tap) switchLamp();
+    letGo();
+    if (!tap) {
+      lastTap = null;
+      return;
+    }
+    if (body.isLamp) {
+      lastTap = null;
+      switchLamp();
+    } else if (lastTap && lastTap.body === body && now - lastTap.t < 400) {
+      lastTap = null;
+      turn(body, 1);
+    } else {
+      lastTap = { body, t: now };
+    }
   }
+
+  canvas.addEventListener(
+    "wheel",
+    (e) => {
+      if (!grip || grip.auto) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now - (grip.wheel || 0) < 240) return;
+      const d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (Math.abs(d) < 1) return;
+      grip.wheel = now;
+      turn(grip.body, Math.sign(d));
+    },
+    { passive: false },
+  );
+
+  window.addEventListener("keydown", (e) => {
+    if (!grip || grip.auto || (e.key !== "r" && e.key !== "R")) return;
+    e.preventDefault();
+    turn(grip.body, e.shiftKey ? -1 : 1);
+  });
 
   // However the press ends, the block is let go: released over the page,
   // outside the window, cancelled by the browser, or the tab hidden
@@ -409,7 +592,7 @@
   function switchLamp() {
     if (!theme) return;
     const r = canvas.getBoundingClientRect();
-    const b = lamp && lamp.added ? bulbAt() : { x: width - 40, y: height - 60 };
+    const b = lamp ? bulbAt() : { x: width - 40, y: height - 60 };
     theme.toggle({ x: r.left + b.x, y: r.top + b.y });
   }
 
@@ -596,12 +779,15 @@
       if (!d.body.added && elapsed >= d.at) {
         d.body.added = true;
         Composite.add(engine.world, d.body);
+        Body.setVelocity(d.body, d.v);
+        Body.setAngularVelocity(d.body, d.spin);
       }
     }
 
     while (acc >= STEP) {
       hold();
       Engine.update(engine, STEP);
+      admit();
       limit();
       acc -= STEP;
     }
@@ -615,7 +801,7 @@
     const settled =
       !grip &&
       glow === glowTarget &&
-      drops.every((d) => d.body.added) &&
+      drops.every((d) => d.body.added && !d.body.entering) &&
       quiet > STILL.frames;
     if (settled || !visible) {
       running = false;
@@ -645,12 +831,23 @@
     if (visible) wake();
   }).observe(canvas);
 
-  let lastWidth = canvas.clientWidth;
-  new ResizeObserver(() => {
-    if (canvas.clientWidth === lastWidth) return;
-    lastWidth = canvas.clientWidth;
-    start();
-  }).observe(canvas);
+  // Rebuild when the column changes size or moves; the blocks are tossed
+  // in afresh
+  let layout = "";
+  let pending = 0;
+  function relayout() {
+    const figure = canvas.parentElement;
+    const next = `${figure.clientWidth}:${Math.round(figure.getBoundingClientRect().left)}`;
+    if (next === layout) return;
+    layout = next;
+    clearTimeout(pending);
+    pending = setTimeout(start, 150);
+  }
+  new ResizeObserver(relayout).observe(canvas.parentElement);
+  window.addEventListener("resize", relayout);
 
+  layout = `${canvas.parentElement.clientWidth}:${Math.round(
+    canvas.parentElement.getBoundingClientRect().left,
+  )}`;
   start();
 })();
