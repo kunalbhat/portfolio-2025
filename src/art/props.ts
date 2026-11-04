@@ -646,3 +646,82 @@ export function cube(solved: boolean, step = 0): PropArt {
   bm.outline();
   return { bm, ax: 2, ay: 6 };
 }
+
+// ---- refinement pass: market, games, families -----------------------------
+
+/** A market stall: striped canopy on poles, a counter piled with goods. */
+export function marketStall(a: Color, b: Color, goods: Color[], sign?: Color): PropArt {
+  const w = 34, h = 30;
+  const bm = new Bitmap(w, h);
+  // canopy, seen from above and a little in front
+  for (let y = 0; y < 8; y++)
+    for (let x = 1; x < w - 1; x++) {
+      let c = Math.floor((x - 1) / 4) % 2 ? a : b;
+      if (y < 2) c = sunlit(c, 0.9);
+      if (y > 5) c = shadow(c, 0.25);
+      bm.px(x, y, c);
+    }
+  for (let x = 1; x < w - 1; x++) if (x % 4 !== 3) bm.px(x, 8, shadow(Math.floor((x - 1) / 4) % 2 ? a : b, 0.4));
+  // poles
+  bm.vline(2, 9, 18, P.wood[1]); bm.vline(w - 3, 9, 18, P.wood[1]);
+  // counter
+  bm.rect(1, 18, w - 2, 9, P.wood[3]); bm.hline(1, 18, w - 2, P.wood[4]);
+  for (let x = 2; x < w - 2; x += 5) bm.vline(x, 20, 7, P.wood[2]);
+  bm.hline(1, 26, w - 2, P.wood[1]);
+  // goods piled on the counter (crates of round things)
+  for (let i = 0; i < 6; i++) {
+    const gx = 3 + i * 5, c = goods[i % goods.length];
+    bm.rect(gx, 15, 4, 3, c); bm.px(gx, 15, sunlit(c)); bm.px(gx + 2, 14, c); bm.px(gx + 3, 16, shadow(c, 0.5));
+  }
+  if (sign) { bm.rect(10, 20, 14, 5, P.cream); bm.hline(11, 22, 12, sign); }
+  bm.outline();
+  return { bm, ax: w / 2, ay: 27 };
+}
+
+export function chessTable(): PropArt {
+  const bm = new Bitmap(14, 10);
+  const stone = P.concrete[3], stoneD = P.concrete[1];
+  bm.rect(1, 1, 12, 5, stone); bm.hline(1, 1, 12, P.concrete[4]);
+  for (let y = 0; y < 3; y++) for (let x = 0; x < 6; x++) if ((x + y) % 2) bm.px(4 + x, 2 + y, P.ink); else bm.px(4 + x, 2 + y, P.cream);
+  bm.hline(1, 6, 12, stoneD);
+  bm.rect(5, 7, 4, 2, stoneD);
+  bm.outline();
+  return { bm, ax: 7, ay: 8 };
+}
+
+export function stroller(c: Color): PropArt {
+  const bm = new Bitmap(12, 11);
+  // hood, basket, handle, wheels
+  bm.rect(2, 1, 6, 4, c); bm.hline(2, 1, 6, sunlit(c)); bm.px(7, 2, shadow(c));
+  bm.rect(2, 5, 7, 2, shadow(c, 0.4));
+  bm.line(9, 5, 11, 1, P.metal[1]);
+  bm.rect(2, 8, 2, 2, hex('#2a2830')); bm.rect(7, 8, 2, 2, hex('#2a2830'));
+  bm.line(3, 7, 8, 7, P.metal[1]);
+  bm.outline();
+  return { bm, ax: 6, ay: 10 };
+}
+
+export function grill(): PropArt {
+  const bm = new Bitmap(10, 11);
+  bm.ellipse(5, 3.5, 4, 2.6, hex('#2a2830'));
+  bm.hline(2, 2, 6, hex('#d0602e')); bm.px(4, 3, hex('#f2b43a'));
+  bm.line(2, 5, 1, 10, hex('#2a2830')); bm.line(8, 5, 9, 10, hex('#2a2830')); bm.line(5, 6, 5, 10, hex('#2a2830'));
+  bm.outline();
+  return { bm, ax: 5, ay: 10 };
+}
+
+export function musicStand(): PropArt {
+  const bm = new Bitmap(8, 14);
+  bm.rect(1, 1, 6, 4, P.white); bm.hline(2, 2, 4, P.ink); bm.hline(2, 3, 3, P.ink);
+  bm.vline(4, 5, 8, P.metal[1]); bm.line(2, 13, 4, 11, P.metal[1]); bm.line(6, 13, 4, 11, P.metal[1]);
+  bm.outline();
+  return { bm, ax: 4, ay: 13 };
+}
+
+export function bubbleArt(r: number): PropArt {
+  const s = Math.ceil(r * 2 + 2);
+  const bm = new Bitmap(s, s);
+  bm.ellipse(s / 2, s / 2, r, r, (x, y, d) => (d > 0.6 ? hex('#cfe8f0') : undefined));
+  bm.px(Math.floor(s / 2 - r / 2), Math.floor(s / 2 - r / 2), P.white);
+  return { bm, ax: s / 2, ay: s / 2 };
+}

@@ -259,6 +259,7 @@ export class Critter extends Entity {
     super(x, y);
   }
   moving = false;
+  state: Record<string, any> = {};
   update(c: Ctx, dt: number) {
     this.ft += dt;
     this.moving = false;

@@ -18,7 +18,7 @@ export type HairStyle =
 
 export type Item =
   | 'none' | 'cup' | 'phone' | 'bag' | 'icecream' | 'racket' | 'book' | 'laptop' | 'popcorn' | 'leash' | 'camera'
-  | 'guitar' | 'paper' | 'cube' | 'kite' | 'broom' | 'tongs' | 'flowers' | 'balloon';
+  | 'guitar' | 'paper' | 'cube' | 'kite' | 'broom' | 'tongs' | 'flowers' | 'balloon' | 'sax' | 'trumpet' | 'fries' | 'mop' | 'tray';
 
 export interface Look {
   skin: SkinName;
@@ -236,6 +236,11 @@ function applyItem(g: Grid, look: Look, v: View, pose: Pose) {
       case 'flowers': over(g, ['.......X', '.......Y', '.......g'], 7); break;
       case 'tongs': over(g, ['.......g', '......g.'], 9); break;
       case 'broom': over(g, ['.......g', '.......g', '.......g', '.......g', '......XX', '......XX'], 8); break;
+      case 'mop': over(g, ['.......g', '.......g', '.......g', '.......g', '......WW', '.....WWW'], 8); break;
+      case 'sax': over(g, ['....X...', '...XY...', '...XX...', '..YXX...', '..XX....'], 6); break;
+      case 'trumpet': over(g, [null, '......XY', 'XXXXXX..'], 3); break;
+      case 'fries': over(g, ['..YYY...', '..XXX...'], 9); break;
+      case 'tray': over(g, ['.WXWXW..', '.gggggg.'], 8); break;
       default: break;
     }
   } else if (v === 'side') {
@@ -279,6 +284,11 @@ function palette(look: Look): Palette {
     flowers: [hex('#e05a7a'), hex('#f2d03a')],
     bag: [P.cloth[look.extra ?? 'tan'][1], P.cloth[look.extra ?? 'tan'][0]],
     broom: [hex('#c8a050'), hex('#c8a050')],
+    sax: [hex('#d8a83a'), hex('#f2d870')],
+    trumpet: [hex('#d8a83a'), hex('#f2d870')],
+    fries: [hex('#d23a32'), hex('#f2d03a')],
+    mop: [hex('#c8a050'), hex('#c8a050')],
+    tray: [hex('#8a5a3a'), hex('#c8a050')],
   };
   const [X, Y] = itemPal[item] ?? [P.metal[1], P.metal[3]];
   return {

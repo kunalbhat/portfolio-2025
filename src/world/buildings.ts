@@ -569,7 +569,11 @@ export function paintBuildings(bm: Bitmap) {
     stoopSteps(bm, dx - 6, base - 20, 28, 20, P.greystone[3], true);
     SPOTS.stoop = { x: dx - 6, y: base - 20, w: 28, h: 20 };
     // little front garden behind a short iron fence, with the leaf pile
-    for (let i = 0; i < 70; i++) for (let j = 0; j < 8; j++) bm.px(x + 8 + i, base + 1 + j, noise2(i, j, 66) < 0.6 ? pick(P.leafOrange, 0.3 + noise2(i, j, 67) * 0.7) : P.grass[1]);
+    for (let i = 0; i < 70; i++) for (let j = 0; j < 7; j++) {
+      const leaf = noise2(i, j, 66) < 0.12;
+      bm.px(x + 8 + i, base + 1 + j, leaf ? pick(P.leafOrange, 0.4 + noise2(i, j, 67) * 0.6) : pick(P.grass, 0.35 + noise2(i, j, 68) * 0.4));
+    }
+    for (let i = 0; i < 70; i++) { if (i % 3 === 0) bm.vline(x + 8 + i, base + 5, 4, hex('#24222a')); bm.px(x + 8 + i, base + 6, hex('#24222a')); }
     SPOTS.leafPile = { x: x + 30, y: base + 1, w: 24, h: 8 };
   }
 

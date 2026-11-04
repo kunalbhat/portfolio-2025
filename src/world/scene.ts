@@ -9,6 +9,7 @@ import { carSprite, bus, trainCar, bicycle, CarKind } from '../art/vehicles';
 import { drawTextCentered, textWidth } from '../art/font';
 import { paintGround } from './ground';
 import { paintTrack, paintBuildings, SPOTS } from './buildings';
+import { addVignettes, paintYards } from './vignettes';
 import { Entity, Prop, Person, Custom, Critter, Hotspot, Ctx, Box } from './actors';
 import { Game } from '../engine/game';
 import { WorldDraw, propSprite } from '../engine/draw';
@@ -42,6 +43,7 @@ export function buildScene(game: Game, story: Story): { ground: HTMLCanvasElemen
   const bm = new Bitmap(WORLD_W, WORLD_H);
   paintGround(bm);
   paintTrack(bm);
+  paintYards(bm);
   backyardTrees(bm);
   paintBuildings(bm);
   const add = <T extends Entity>(e: T) => game.add(e);
@@ -49,6 +51,17 @@ export function buildScene(game: Game, story: Story): { ground: HTMLCanvasElemen
   // ---- helpers ------------------------------------------------------------
   const treeAt = (x: number, y: number, kind: props.Foliage, r: number, seed: number, leaves = true) => {
     const art = props.tree(kind, r, seed);
+    // November: the lawn under each tree is littered with its own leaves
+    if (kind !== 'green' && y > 440) {
+      const ramp = kind === 'gold' ? P.leafGold : kind === 'red' ? P.leafRed : P.leafOrange;
+      const LR = rng(seed * 31);
+      for (let i = 0; i < r * 9; i++) {
+        const a = LR.next() * Math.PI * 2, d = Math.sqrt(LR.next());
+        const lx = Math.round(x + 3 + Math.cos(a) * r * 1.3 * d), ly = Math.round(y + 2 + Math.sin(a) * r * 0.55 * d);
+        const under = bm.get(lx, ly);
+        if (under && (under === P.grass[0] || under === P.grass[1] || under === P.grass[2] || under === P.grass[3] || under === P.grass[4] || LR.chance(0.5))) bm.px(lx, ly, ramp[LR.int(2, 4)]);
+      }
+    }
     bm.shadeEllipse(x + r * 0.45, y - 1, r * 0.95, r * 0.42, 0.9, 0.6);
     const t = add(new Prop(art, x, y));
     if (leaves && kind !== 'green') leafFall(game, x, y - art.ay + art.bm.h * 0.4, r, kind);
@@ -494,7 +507,8 @@ export function buildScene(game: Game, story: Story): { ground: HTMLCanvasElemen
     c.bubbles.say(SPOTS.arcadeWindow.x + 50, SPOTS.arcadeWindow.y - 4, 'INSERT COIN', 1.6, 'shout');
   }, 1));
 
-  // ---- crowds: the density that makes it a search ------------------------
+  // ---- little stories, then the crowds that make it a search -------------
+  addVignettes({ game, bm, who, prop });
   crowds(game, who, walker);
 
   // ---- static ground shadows for everything sitting still -----------------
@@ -516,7 +530,7 @@ function backyardTrees(bm: Bitmap) {
   });
 }
 
-function blanket(bm: Bitmap, x: number, y: number, w: number, h: number, c: number) {
+export function blanket(bm: Bitmap, x: number, y: number, w: number, h: number, c: number) {
   for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) {
     const check = (Math.floor(i / 3) + Math.floor(j / 3)) % 2 === 0;
     bm.px(x + i, y + j, check ? c : P.cream);
@@ -569,7 +583,7 @@ function steam(game: Game, cups: [number, number][]) {
 }
 
 /** A little flock of pigeons, pecking. Scatters when tapped or crowded. */
-function flock(game: Game, cx: number, cy: number, n: number, seed: number) {
+export function flock(game: Game, cx: number, cy: number, n: number, seed: number) {
   const R = rng(seed * 13);
   const birds = Array.from({ length: n }, () => ({ x: cx + R.range(-14, 14), y: cy + R.range(-5, 5), hx: 0, hy: 0, flip: R.chance(0.5), peck: R.range(0, 3), fly: 0, vx: 0, vy: 0 }));
   birds.forEach((b) => { b.hx = b.x; b.hy = b.y; });
@@ -605,6 +619,7 @@ function flock(game: Game, cx: number, cy: number, n: number, seed: number) {
     c.bubbles.say(cx, cy - 10, 'FLAP FLAP', 1);
   };
   e.y = cy + 2;
+  return e;
 }
 
 /** Someone who drops an orange, chases it, picks it up, and carries on. */
@@ -668,7 +683,7 @@ function dogWalk(game: Game, kind: 'lab' | 'dachshund' | 'corgi' | 'poodle', pts
   });
 }
 
-function leash(d: WorldDraw, x0: number, y0: number, x1: number, y1: number, css: string) {
+export function leash(d: WorldDraw, x0: number, y0: number, x1: number, y1: number, css: string) {
   const n = Math.max(2, Math.round(Math.hypot(x1 - x0, y1 - y0)));
   d.ctx.fillStyle = css;
   for (let i = 0; i <= n; i++) {
@@ -903,10 +918,13 @@ function tennis(game: Game, bm: Bitmap, story: Story): Entity {
   A.lines = ['15-LOVE!', 'OUT? THAT WAS IN.']; B.lines = ['MY DOG? NO, NOT MINE.', 'THAT WAS OUT.'];
   // spectators
   game.add(new Prop(props.bench(), 1110, 640));
-  game.add(new Person({ skin: 'olive', hair: 'black', style: 'cap', hat: 'navy', top: 'sky', bottom: 'khaki' }, 1104, 639, 'sit', false)).lines = ['GREAT RALLY!'];
-  game.add(new Person({ skin: 'light', hair: 'blonde', style: 'bun', top: 'pink', bottom: 'white' }, 1116, 639, 'sit', true)).lines = ['WHO\'S WINNING?'];
+  const specs = [
+    game.add(new Person({ skin: 'olive', hair: 'black', style: 'cap', hat: 'navy', top: 'sky', bottom: 'khaki' }, 1104, 639, 'sit', false)),
+    game.add(new Person({ skin: 'light', hair: 'blonde', style: 'bun', top: 'pink', bottom: 'white' }, 1116, 639, 'sit', true)),
+  ];
+  specs[0].lines = ['GREAT RALLY!']; specs[1].lines = ['WHO\'S WINNING?'];
 
-  const ball = { x: A.x + 4, y: A.y - 8, z: 0, vx: 0, vy: 0, vz: 0, live: false, hits: 0, next: 'B' as 'A' | 'B' };
+  const ball = { x: A.x + 4, y: A.y - 8, z: 0, vx: 0, vy: 0, vz: 0, live: false, hits: 0, next: 'B' as 'A' | 'B', out: false };
   const court = game.add(new Custom(netX, L.y + L.h / 2, {
     update: (s, c, dt) => {
       s.state.t = (s.state.t ?? 0) + dt;
@@ -921,14 +939,31 @@ function tennis(game: Game, bm: Bitmap, story: Story): Entity {
       }
       ball.x += ball.vx * dt; ball.y += ball.vy * dt; ball.vz -= 260 * dt; ball.z += ball.vz * dt;
       if (ball.z < 0) { ball.z = 0; ball.vz = Math.abs(ball.vz) * 0.55; }
+      if (ball.out) {
+        if (ball.z <= 0 && ball.y > COURT.y + COURT.h) {
+          ball.out = false; ball.live = false; s.state.t = 0;
+          // the spectators flinch; Nougat, delighted, has a ball again
+          specs.forEach((p, i) => setTimeout(() => { p.hop(4); if (i === 0) p.say(c, 'WATCH IT!', 1.2); }, i * 120));
+          const n = c.get('nougat') as Custom | undefined;
+          if (n && !n.state.happy) { n.state.dropped = false; c.bubbles.say(n.x, n.y - 12, 'ARF!', 1); }
+          s.state.hideBall = true;
+          setTimeout(() => (s.state.hideBall = false), 4000);
+        }
+        return;
+      }
       const hitter = ball.next === 'B' ? B : A;
       // the receiver drifts toward the ball's line
       hitter.y += Math.max(-30 * dt, Math.min(30 * dt, ball.y - hitter.y));
       if ((ball.next === 'B' && ball.x >= B.x - 4) || (ball.next === 'A' && ball.x <= A.x + 4)) {
         if (s.state.left <= 0) {
           // the last shot sails over the fence, right to where Nougat waits
-          ball.live = false; s.state.t = 0;
-          hitter.say(c, 'OUT!', 1.2);
+          hitter.pose = 'wave1'; setTimeout(() => (hitter.pose = 'stand'), 200);
+          const n = c.get('nougat') as Custom | undefined;
+          const tx = n && !n.state.happy ? n.x + 4 : 1250, ty = n && !n.state.happy ? n.y : 690;
+          ball.next = 'out' as 'A'; ball.out = true;
+          ball.vx = (tx - ball.x) / 1.3; ball.vy = (ty - ball.y) / 1.3; ball.vz = 120; ball.z = Math.max(ball.z, 8);
+          s.state.left = 99;
+          setTimeout(() => (ball.next === ('out' as 'A') ? hitter.say(c, 'OUT!', 1.2) : 0), 300);
           return;
         }
         s.state.left--;
@@ -1010,7 +1045,11 @@ function tennis(game: Game, bm: Bitmap, story: Story): Entity {
   n.tap = (c) => {
     const st = n.state;
     c.bubbles.say(n.x, n.y - 12, st.happy ? '♥ ARF ♥' : 'ARF!', 1.2);
-    if (st.mode === 'idle' && !c.reduced) { st.mode = 'zoom'; st.zt = 0; st.cx = n.x; st.cy = n.y; }
+    if (st.mode === 'idle' && !c.reduced) {
+      st.mode = 'zoom'; st.zt = 0; st.cx = n.x; st.cy = n.y;
+      const f = game.entities.find((e) => (e as Entity & { nougatFlock?: boolean }).nougatFlock);
+      setTimeout(() => f?.tap?.(c), 400);
+    }
     else st.dropped = true;
     story.discover('nougat');
   };
@@ -1018,10 +1057,10 @@ function tennis(game: Game, bm: Bitmap, story: Story): Entity {
 }
 
 function frisbee(game: Game) {
-  const a = game.add(new Person({ skin: 'brown', hair: 'brown', style: 'short', top: 'purple', bottom: 'khaki' }, 836, 766, 'stand'));
-  const b = game.add(new Person({ skin: 'fair', hair: 'blonde', style: 'cap', hat: 'green', top: 'white', topKind: 'tee', bottom: 'navy', bottomKind: 'shorts' }, 950, 792, 'stand', true));
+  const a = game.add(new Person({ skin: 'brown', hair: 'brown', style: 'short', top: 'purple', bottom: 'khaki' }, 852, 558, 'stand'));
+  const b = game.add(new Person({ skin: 'fair', hair: 'blonde', style: 'cap', hat: 'green', top: 'white', topKind: 'tee', bottom: 'navy', bottomKind: 'shorts' }, 944, 590, 'stand', true));
   a.lines = ['NICE THROW!']; b.lines = ['GO LONG!'];
-  const corgi = game.add(new Critter((f, i, m) => dog('corgi', m ? i : 0, f), 890, 782, 9));
+  const corgi = game.add(new Critter((f, i, m) => dog('corgi', m ? i : 0, f), 898, 574, 9));
   corgi.tap = (c) => c.bubbles.say(corgi.x, corgi.y - 10, 'YIP!', 1);
   let t = 0;
   game.add(new Custom(0, 0, {
@@ -1306,7 +1345,7 @@ function rooftopCinema(game: Game, bm: Bitmap, story: Story) {
         g.fillRect(sx + 30, sy + 22, 16, 8);
         return;
       }
-      g.fillStyle = '#f2e6b0'; g.fillRect(sx + 56, sy + 5, 7, 7); g.fillStyle = '#2a2a4a'; g.fillRect(sx + 59, sy + 5, 4, 4);
+      g.fillStyle = '#f2e6b0'; for (let j = 0; j < 8; j++) for (let i = 0; i < 8; i++) if ((i - 3.5) ** 2 + (j - 3.5) ** 2 < 14 && (i - 5.5) ** 2 + (j - 2.5) ** 2 > 9) g.fillRect(sx + 56 + i, sy + 4 + j, 1, 1);
       g.fillStyle = '#3a4a3a';
       for (let i = 0; i < sw; i++) { const h = 6 + Math.round(Math.sin(i * 0.08) * 3); g.fillRect(sx + i, sy + sh - h, 1, h); }
       const gx = sx + ((t * 10) % (sw + 20)) - 10, gy = sy + 14 + Math.sin(t * 2) * 3;
@@ -1378,7 +1417,7 @@ const BOTTOMS = ['denim', 'navy', 'black', 'charcoal', 'khaki', 'brown', 'grey',
 const ITEMS = ['none', 'none', 'none', 'cup', 'phone', 'bag', 'none', 'book', 'icecream'] as const;
 const QUIPS = ['NICE DAY FOR IT.', 'HAVE YOU SEEN A DOG?', 'NOT ME.', 'I\'M JUST HERE.', 'HELLO!', 'WE\'RE LOST.', 'IS THAT THE L?', 'LOVE THIS PARK.', 'HM?', 'SAY HI TO NOUGAT.', 'COLD, ISN\'T IT?', 'OH, HI!'];
 
-function randomLook(R: ReturnType<typeof rng>, kid = false): Look {
+export function randomLook(R: ReturnType<typeof rng>, kid = false): Look {
   const style = R.pick(STYLES);
   return {
     skin: R.pick(SKINS), hair: R.pick(HAIRS), style, hat: style === 'cap' || style === 'beanie' ? R.pick(TOPS) : undefined,
@@ -1399,9 +1438,9 @@ function crowds(game: Game, who: Who, walker: Walker) {
     // around the bean
     [628, 586], [636, 596, 'back'], [748, 590], [756, 600, 'side'], [612, 610], [770, 616, 'back'], [676, 640], [700, 646, 'side'], [720, 636], [598, 572, 'back'],
     // north lawn
-    [440, 470], [452, 472, 'side'], [900, 540], [912, 546, 'back'], [700, 488], [714, 488, 'side'],
+    [440, 470], [452, 472, 'side'], [700, 488], [714, 488, 'side'],
     // south lawn and paths
-    [780, 760], [792, 762, 'side'], [930, 740], [700, 790, 'back'], [990, 846], [1002, 848, 'side'],
+    [700, 790, 'back'], [990, 846], [1002, 848, 'side'],
     // east lawn
     [1360, 708], [1372, 712, 'side'], [1150, 790], [1300, 846], [1416, 846, 'back'],
     // pond and playground edges

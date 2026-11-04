@@ -27,7 +27,7 @@ function alley(bm: Bitmap) {
     for (let x = 0; x < WORLD_W; x++) {
       const n = smooth2(x, y, 11, 3) * 0.5 + noise2(x, y, 4) * 0.5;
       let c = pick(P.concrete, 0.12 + n * 0.4);
-      if (smooth2(x, y, 23, 5) > 0.62) c = mix(c, P.path[1], 0.35);
+      if (smooth2(x, y, 23, 5) > 0.72) c = mix(c, P.path[1], 0.2);
       bm.px(x, y, c);
     }
   // a strip of gravel and weeds along the back fences, cracks with grass
